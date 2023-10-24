@@ -16,8 +16,15 @@ import lombok.Setter;
 public class Size {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_size;
+    @Column(name = "id_size",unique = true, nullable = false)
+    private Long sizeId;
+
+    @Column(name = "adult")
     private Integer adult;
-    private String no_size;
-    private String size_description;
+
+    @Column(name = "no_size")
+    private String noSize;
+
+    @Column(name = "size_description")
+    private String sizeDescription;
 }

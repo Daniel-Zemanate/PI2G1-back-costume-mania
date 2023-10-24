@@ -15,10 +15,17 @@ import lombok.Setter;
 public class Catalog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_catalog;
+    @Column(name = "id_catalog",unique = true, nullable = false)
+    private Long catalogId;
+
     @ManyToOne
-    @JoinColumn(name = "size_id")
+    @JoinColumn(name = "id_size")
+    @Column(name = "size")
     private Size size;
+
+    @Column(name = "quantity")
     private Integer quantity;
+
+    @Column(name = "price")
     private Float price;
 }
