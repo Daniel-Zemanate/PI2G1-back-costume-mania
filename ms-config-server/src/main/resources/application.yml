@@ -1,0 +1,14 @@
+server:
+  port: ${PORT:8888}
+
+spring:
+  application:
+    name: ms-config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/Daniel-Zemanate/PI2G1-back-costume-mania
+          default-label: main
+          force-pull: true
+          search-paths: Configuration

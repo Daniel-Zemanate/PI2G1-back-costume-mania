@@ -3,12 +3,12 @@ server:
 
 spring:
   application:
-    name: ms-facturacion-service
+    name: ms-bills
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    password: #
-    url: jdbc:mysql://localhost:3306/costumemania
-    username: #root
+    password: #${MYSQL_PASSWORD}
+    url: #${MYSQL_URL}
+    username: #${MYSQL_USERNAME}
   jpa:
     hibernate:
     ddl-auto: update
