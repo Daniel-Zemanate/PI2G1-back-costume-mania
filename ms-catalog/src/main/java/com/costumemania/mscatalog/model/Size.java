@@ -17,7 +17,7 @@ public class Size {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_size",unique = true, nullable = false)
-    private Long sizeId;
+    private Long idSize;
 
     @Column(name = "adult")
     private Integer adult;

@@ -16,7 +16,7 @@ public class Catalog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_catalog",unique = true, nullable = false)
-    private Long catalogId;
+    private Long idCatalog;
 
     @ManyToOne
     @JoinColumn(name = "id_size")

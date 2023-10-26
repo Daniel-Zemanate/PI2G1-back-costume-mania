@@ -17,17 +17,15 @@ public class Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_model",unique = true, nullable = false)
-    private Long modelId;
+    private Long idModel;
 
     @Column(name = "name_model")
-    private String modelName;
+    private String nameModel;
     @ManyToOne
     @JoinColumn(name = "id_category")
     private Category category;
 
-    @Column(name = "url_adult_image")
-    private String adultImageUrl;
+    @Column(name = "url_image")
+    private String urlImage;
 
-    @Column(name = "url_child_image")
-    private String childImageUrl;
 }
