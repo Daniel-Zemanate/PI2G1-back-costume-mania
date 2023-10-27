@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: ms-eureka-server
+  config:
+    import: configserver:http://localhost:8888

@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: ms-bills
+  config:
+    import: configserver:http://localhost:8888
