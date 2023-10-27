@@ -3,6 +3,7 @@ version: "3.8"
 services:
   mysqldb:
     image: mysql:8.1
+#   Create your personal .env file from .envTemplate
     env_file: ./.env
     environment:
       - MYSQL_USER=$MYSQLDB_USER
