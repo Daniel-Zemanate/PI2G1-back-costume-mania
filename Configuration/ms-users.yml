@@ -1,0 +1,42 @@
+server:
+  port: ${PORT:0}
+
+spring:
+  application:
+    name: ms-users
+  datasource:
+    driverClassName: ${DDBB_USERNAME:com.mysql.cj.jdbc.Driver}
+    url: ${DDBB_URL}
+    username: ${DDBB_USERNAME}
+    password: ${DDBB_PASSWORD}
+    jpa:
+      open-in-view: false
+      show-sql: true
+      hibernate:
+        ddl-auto: update
+      properties:
+        hibernate:
+          dialect: ${DDBB_DIALECT:org.hibernate.dialect.MySQL8Dialect}
+          format_sql: true
+      defer-datasource-initialization: true
+
+# This is left only for possible need in the future.
+#    sql:
+#      init:
+#        data-locations: classpath:${DDBB_SQLFILE}
+#        mode: always
+#        platform: mysql
+
+
+message: hello from ms-users
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
