@@ -1,6 +1,14 @@
 spring:
   application:
     name: ms-catalog
-  config:
-    import: configserver:http://localhost:8888
+  #config:
+  #  import: configserver:http://localhost:8888
 
+# configuración para pruebas
+  datasource:
+    url: jdbc:mysql://localhost:3306/costumemania
+    username: root
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update
