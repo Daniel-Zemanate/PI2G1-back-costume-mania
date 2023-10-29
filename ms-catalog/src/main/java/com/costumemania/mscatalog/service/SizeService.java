@@ -16,10 +16,10 @@ public class SizeService {
     public List<Size> getAll() {
         return sizeRepository.findAll();
     }
-    public Optional<Size> getById (Long id){
+    public Optional<Size> getById (Integer id){
         return sizeRepository.findById(id);
     }
-    public List<Size> getByAdultOrChild(Integer adult) {
-        return sizeRepository.findAllByAdultOrChild(adult);
+    public List<Size> getByAdult(Integer adult) {
+        return sizeRepository.findAllByAdult(adult);
     }
 }
