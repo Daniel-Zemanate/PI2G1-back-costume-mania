@@ -13,6 +13,18 @@ public class CatalogService {
     @Autowired
     CatalogRepository catalogRepository;
 
+
+    public List<Catalog> getCatalog(){
+        return catalogRepository.findAll();
+    }
+
+    public Optional<Catalog> getCatalogById(Integer id){
+        return catalogRepository.findById(id);
+    }
+
+
+
+
     public Catalog create (CatalogDTO catalogDTO) {
         return catalogRepository.create(catalogDTO);
     };
@@ -21,13 +33,6 @@ public class CatalogService {
         return catalogRepository.update(catalogDTO);
     };
 
-    public List<Catalog> getCatalog(){
-        return catalogRepository.findAll();
-    }
-
-    public Optional<Catalog> getCatalogById(Long id){
-        return catalogRepository.findById(id);
-    }
 
     public List<Catalog> getLastCatalog(){
         return catalogRepository.findNews();

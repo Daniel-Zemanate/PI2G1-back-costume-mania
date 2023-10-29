@@ -8,10 +8,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CatalogRepository extends JpaRepository<Catalog, Long> {
-    Catalog create (CatalogDTO catalogDTO);
+public interface CatalogRepository extends JpaRepository<Catalog, Integer> {
+
     List<Catalog> findAll ();
-    Optional<Catalog> findById (Long id);
+    Optional<Catalog> findById (Integer id);
+
+
+
+    Catalog create (CatalogDTO catalogDTO);
     void delete(Long id);
 
     // para informar los ultimos elementos agregados al catalogo, pero no informa las reposiciones de stock

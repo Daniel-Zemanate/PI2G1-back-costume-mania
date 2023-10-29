@@ -18,14 +18,14 @@ public class Catalog {
     @Column(name = "id_catalog",unique = true, nullable = false)
     private Long idCatalog;
 
-    @ManyToOne
-    @JoinColumn(name = "id_model")
+    //@ManyToOne
+    //@JoinColumn(name = "id_model")
     @Column(name = "model")
-    private Model model;
+    private Integer model;
 
     @ManyToOne
-    @JoinColumn(name = "id_size")
-    @Column(name = "size")
+    @JoinColumn(name = "size")
+    //@Column(name = "size")
     private Size size;
 
     @Column(name = "quantity")

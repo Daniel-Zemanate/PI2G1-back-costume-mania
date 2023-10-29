@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SizeRepository extends JpaRepository<Size, Long> {
+public interface SizeRepository extends JpaRepository<Size, Integer> {
     List<Size> findAll();
     Optional<Size> findById (Integer id);
     List<Size> findAllByAdult(Integer adult);
