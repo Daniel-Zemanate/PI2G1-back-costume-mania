@@ -25,3 +25,6 @@ replay_pid*
 
 # IDEA config files
 .idea/
+
+# IGNORE .env FILES
+.env
