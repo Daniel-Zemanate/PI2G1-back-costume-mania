@@ -149,9 +149,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `costumemania`.`user`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `costumemania`.`user` ;
+DROP TABLE IF EXISTS `costumemania`.`users` ;
 
-CREATE TABLE IF NOT EXISTS `costumemania`.`user` (
+CREATE TABLE IF NOT EXISTS `costumemania`.`users` (
   `id_user` INT NOT NULL AUTO_INCREMENT,
   `role` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
@@ -176,17 +176,17 @@ DROP TABLE IF EXISTS `costumemania`.`fav` ;
 
 CREATE TABLE IF NOT EXISTS `costumemania`.`fav` (
   `id_fav` INT NOT NULL AUTO_INCREMENT,
-  `user` INT NOT NULL,
+  `users` INT NOT NULL,
   `model` INT NOT NULL,
   PRIMARY KEY (`id_fav`),
-  INDEX `id_user_idx` (`user` ASC) VISIBLE,
+  INDEX `id_user_idx` (`users` ASC) VISIBLE,
   INDEX `id_model_idx` (`model` ASC) VISIBLE,
   CONSTRAINT `model`
     FOREIGN KEY (`model`)
     REFERENCES `costumemania`.`model` (`id_model`),
-  CONSTRAINT `user`
-    FOREIGN KEY (`user`)
-    REFERENCES `costumemania`.`user` (`id_user`))
+  CONSTRAINT `users`
+    FOREIGN KEY (`users`)
+    REFERENCES `costumemania`.`users` (`id_user`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 14
 DEFAULT CHARACTER SET = utf8mb4
@@ -201,7 +201,7 @@ DROP TABLE IF EXISTS `costumemania`.`sale` ;
 CREATE TABLE IF NOT EXISTS `costumemania`.`sale` (
   `id_sale` INT NOT NULL,
   `no_invoice` INT NULL DEFAULT NULL,
-  `user` INT NOT NULL,
+  `users` INT NOT NULL,
   `model` INT NOT NULL,
   `quantity` INT NOT NULL,
   `shipping_address` VARCHAR(45) NOT NULL,
@@ -210,7 +210,7 @@ CREATE TABLE IF NOT EXISTS `costumemania`.`sale` (
   `sale_date` DATE NULL DEFAULT NULL,
   `shipping_date` DATE NULL DEFAULT NULL,
   PRIMARY KEY (`id_sale`),
-  INDEX `id_user_idx` (`user` ASC) VISIBLE,
+  INDEX `id_user_idx` (`users` ASC) VISIBLE,
   INDEX `id_envio_idx` (`shipping_city` ASC) VISIBLE,
   INDEX `id_status_idx` (`status` ASC) VISIBLE,
   INDEX `id_catalog_idx` (`model` ASC) VISIBLE,
@@ -224,8 +224,8 @@ CREATE TABLE IF NOT EXISTS `costumemania`.`sale` (
     FOREIGN KEY (`status`)
     REFERENCES `costumemania`.`status` (`id_status`),
   CONSTRAINT `id_user`
-    FOREIGN KEY (`user`)
-    REFERENCES `costumemania`.`user` (`id_user`))
+    FOREIGN KEY (`users`)
+    REFERENCES `costumemania`.`users` (`id_user`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -355,10 +355,10 @@ INSERT INTO `costumemania`.`role` (`id_role`, `role`) VALUES ('1', 'Administrado
 INSERT INTO `costumemania`.`role` (`id_role`, `role`) VALUES ('2', 'Usuario');
 
 
-INSERT INTO `costumemania`.`user` (`id_user`, `role`, `name`, `last_name`, `email`, `pass`) VALUES ('1', '1', 'Juan', 'Perez', 'j.perez@email.com', '1234');
-INSERT INTO `costumemania`.`user` (`id_user`, `role`, `name`, `last_name`, `email`, `pass`) VALUES ('2', '2', 'Daniel', 'Gonzalez', 'd.gonzalez@email.com', '1234');
-INSERT INTO `costumemania`.`user` (`id_user`, `role`, `name`, `last_name`, `email`, `pass`) VALUES ('3', '2', 'Eduardo', 'Calviño', 'eduardo@email.com', '1234');
-INSERT INTO `costumemania`.`user` (`id_user`, `role`, `name`, `last_name`, `email`, `pass`) VALUES ('4', '2', 'Laura', 'Nuñez', 'laura@email.com', '1234');
+INSERT INTO `costumemania`.`users` (`id_user`, `role`, `name`, `last_name`, `email`, `pass`) VALUES ('1', '1', 'Juan', 'Perez', 'j.perez@email.com', '1234');
+INSERT INTO `costumemania`.`users` (`id_user`, `role`, `name`, `last_name`, `email`, `pass`) VALUES ('2', '2', 'Daniel', 'Gonzalez', 'd.gonzalez@email.com', '1234');
+INSERT INTO `costumemania`.`users` (`id_user`, `role`, `name`, `last_name`, `email`, `pass`) VALUES ('3', '2', 'Eduardo', 'Calviño', 'eduardo@email.com', '1234');
+INSERT INTO `costumemania`.`users` (`id_user`, `role`, `name`, `last_name`, `email`, `pass`) VALUES ('4', '2', 'Laura', 'Nuñez', 'laura@email.com', '1234');
 
 
 INSERT INTO `costumemania`.`shipping` (`id_shipping`, `destination`, `cost`) VALUES ('1', 'CABA, Arg', '0.00');
@@ -379,26 +379,26 @@ INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('5', 'Cancel
 INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('6', 'Cancelado por administrador');
 
 
-INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `user`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`,`shipping_date`) VALUES ('1', '00023', '2', '2', '1', 'calle 123', '1', '3', '2023-02-12', '2023-02-16');
-INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `user`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`,`shipping_date`) VALUES ('2', '00023', '2', '15', '1', 'calle 123', '1', '3', '2023-02-12', '2023-02-16');
-INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `user`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`,`shipping_date`) VALUES ('3', '00024', '2', '25', '1', 'calle 123', '8', '3', '2023-03-12', '2023-03-13');
-INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `user`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`) VALUES ('4', '00026', '3', '25', '1', 'calle 123', '3', '2', '2023-06-12');
-INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `user`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`) VALUES ('5', '00027', '4', '48', '2', 'calle 123', '4', '1', '2023-06-12');
-INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `user`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`,`shipping_date`) VALUES ('6', '00028', '2', '51', '1', 'calle 123', '5', '5', '2023-02-12', '2023-02-16');
-INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `user`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`) VALUES ('7', '00028', '3', '9', '1', 'calle 123', '6', '4', '2023-05-12');
-INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `user`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`) VALUES ('8', '00029', '3', '25', '1', 'calle 123', '7', '1', '2023-06-12');
+INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `users`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`,`shipping_date`) VALUES ('1', '00023', '2', '2', '1', 'calle 123', '1', '3', '2023-02-12', '2023-02-16');
+INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `users`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`,`shipping_date`) VALUES ('2', '00023', '2', '15', '1', 'calle 123', '1', '3', '2023-02-12', '2023-02-16');
+INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `users`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`,`shipping_date`) VALUES ('3', '00024', '2', '25', '1', 'calle 123', '8', '3', '2023-03-12', '2023-03-13');
+INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `users`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`) VALUES ('4', '00026', '3', '25', '1', 'calle 123', '3', '2', '2023-06-12');
+INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `users`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`) VALUES ('5', '00027', '4', '48', '2', 'calle 123', '4', '1', '2023-06-12');
+INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `users`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`,`shipping_date`) VALUES ('6', '00028', '2', '51', '1', 'calle 123', '5', '5', '2023-02-12', '2023-02-16');
+INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `users`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`) VALUES ('7', '00028', '3', '9', '1', 'calle 123', '6', '4', '2023-05-12');
+INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `users`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`) VALUES ('8', '00029', '3', '25', '1', 'calle 123', '7', '1', '2023-06-12');
 
 
-INSERT INTO `costumemania`.`fav` (`id_fav`, `user`, `model`) VALUES ('1', '2', '11');
-INSERT INTO `costumemania`.`fav` (`id_fav`, `user`, `model`) VALUES ('2', '2', '12');
-INSERT INTO `costumemania`.`fav` (`id_fav`, `user`, `model`) VALUES ('3', '2', '13');
-INSERT INTO `costumemania`.`fav` (`id_fav`, `user`, `model`) VALUES ('4', '4', '15');
-INSERT INTO `costumemania`.`fav` (`id_fav`, `user`, `model`) VALUES ('5', '3', '18');
-INSERT INTO `costumemania`.`fav` (`id_fav`, `user`, `model`) VALUES ('6', '4', '4');
-INSERT INTO `costumemania`.`fav` (`id_fav`, `user`, `model`) VALUES ('7', '4', '10');
-INSERT INTO `costumemania`.`fav` (`id_fav`, `user`, `model`) VALUES ('8', '2', '15');
-INSERT INTO `costumemania`.`fav` (`id_fav`, `user`, `model`) VALUES ('9', '3', '15');
-INSERT INTO `costumemania`.`fav` (`id_fav`, `user`, `model`) VALUES ('10', '3', '4');
-INSERT INTO `costumemania`.`fav` (`id_fav`, `user`, `model`) VALUES ('11', '2', '1');
-INSERT INTO `costumemania`.`fav` (`id_fav`, `user`, `model`) VALUES ('12', '2', '2');
-INSERT INTO `costumemania`.`fav` (`id_fav`, `user`, `model`) VALUES ('13', '2', '3');
+INSERT INTO `costumemania`.`fav` (`id_fav`, `users`, `model`) VALUES ('1', '2', '11');
+INSERT INTO `costumemania`.`fav` (`id_fav`, `users`, `model`) VALUES ('2', '2', '12');
+INSERT INTO `costumemania`.`fav` (`id_fav`, `users`, `model`) VALUES ('3', '2', '13');
+INSERT INTO `costumemania`.`fav` (`id_fav`, `users`, `model`) VALUES ('4', '4', '15');
+INSERT INTO `costumemania`.`fav` (`id_fav`, `users`, `model`) VALUES ('5', '3', '18');
+INSERT INTO `costumemania`.`fav` (`id_fav`, `users`, `model`) VALUES ('6', '4', '4');
+INSERT INTO `costumemania`.`fav` (`id_fav`, `users`, `model`) VALUES ('7', '4', '10');
+INSERT INTO `costumemania`.`fav` (`id_fav`, `users`, `model`) VALUES ('8', '2', '15');
+INSERT INTO `costumemania`.`fav` (`id_fav`, `users`, `model`) VALUES ('9', '3', '15');
+INSERT INTO `costumemania`.`fav` (`id_fav`, `users`, `model`) VALUES ('10', '3', '4');
+INSERT INTO `costumemania`.`fav` (`id_fav`, `users`, `model`) VALUES ('11', '2', '1');
+INSERT INTO `costumemania`.`fav` (`id_fav`, `users`, `model`) VALUES ('12', '2', '2');
+INSERT INTO `costumemania`.`fav` (`id_fav`, `users`, `model`) VALUES ('13', '2', '3');

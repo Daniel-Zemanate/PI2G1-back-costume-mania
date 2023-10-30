@@ -16,4 +16,4 @@ services:
     logging:
       driver: none
     volumes:
-      - ./db:/docker-entrypoint-initdb.d
+      - ./db/script-disfraces.sql:/docker-entrypoint-initdb.d/script.sql
