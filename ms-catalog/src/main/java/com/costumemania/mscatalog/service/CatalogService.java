@@ -26,4 +26,7 @@ public class CatalogService {
     public List<Catalog> getNews () {
         return catalogRepository.findNews();
     };
+    public void delete (Integer id) {
+        catalogRepository.deleteById(id);
+    }
 }

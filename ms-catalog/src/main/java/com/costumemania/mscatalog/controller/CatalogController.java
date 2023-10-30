@@ -6,10 +6,7 @@ import com.costumemania.mscatalog.service.CatalogService;
 import com.costumemania.mscatalog.service.SizeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,5 +65,18 @@ public class CatalogController {
     @GetMapping("/news")
     public ResponseEntity<List<Catalog>> getNews(){
         return ResponseEntity.ok().body(catalogService.getNews());
+    }
+
+    @DeleteMapping("/{idCatalog}")
+    public ResponseEntity<String> delete(@PathVariable Integer idCatalog) {
+        // first verify if the ID exist
+        Optional<Catalog> catalogProof = catalogService.getCatalogById(idCatalog);
+        if (catalogProof.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        // else...
+        catalogService.delete(idCatalog);
+        return ResponseEntity.ok().body("Catalog item with ID " + idCatalog + " deleted");
     }
 }
