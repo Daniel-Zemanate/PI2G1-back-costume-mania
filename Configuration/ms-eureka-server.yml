@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: ms-eureka-server
+#  ------ cloud parameters to exclude if local test is needed ------
+#  cloud:
+#    config:
+#      enabled: false
 eureka:
   instance:
     hostname: localhost
