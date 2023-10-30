@@ -12,7 +12,7 @@
 	<artifactId>ms-catalog</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ms-catalog</name>
-	<description>Catalog microservice to handler catalog to sell</description>
+	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.4</spring-cloud.version>
@@ -56,16 +56,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.github.openfeign/feign-core -->
 		<dependency>
 			<groupId>io.github.openfeign</groupId>
 			<artifactId>feign-core</artifactId>
 			<version>13.0</version>
 		</dependency>
-
-
 	</dependencies>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

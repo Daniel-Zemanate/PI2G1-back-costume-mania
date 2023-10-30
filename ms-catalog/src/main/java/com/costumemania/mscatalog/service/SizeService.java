@@ -19,6 +19,7 @@ public class SizeService {
     public Optional<Size> getById (Integer id){
         return sizeRepository.findById(id);
     }
+
     public List<Size> getByAdult(Integer adult) {
         return sizeRepository.findAllByAdult(adult);
     }

@@ -4,6 +4,7 @@ import com.costumemania.mscatalog.model.Catalog;
 import com.costumemania.mscatalog.model.Size;
 import com.costumemania.mscatalog.service.CatalogService;
 import com.costumemania.mscatalog.service.SizeService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,5 +63,10 @@ public class CatalogController {
             result.add(listBySize);
         }
         return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/news")
+    public ResponseEntity<List<Catalog>> getNews(){
+        return ResponseEntity.ok().body(catalogService.getNews());
     }
 }
