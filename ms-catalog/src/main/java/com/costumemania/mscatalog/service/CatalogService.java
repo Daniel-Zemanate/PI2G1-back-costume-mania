@@ -2,6 +2,7 @@ package com.costumemania.mscatalog.service;
 
 import com.costumemania.mscatalog.model.Catalog;
 import com.costumemania.mscatalog.model.CatalogDTO;
+import com.costumemania.mscatalog.model.Size;
 import com.costumemania.mscatalog.repository.CatalogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,15 +14,15 @@ public class CatalogService {
     @Autowired
     CatalogRepository catalogRepository;
 
-
     public List<Catalog> getCatalog(){
         return catalogRepository.findAll();
     }
-
     public Optional<Catalog> getCatalogById(Integer id){
         return catalogRepository.findById(id);
     }
-
+    public List<Catalog> getCatalogBySize (Size size) {
+        return catalogRepository.findBySize(size);
+    };
 
 
 
@@ -48,10 +49,6 @@ public class CatalogService {
 
     public List<Catalog> getCatalogByCategory(Long idCategory){
         return catalogRepository.findAllByCategory(idCategory);
-    }
-
-    public List<Catalog> getCatalogBySize(Long idSize){
-        return catalogRepository.findAllBySize(idSize);
     }
 
     public void delete(Long id){
