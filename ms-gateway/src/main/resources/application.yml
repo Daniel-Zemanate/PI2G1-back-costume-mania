@@ -1,0 +1,58 @@
+#spring:
+#  application:
+#    name: ms-gateway
+#  config:
+#    import: configserver:http://localhost:8888
+
+server:
+  port: ${PORT:8090}
+
+spring:
+  application:
+    name: ms-gateway
+  #  ------ cloud parameters to exclude if local test is needed ------
+  cloud:
+    config:
+      enabled: false
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: ms-bill
+          uri: lb://ms-bill
+          predicates:
+            - Path=/api/v1/bill/**
+        - id: ms-catalog
+          uri: lb://ms-catalog
+          predicates:
+            - Path=/api/v1/catalog/**
+        - id: ms-product
+          uri: lb://ms-product
+          predicates:
+            - Path=/api/v1/product/**
+        - id: ms-users
+          uri: lb://ms-users
+          predicates:
+            - Path=/api/v1/users/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: true
+    serviceURL:
+      defaultZone: http://localhost:8761/eureka/
+  management:
+    endpoint:
+      gateway:
+        enabled: true
+    endpoints:
+      web:
+        exposure:
+          include: gateway

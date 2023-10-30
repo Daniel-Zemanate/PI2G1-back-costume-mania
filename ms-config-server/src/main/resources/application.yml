@@ -9,6 +9,6 @@ spring:
       server:
         git:
           uri: https://github.com/Daniel-Zemanate/PI2G1-back-costume-mania
-          default-label: HOTFIX-ms-users
+          default-label: PI2G1-33
           force-pull: true
           search-paths: Configuration
