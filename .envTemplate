@@ -1,0 +1,14 @@
+############################################
+# Use this template to locally create your personal ".env" file.
+# This file may contain secret credentials used locally or during deployment
+# That's the reason .env file is ignored for version control.
+############################################
+
+MYSQLDB_HOST=mysqldb
+MYSQLDB_USER=costumemania
+MYSQLDB_PASSWORD=123456
+MYSQLDB_ROOT_PASSWORD=123456
+MYSQLDB_DATABASE=costumemania
+
+MYSQLDB_LOCAL_PORT=3306
+MYSQLDB_DOCKER_PORT=3306
