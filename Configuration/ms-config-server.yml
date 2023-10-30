@@ -1,4 +1,0 @@
-server:
-  port: ${PORT:8888}
-
-message: configuración custom con spring cloud config EKN31!
