@@ -1,5 +1,25 @@
 spring:
   application:
     name: ms-product
-  config:
-    import: configserver:http://localhost:8888
+    # config:
+  #  import: configserver:http://localhost:8888
+  # configuración para pruebas
+  cloud:
+    config:
+      enabled: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/costumemania
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+eureka:
+  client:
+    enabled: false
+server:
+  port: 8080

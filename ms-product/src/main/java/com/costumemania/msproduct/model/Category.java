@@ -18,12 +18,12 @@ import java.util.List;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_category",unique = true, nullable = false)
-    private Long idCategory;
+    @Column(name = "id_category")
+    private Integer idCategory;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy ="category")
+    @OneToMany(mappedBy ="category",fetch = FetchType.LAZY)
     private List<Model> model = new ArrayList<>();
 }
