@@ -6,9 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,12 +15,16 @@ import java.util.List;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_category")
+    @Column(name = "id_category", unique = true, nullable = false)
     private Integer idCategory;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy ="category",fetch = FetchType.LAZY)
-    private List<Model> model = new ArrayList<>();
+    public Integer getIdCategory() {
+        return idCategory;
+    }
+    public void setIdCategory(Integer idCategory) {
+        this.idCategory = idCategory;
+    }
 }

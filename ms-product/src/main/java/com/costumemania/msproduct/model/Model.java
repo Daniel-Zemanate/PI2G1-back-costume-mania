@@ -1,6 +1,5 @@
 package com.costumemania.msproduct.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,12 +21,11 @@ public class Model {
 
     @Column(name = "name_model")
     private String nameModel;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category", referencedColumnName = "id_category")
-    @JsonIgnore
     private Category category;
 
     @Column(name = "url_image")
     private String urlImage;
-
 }
