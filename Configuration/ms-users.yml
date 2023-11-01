@@ -6,15 +6,17 @@ server:
 spring:
   application:
     name: ms-users
+  profiles:
+    active: ${PROFILE:default}
 #  ------ cloud parameters to exclude if local test is needed ------
 #  cloud:
 #    config:
 #      enabled: false
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3310/costumemania
-    username: ${DDBB_USERNAME}
-    password: ${DDBB_PASSWORD}
+      url: jdbc:mysql://${DB_ENDPOINT}/${DB_NAME}
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
     jpa:
       open-in-view: false
       show-sql: true
@@ -29,10 +31,9 @@ spring:
 # This is left only for possible need in the future.
 #    sql:
 #      init:
-#        data-locations: classpath:${DDBB_SQLFILE}
+#        data-locations: classpath:${DB_SQLFILE}
 #        mode: always
 #        platform: mysql
-
 
 message: hello from ms-users
 
