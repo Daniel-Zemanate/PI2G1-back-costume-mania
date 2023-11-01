@@ -8,15 +8,15 @@ spring:
     name: ms-users
   profiles:
     active: ${PROFILE:default}
-#  ------ cloud parameters to exclude if local test is needed ------
-#  cloud:
-#    config:
-#      enabled: false
+  #  ------ cloud parameters to exclude if local test is needed ------
+  #  cloud:
+  #    config:
+  #      enabled: false
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://${DB_ENDPOINT}/${DB_NAME}
-      username: ${DB_USERNAME}
-      password: ${DB_PASSWORD}
+    url: jdbc:mysql://${DB_ENDPOINT:localhost:3307}/${DB_NAME:costumemania}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     jpa:
       open-in-view: false
       show-sql: true
