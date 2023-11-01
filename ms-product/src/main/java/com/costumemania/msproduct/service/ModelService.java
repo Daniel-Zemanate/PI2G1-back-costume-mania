@@ -35,7 +35,11 @@ public class ModelService {
         return modelRepository.findByName(name);
     }
 
-    public Model getByCategoryModel(String category){
+    public List<Model> getByNameAndCategoryModel(String name,String category){
+        return modelRepository.findByNameAndCategory(name,category);
+    }
+
+    public List<Model> getByCategoryModel(String category){
 
         return modelRepository.findByCategory(category);
     }

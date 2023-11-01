@@ -55,6 +55,16 @@ return ResponseEntity.ok(modelService.getByIdModel(id));
     public ResponseEntity<Model> getByNameModel(@PathVariable String name){
         return ResponseEntity.ok(modelService.getByNameModel(name));
     }
+    @GetMapping("/category/{category}")
+    @ResponseStatus(code= HttpStatus.OK)
+    public ResponseEntity<List<Model>> getByCategoryModel(@PathVariable String category){
+        return ResponseEntity.ok(modelService.getByCategoryModel(category));
+    }
+    @GetMapping("/name/{name}/category/{category}")
+    @ResponseStatus(code= HttpStatus.OK)
+    public ResponseEntity<List<Model>> getByNameAndCategoryModel(@PathVariable String name,@PathVariable String category){
+        return ResponseEntity.ok(modelService.getByNameAndCategoryModel(name,category));
+    }
 
     //Andando
     @DeleteMapping("/{id}")
