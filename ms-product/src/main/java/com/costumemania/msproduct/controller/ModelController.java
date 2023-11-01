@@ -84,7 +84,7 @@ public class ModelController {
     public ResponseEntity<Object> deleteModel(@PathVariable Integer id){
         Optional<Model> model =modelService.getByIdModel(id);
         if(model.isEmpty()){
-            ResponseEntity.notFound().build();
+           return ResponseEntity.notFound().build();
         }
         modelService.deleteByIdModel(id);
         return ResponseEntity.ok().body("Model item with ID " + id + " deleted");
