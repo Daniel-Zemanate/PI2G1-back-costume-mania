@@ -16,11 +16,14 @@ public class Catalog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_catalog",unique = true, nullable = false)
-    private Long idCatalog;
+    private Integer idCatalog;
 
     @ManyToOne
-    @JoinColumn(name = "id_size")
-    @Column(name = "size")
+    @JoinColumn(name = "model")
+    private Model model;
+
+    @ManyToOne
+    @JoinColumn(name = "size")
     private Size size;
 
     @Column(name = "quantity")
