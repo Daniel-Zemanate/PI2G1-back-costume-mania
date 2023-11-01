@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: ms-eureka-server
+  profiles:
+    active: ${PROFILE:default}
 #  ------ cloud parameters to exclude if local test is needed ------
 #  cloud:
 #    config:
