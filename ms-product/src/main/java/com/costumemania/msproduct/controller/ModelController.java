@@ -11,23 +11,23 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/api/v1/models")
+@RequestMapping("/api/v1/model")
 public class ModelController {
 
     private final ModelService modelService;
-
     public ModelController(ModelService modelService) {
         this.modelService = modelService;
     }
 
-    //Andando
-    @PostMapping
+    // AJUSTAR EL CREATE PORQUE NO ANDA!
+    @PostMapping("/create")
     @ResponseStatus(code= HttpStatus.CREATED)
     public ResponseEntity<Model> createModel(@RequestBody Model model){
-        modelService.saveModel(model);
+        modelService.saveModel(model.getNameModel(), model.getCategory().getIdCategory(), model.getUrlImage());
         return ResponseEntity.ok(model);
     }
 
+    // HASTA QUE NO ANDE EL CREATE, no va a andar este.
     @PutMapping
     @ResponseStatus(code=HttpStatus.OK)
     public ResponseEntity updateModel(@RequestBody Model model){
@@ -35,39 +35,43 @@ public class ModelController {
         return ResponseEntity.ok().build();
     }
 
-    //Andando
     @GetMapping
     @ResponseStatus(code= HttpStatus.OK)
     public ResponseEntity<List<Model>> getAllModel(){
         return ResponseEntity.ok(modelService.getAllModel());
     }
 
-    //Andando
-    @GetMapping("/id/{id}")
+    //MODIFICAR!! agregar validación para que si no encuentra un modelo, devuelva un 404 (y no un 200)
+    @GetMapping("/{id}")
     @ResponseStatus(code= HttpStatus.OK)
     public ResponseEntity<Optional<Model>>getByIdModel(@PathVariable Integer id){
-return ResponseEntity.ok(modelService.getByIdModel(id));
-
+        return ResponseEntity.ok(modelService.getByIdModel(id));
     }
-    //Andando
+
+    //MODIFICAR!! agregar validación para que si no encuentra un modelo, devuelva un 404 (y no un 200)
     @GetMapping("/name/{name}")
     @ResponseStatus(code= HttpStatus.OK)
     public ResponseEntity<Model> getByNameModel(@PathVariable String name){
         return ResponseEntity.ok(modelService.getByNameModel(name));
     }
+
+    //MODIFICAR!! agregar validación para que use la API de categoria para validar si existe. si no encuentra una categoria, devuelva un 404 (y no un 200)
     @GetMapping("/category/{category}")
     @ResponseStatus(code= HttpStatus.OK)
     public ResponseEntity<List<Model>> getByCategoryModel(@PathVariable String category){
         return ResponseEntity.ok(modelService.getByCategoryModel(category));
     }
+
+    //MODIFICAR!! agregar validación para que si no encuentra un modelo, devuelva un 404 (y no un 200)
+    //MODIFICAR!! agregar validación para que use la API de categoria para validar si existe. si no encuentra una categoria, devuelva un 404 (y no un 200)
     @GetMapping("/name/{name}/category/{category}")
     @ResponseStatus(code= HttpStatus.OK)
     public ResponseEntity<List<Model>> getByNameAndCategoryModel(@PathVariable String name,@PathVariable String category){
         return ResponseEntity.ok(modelService.getByNameAndCategoryModel(name,category));
     }
 
-    //Andando
-    @DeleteMapping("/{id}")
+    //MODIFICAR!! agregar validación para que si no encuentra un modelo, devuelva un 404 (y no un 200)
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(code=HttpStatus.OK)
     public ResponseEntity deleteModel(@PathVariable Integer id){
         modelService.deleteByIdModel(id);

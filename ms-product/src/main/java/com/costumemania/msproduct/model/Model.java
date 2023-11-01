@@ -22,10 +22,20 @@ public class Model {
     @Column(name = "name_model")
     private String nameModel;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category", referencedColumnName = "id_category")
+    @ManyToOne
+    @JoinColumn(name = "category")
     private Category category;
 
     @Column(name = "url_image")
     private String urlImage;
+
+    public String getNameModel() {
+        return nameModel;
+    }
+    public Category getCategory() {
+        return category;
+    }
+    public String getUrlImage() {
+        return urlImage;
+    }
 }

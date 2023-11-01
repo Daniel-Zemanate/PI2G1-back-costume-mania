@@ -18,9 +18,8 @@ public class ModelService {
         this.modelRepository = modelRepository;
     }
 
-    public Model saveModel(Model model){
-        return modelRepository.save(model);
-
+    public Model saveModel(String nameModel, Integer categoryId, String url){
+        return modelRepository.createComplete (nameModel, categoryId, url);
     }
 
     public List<Model> getAllModel(){
@@ -40,7 +39,6 @@ public class ModelService {
     }
 
     public List<Model> getByCategoryModel(String category){
-
         return modelRepository.findByCategory(category);
     }
 
