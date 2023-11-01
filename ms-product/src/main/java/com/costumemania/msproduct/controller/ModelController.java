@@ -41,25 +41,34 @@ public class ModelController {
         return ResponseEntity.ok(modelService.getAllModel());
     }
 
-    //MODIFICAR!! agregar validación para que si no encuentra un modelo, devuelva un 404 (y no un 200)
+
     @GetMapping("/{id}")
-    @ResponseStatus(code= HttpStatus.OK)
     public ResponseEntity<Optional<Model>>getByIdModel(@PathVariable Integer id){
-        return ResponseEntity.ok(modelService.getByIdModel(id));
+        Optional<Model>model= modelService.getByIdModel(id);
+        if(model.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(model);
     }
 
-    //MODIFICAR!! agregar validación para que si no encuentra un modelo, devuelva un 404 (y no un 200)
+
     @GetMapping("/name/{name}")
-    @ResponseStatus(code= HttpStatus.OK)
-    public ResponseEntity<Model> getByNameModel(@PathVariable String name){
-        return ResponseEntity.ok(modelService.getByNameModel(name));
+    public ResponseEntity<Optional<Model>> getByNameModel(@PathVariable String name){
+        Optional<Model> model = modelService.getByNameModel(name);
+        if(model.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(model);
     }
 
     //MODIFICAR!! agregar validación para que use la API de categoria para validar si existe. si no encuentra una categoria, devuelva un 404 (y no un 200)
     @GetMapping("/category/{category}")
-    @ResponseStatus(code= HttpStatus.OK)
     public ResponseEntity<List<Model>> getByCategoryModel(@PathVariable String category){
-        return ResponseEntity.ok(modelService.getByCategoryModel(category));
+        List<Model> model = modelService.getByCategoryModel(category);
+        if (model.isEmpty()){
+            ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
     }
 
     //MODIFICAR!! agregar validación para que si no encuentra un modelo, devuelva un 404 (y no un 200)
@@ -70,12 +79,15 @@ public class ModelController {
         return ResponseEntity.ok(modelService.getByNameAndCategoryModel(name,category));
     }
 
-    //MODIFICAR!! agregar validación para que si no encuentra un modelo, devuelva un 404 (y no un 200)
+    //MODIFICAR!!
     @DeleteMapping("/delete/{id}")
-    @ResponseStatus(code=HttpStatus.OK)
-    public ResponseEntity deleteModel(@PathVariable Integer id){
+    public ResponseEntity<Object> deleteModel(@PathVariable Integer id){
+        Optional<Model> model =modelService.getByIdModel(id);
+        if(model.isEmpty()){
+            ResponseEntity.notFound().build();
+        }
         modelService.deleteByIdModel(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("Model item with ID " + id + " deleted");
     }
 
 }

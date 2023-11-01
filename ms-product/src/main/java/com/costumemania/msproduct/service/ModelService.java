@@ -30,7 +30,7 @@ public class ModelService {
         return modelRepository.findById(id);
     }
 
-    public Model getByNameModel(String name){
+    public Optional<Model> getByNameModel(String name){
         return modelRepository.findByName(name);
     }
 
