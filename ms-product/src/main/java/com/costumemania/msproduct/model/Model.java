@@ -47,4 +47,7 @@ public class Model {
     public void setUrlImage(String urlImage) {
         this.urlImage = urlImage;
     }
+    public void setIdModel(Integer idModel) {
+        this.idModel = idModel;
+    }
 }

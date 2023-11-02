@@ -40,15 +40,29 @@ public class ModelController {
         return ResponseEntity.accepted().body(modelService.saveModel(modelCreated));
     }
 
-    // HASTA QUE NO ANDE EL CREATE, no va a andar este.
     @PutMapping("/{id}")
-    public ResponseEntity<Model> updateModel(@PathVariable Integer id, @RequestBody Model model){
+    public ResponseEntity<Model> updateModel(@PathVariable Integer id, @RequestBody ModelDTO modelDTO){
+        // verify ID
         Optional<Model> searchModel = modelService.getByIdModel(id);
         if(searchModel.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        modelService.updateModel(model);
-        return ResponseEntity.ok().build();
+        // verify category
+        Optional<Category> searchCategory = categoryService.getdById(modelDTO.getCategory());
+        if(searchCategory.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        // verify name empty
+        if(modelDTO.getNameModel().isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+        // create
+        Model modelCreated = new Model();
+        modelCreated.setIdModel(id);
+        modelCreated.setNameModel(modelDTO.getNameModel());
+        modelCreated.setCategory(categoryService.categorydById(modelDTO.getCategory()));
+        modelCreated.setUrlImage(modelDTO.getUrlImage());
+        return ResponseEntity.accepted().body(modelService.saveModel(modelCreated));
     }
 
     @GetMapping
@@ -56,7 +70,6 @@ public class ModelController {
     public ResponseEntity<List<Model>> getAllModel(){
         return ResponseEntity.ok(modelService.getAllModel());
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Model>>getByIdModel(@PathVariable Integer id){
@@ -67,7 +80,6 @@ public class ModelController {
         return ResponseEntity.ok().body(model);
     }
 
-
     @GetMapping("/name/{name}")
     public ResponseEntity<Optional<Model>> getByNameModel(@PathVariable String name){
         Optional<Model> model = modelService.getByNameModel(name);
@@ -76,6 +88,7 @@ public class ModelController {
         }
         return ResponseEntity.ok().body(model);
     }
+
     @GetMapping("/category/id/{idCategory}")
     public ResponseEntity<List<Model>> getByIdCategory(@PathVariable Integer idCategory){
         Optional<Category> searchedCategory = categoryService.getdById(idCategory);
@@ -109,7 +122,6 @@ public class ModelController {
     public ResponseEntity<List<Model>> getByNameAndCategoryModel(@PathVariable String name,@PathVariable String category){
         return ResponseEntity.ok(modelService.getByNameAndCategoryModel(name,category));
     }
-
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deleteModel(@PathVariable Integer id){
