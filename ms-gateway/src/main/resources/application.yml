@@ -1,5 +1,5 @@
 spring:
   application:
-    name: ms-facturacion-service
+    name: ms-gateway
   config:
     import: configserver:http://localhost:8888
