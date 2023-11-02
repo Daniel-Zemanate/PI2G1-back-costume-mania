@@ -1,0 +1,13 @@
+# Use 1openjdk17
+# FROM adoptopenjdk/openjdk17:alpine
+# FROM openjdk:17-jdk-alpine
+FROM registry.access.redhat.com/ubi8/openjdk-17:1.17-4
+
+# Add .jar file generated during compilation
+COPY target/ms-eureka-server-0.0.1-SNAPSHOT.jar /app/ms-eureka-server.jar
+
+# Working directory
+WORKDIR /app
+
+# Exec command to run the app
+CMD ["java", "-jar", "ms-eureka-server.jar"]

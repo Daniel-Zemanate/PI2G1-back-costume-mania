@@ -1,0 +1,11 @@
+# Other image: FROM adoptopenjdk/openjdk17:alpine
+FROM registry.access.redhat.com/ubi8/openjdk-17:1.17-4
+
+# Add .jar file generated during compilation
+COPY target/ms-gateway-0.0.1-SNAPSHOT.jar /app/ms-gateway.jar
+
+# Working directory
+WORKDIR /app
+
+# Exec command to run the app
+CMD ["java", "-jar", "ms-gateway.jar"]

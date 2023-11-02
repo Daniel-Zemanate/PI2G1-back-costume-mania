@@ -1,14 +1,22 @@
 server:
   port: ${PORT:0}
+  servlet:
+    context-path: /api/v1
 
 spring:
   application:
     name: ms-users
+  profiles:
+    active: ${PROFILE:default}
+  #  ------ cloud parameters to exclude if local test is needed ------
+  #  cloud:
+  #    config:
+  #      enabled: false
   datasource:
-    driverClassName: ${DDBB_USERNAME:com.mysql.cj.jdbc.Driver}
-    url: ${DDBB_URL}
-    username: ${DDBB_USERNAME}
-    password: ${DDBB_PASSWORD}
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_ENDPOINT:localhost:3307}/${DB_NAME:costumemania}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     jpa:
       open-in-view: false
       show-sql: true
@@ -16,17 +24,16 @@ spring:
         ddl-auto: update
       properties:
         hibernate:
-          dialect: ${DDBB_DIALECT:org.hibernate.dialect.MySQL8Dialect}
+          dialect: org.hibernate.dialect.MySQL8Dialect
           format_sql: true
       defer-datasource-initialization: true
 
 # This is left only for possible need in the future.
 #    sql:
 #      init:
-#        data-locations: classpath:${DDBB_SQLFILE}
+#        data-locations: classpath:${DB_SQLFILE}
 #        mode: always
 #        platform: mysql
-
 
 message: hello from ms-users
 
@@ -38,5 +45,7 @@ management:
 
 eureka:
   client:
+    register-with-eureka: true
+    fetch-registry: true
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
