@@ -38,4 +38,13 @@ public class Model {
     public String getUrlImage() {
         return urlImage;
     }
+    public void setNameModel(String nameModel) {
+        this.nameModel = nameModel;
+    }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
 }

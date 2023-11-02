@@ -22,14 +22,14 @@ public class CategoryController {
         return ResponseEntity.ok().body(categoryService.getAll());
     };
     @GetMapping("/{idCategory}")
-    public ResponseEntity<Optional<Category>> getdById (@PathVariable Integer idCategory) {
+    public ResponseEntity<Category> getdById (@PathVariable Integer idCategory) {
         // first verify if the ID exist
         Optional<Category> categoryProof = categoryService.getdById(idCategory);
         if (categoryProof.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         // else...
-        return ResponseEntity.ok().body(categoryProof);
+        return ResponseEntity.ok().body(categoryService.categorydById(idCategory));
     };
 
     @GetMapping("/name/{categoryName}")

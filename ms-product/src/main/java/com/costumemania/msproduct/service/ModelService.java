@@ -15,7 +15,6 @@ public class ModelService {
 
     @Autowired
     public ModelService(ModelRepository modelRepository) {
-
         this.modelRepository = modelRepository;
     }
 

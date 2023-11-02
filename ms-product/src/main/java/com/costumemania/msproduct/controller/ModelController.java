@@ -2,6 +2,7 @@ package com.costumemania.msproduct.controller;
 
 import com.costumemania.msproduct.model.Category;
 import com.costumemania.msproduct.model.Model;
+import com.costumemania.msproduct.model.ModelDTO;
 import com.costumemania.msproduct.service.CategoryService;
 import com.costumemania.msproduct.service.ModelService;
 import org.springframework.http.HttpStatus;
@@ -23,18 +24,21 @@ public class ModelController {
         this.categoryService = categoryService;
     }
 
-    // AJUSTAR EL CREATE PORQUE NO ANDA!
-    /*@PostMapping("/create")
-    @ResponseStatus(code= HttpStatus.CREATED)
-    public ResponseEntity<Model> createModel(@RequestBody Model model){
-        Long id = model.getIdModel();
-        Optional<Category> searchCategory = categoryService.getdById(id);
+    @PostMapping("/create")
+    public ResponseEntity<Model> createModel(@RequestBody ModelDTO modelDTO){
+        Optional<Category> searchCategory = categoryService.getdById(modelDTO.getCategory());
         if(searchCategory.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        Optional<Model> searchModel = modelService.getByIdModel(id);
-        return ResponseEntity.ok(model);
-    }*/
+        if(modelDTO.getNameModel().isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+        Model modelCreated = new Model();
+        modelCreated.setNameModel(modelDTO.getNameModel());
+        modelCreated.setCategory(categoryService.categorydById(modelDTO.getCategory()));
+        modelCreated.setUrlImage(modelDTO.getUrlImage());
+        return ResponseEntity.accepted().body(modelService.saveModel(modelCreated));
+    }
 
     // HASTA QUE NO ANDE EL CREATE, no va a andar este.
     @PutMapping("/{id}")
