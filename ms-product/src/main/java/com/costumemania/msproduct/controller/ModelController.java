@@ -74,8 +74,8 @@ public class ModelController {
     }
     @GetMapping("/category/id/{idCategory}")
     public ResponseEntity<List<Model>> getByIdCategory(@PathVariable Integer idCategory){
-        Optional<Category> searchCategory = categoryService.getdById(idCategory);
-        if(searchCategory.isEmpty()){
+        Optional<Category> searchedCategory = categoryService.getdById(idCategory);
+        if(searchedCategory.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         List<Model> listModel = modelService.getByIdCategoryModel(idCategory);
@@ -87,9 +87,9 @@ public class ModelController {
 
     @GetMapping("/category/{category}")
     public ResponseEntity<List<Model>> getByCategory(@PathVariable String category){
-        Optional<Category> searchCategory = categoryService.getByName(category);
-        if(searchCategory.isEmpty()){
-            return ResponseEntity.notFound().build();
+        Optional<Category> searchedCategory = categoryService.getByName(category);
+        if(searchedCategory.isEmpty()){
+            return ResponseEntity.badRequest().build();
         }
         List<Model> listModel = modelService.getByCategoryModel(category);
         if (listModel.isEmpty()){
