@@ -39,6 +39,9 @@ public class ModelService {
         return modelRepository.findByNameAndCategory(name,category);
     }
 
+    public List<Model> getByIdCategoryModel(Integer idCategory) {
+        return modelRepository.findByIdCategory(idCategory);
+    }
     public List<Model> getByCategoryModel(String category){
         return modelRepository.findByCategory(category);
     }
@@ -52,5 +55,6 @@ public class ModelService {
             modelRepository.save(model);
         }
     }
+
 
 }

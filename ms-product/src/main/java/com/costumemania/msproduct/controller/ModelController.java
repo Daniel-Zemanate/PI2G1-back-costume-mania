@@ -24,12 +24,17 @@ public class ModelController {
     }
 
     // AJUSTAR EL CREATE PORQUE NO ANDA!
-    @PostMapping("/create")
+    /*@PostMapping("/create")
     @ResponseStatus(code= HttpStatus.CREATED)
     public ResponseEntity<Model> createModel(@RequestBody Model model){
-
+        Long id = model.getIdModel();
+        Optional<Category> searchCategory = categoryService.getdById(id);
+        if(searchCategory.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        Optional<Model> searchModel = modelService.getByIdModel(id);
         return ResponseEntity.ok(model);
-    }
+    }*/
 
     // HASTA QUE NO ANDE EL CREATE, no va a andar este.
     @PutMapping("/{id}")
@@ -67,10 +72,21 @@ public class ModelController {
         }
         return ResponseEntity.ok().body(model);
     }
+    @GetMapping("/category/id/{idCategory}")
+    public ResponseEntity<List<Model>> getByIdCategory(@PathVariable Integer idCategory){
+        Optional<Category> searchCategory = categoryService.getdById(idCategory);
+        if(searchCategory.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        List<Model> listModel = modelService.getByIdCategoryModel(idCategory);
+        if (listModel.isEmpty()){
+            ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(listModel);
+    }
 
-    //MODIFICAR!! agregar validación para que use la API de categoria para validar si existe. si no encuentra una categoria, devuelva un 404 (y no un 200)
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<Model>> getByCategoryModel(@PathVariable String category){
+    public ResponseEntity<List<Model>> getByCategory(@PathVariable String category){
         Optional<Category> searchCategory = categoryService.getByName(category);
         if(searchCategory.isEmpty()){
             return ResponseEntity.notFound().build();
@@ -90,7 +106,7 @@ public class ModelController {
         return ResponseEntity.ok(modelService.getByNameAndCategoryModel(name,category));
     }
 
-    //MODIFICAR!!
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deleteModel(@PathVariable Integer id){
         Optional<Model> model =modelService.getByIdModel(id);
