@@ -26,13 +26,16 @@ public class ModelController {
 
     @PostMapping("/create")
     public ResponseEntity<Model> createModel(@RequestBody ModelDTO modelDTO){
+        // verify category
         Optional<Category> searchCategory = categoryService.getdById(modelDTO.getCategory());
         if(searchCategory.isEmpty()){
             return ResponseEntity.notFound().build();
         }
+        // verify name empty
         if(modelDTO.getNameModel().isEmpty()){
             return ResponseEntity.badRequest().build();
         }
+        // create
         Model modelCreated = new Model();
         modelCreated.setNameModel(modelDTO.getNameModel());
         modelCreated.setCategory(categoryService.categorydById(modelDTO.getCategory()));
@@ -73,6 +76,7 @@ public class ModelController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Model>>getByIdModel(@PathVariable Integer id){
+        // verify model empty
         Optional<Model>model= modelService.getByIdModel(id);
         if(model.isEmpty()){
             return ResponseEntity.notFound().build();
@@ -81,8 +85,9 @@ public class ModelController {
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<Optional<Model>> getByNameModel(@PathVariable String name){
-        Optional<Model> model = modelService.getByNameModel(name);
+    public ResponseEntity<Optional<List<Model>>> getByNameModel(@PathVariable String name){
+        // verify list by name empty
+        Optional<List<Model>> model = modelService.getByNameModel(name);
         if(model.isEmpty()){
             return ResponseEntity.notFound().build();
         }
@@ -91,10 +96,12 @@ public class ModelController {
 
     @GetMapping("/category/id/{idCategory}")
     public ResponseEntity<List<Model>> getByIdCategory(@PathVariable Integer idCategory){
+        // verify category empty
         Optional<Category> searchedCategory = categoryService.getdById(idCategory);
         if(searchedCategory.isEmpty()){
             return ResponseEntity.notFound().build();
         }
+        // verify list by category empty
         List<Model> listModel = modelService.getByIdCategoryModel(idCategory);
         if (listModel.isEmpty()){
             ResponseEntity.notFound().build();
@@ -104,10 +111,12 @@ public class ModelController {
 
     @GetMapping("/category/{category}")
     public ResponseEntity<List<Model>> getByCategory(@PathVariable String category){
+        // verify category empty
         Optional<Category> searchedCategory = categoryService.getByName(category);
         if(searchedCategory.isEmpty()){
             return ResponseEntity.badRequest().build();
         }
+        // verify list by category empty
         List<Model> listModel = modelService.getByCategoryModel(category);
         if (listModel.isEmpty()){
             ResponseEntity.notFound().build();
@@ -115,16 +124,29 @@ public class ModelController {
         return ResponseEntity.ok().body(listModel);
     }
 
-    //MODIFICAR!! agregar validación para que si no encuentra un modelo, devuelva un 404 (y no un 200)
-    //MODIFICAR!! agregar validación para que use la API de categoria para validar si existe. si no encuentra una categoria, devuelva un 404 (y no un 200)
     @GetMapping("/name/{name}/category/{category}")
-    @ResponseStatus(code= HttpStatus.OK)
-    public ResponseEntity<List<Model>> getByNameAndCategoryModel(@PathVariable String name,@PathVariable String category){
+    public ResponseEntity<List<Model>> getByNameAndCategoryModel(@PathVariable String name,@PathVariable Integer category){
+        // verify list by name empty
+        Optional<List<Model>> model = modelService.getByNameModel(name);
+        if(model.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        // verify category empty
+        Optional<Category> searchedCategory = categoryService.getdById(category);
+        if(searchedCategory.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        // verify list by category empty
+        List<Model> listModel = modelService.getByIdCategoryModel(category);
+        if (listModel.isEmpty()){
+            ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(modelService.getByNameAndCategoryModel(name,category));
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deleteModel(@PathVariable Integer id){
+        // verify model empty
         Optional<Model> model =modelService.getByIdModel(id);
         if(model.isEmpty()){
            return ResponseEntity.notFound().build();
@@ -132,5 +154,4 @@ public class ModelController {
         modelService.deleteByIdModel(id);
         return ResponseEntity.ok().body("Model item with ID " + id + " deleted");
     }
-
 }

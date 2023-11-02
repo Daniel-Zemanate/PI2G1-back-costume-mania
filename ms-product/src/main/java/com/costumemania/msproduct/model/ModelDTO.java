@@ -11,11 +11,6 @@ public class ModelDTO {
         this.category = category;
         this.urlImage = urlImage;
     }
-    /*public ModelDTO(String nameModel, Integer category) {
-        this.nameModel = nameModel;
-        this.category = category;
-        this.urlImage = "";
-    }*/
 
     public String getNameModel() {
         return nameModel;

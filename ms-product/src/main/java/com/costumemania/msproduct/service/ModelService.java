@@ -11,49 +11,31 @@ import java.util.Optional;
 
 @Service
 public class ModelService {
-    private final ModelRepository modelRepository;
-
     @Autowired
-    public ModelService(ModelRepository modelRepository) {
-        this.modelRepository = modelRepository;
-    }
+    ModelRepository modelRepository;
 
     public Model saveModel(@RequestBody Model model){
         return modelRepository.save(model);
     }
-
     public List<Model> getAllModel(){
         return modelRepository.findAll();
     }
-   // ver opcional
     public Optional<Model> getByIdModel(Integer id){
         return modelRepository.findById(id);
     }
-
-    public Optional<Model> getByNameModel(String name){
+    public Optional<List<Model>> getByNameModel(String name){
         return modelRepository.findByName(name);
     }
-
-    public List<Model> getByNameAndCategoryModel(String name,String category){
+    public List<Model> getByNameAndCategoryModel(String name,Integer category){
         return modelRepository.findByNameAndCategory(name,category);
     }
-
     public List<Model> getByIdCategoryModel(Integer idCategory) {
         return modelRepository.findByIdCategory(idCategory);
     }
     public List<Model> getByCategoryModel(String category){
         return modelRepository.findByCategory(category);
     }
-
     public void deleteByIdModel(Integer id){
        modelRepository.deleteById(id);
     }
-
-    public void updateModel(Model model){
-        if(modelRepository.existsById(model.getIdModel())){
-            modelRepository.save(model);
-        }
-    }
-
-
 }
