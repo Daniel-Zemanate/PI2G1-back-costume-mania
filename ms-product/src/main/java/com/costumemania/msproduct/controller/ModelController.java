@@ -1,6 +1,8 @@
 package com.costumemania.msproduct.controller;
 
+import com.costumemania.msproduct.model.Category;
 import com.costumemania.msproduct.model.Model;
+import com.costumemania.msproduct.service.CategoryService;
 import com.costumemania.msproduct.service.ModelService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,22 +17,27 @@ import java.util.Optional;
 public class ModelController {
 
     private final ModelService modelService;
-    public ModelController(ModelService modelService) {
+    private final CategoryService categoryService;
+    public ModelController(ModelService modelService, CategoryService categoryService) {
         this.modelService = modelService;
+        this.categoryService = categoryService;
     }
 
     // AJUSTAR EL CREATE PORQUE NO ANDA!
     @PostMapping("/create")
     @ResponseStatus(code= HttpStatus.CREATED)
     public ResponseEntity<Model> createModel(@RequestBody Model model){
-        modelService.saveModel(model.getNameModel(), model.getCategory().getIdCategory(), model.getUrlImage());
+
         return ResponseEntity.ok(model);
     }
 
     // HASTA QUE NO ANDE EL CREATE, no va a andar este.
-    @PutMapping
-    @ResponseStatus(code=HttpStatus.OK)
-    public ResponseEntity updateModel(@RequestBody Model model){
+    @PutMapping("/{id}")
+    public ResponseEntity<Model> updateModel(@PathVariable Integer id, @RequestBody Model model){
+        Optional<Model> searchModel = modelService.getByIdModel(id);
+        if(searchModel.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
         modelService.updateModel(model);
         return ResponseEntity.ok().build();
     }
@@ -64,11 +71,15 @@ public class ModelController {
     //MODIFICAR!! agregar validación para que use la API de categoria para validar si existe. si no encuentra una categoria, devuelva un 404 (y no un 200)
     @GetMapping("/category/{category}")
     public ResponseEntity<List<Model>> getByCategoryModel(@PathVariable String category){
-        List<Model> model = modelService.getByCategoryModel(category);
-        if (model.isEmpty()){
+        Optional<Category> searchCategory = categoryService.getByName(category);
+        if(searchCategory.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        List<Model> listModel = modelService.getByCategoryModel(category);
+        if (listModel.isEmpty()){
             ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(listModel);
     }
 
     //MODIFICAR!! agregar validación para que si no encuentra un modelo, devuelva un 404 (y no un 200)

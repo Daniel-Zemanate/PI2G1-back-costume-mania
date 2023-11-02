@@ -4,6 +4,7 @@ import com.costumemania.msproduct.model.Model;
 import com.costumemania.msproduct.repository.ModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,8 +19,8 @@ public class ModelService {
         this.modelRepository = modelRepository;
     }
 
-    public Model saveModel(String nameModel, Integer categoryId, String url){
-        return modelRepository.createComplete (nameModel, categoryId, url);
+    public Model saveModel(@RequestBody Model model){
+        return modelRepository.save(model);
     }
 
     public List<Model> getAllModel(){
