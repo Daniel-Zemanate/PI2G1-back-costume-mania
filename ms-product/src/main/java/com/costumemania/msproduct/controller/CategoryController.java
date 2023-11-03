@@ -69,7 +69,11 @@ public class CategoryController {
         }
         // else...
         categoryService.delete(idCategory);
-        return ResponseEntity.ok().body("Category item with ID " + idCategory + " deleted");
+        return ResponseEntity.ok().body("Category item with ID " + idCategory + " deleted with all the related catalog");
         // hacer vinculacion con catalogo para borrar categoria
+        /* 1. borrar todos los modelos de esa categoria
+        2. en modelo, eliminar to-do el catalogo de ese modelo
+        3. crear un nuevo endpoint que use una query para eliminar to-do junto
+         */
     }
 }
