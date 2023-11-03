@@ -4,6 +4,8 @@ import com.costumemania.mscatalog.model.Catalog;
 import com.costumemania.mscatalog.model.Size;
 import com.costumemania.mscatalog.repository.CatalogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +18,10 @@ public class CatalogService {
 
     public List<Catalog> getCatalog(){
         return catalogRepository.findAll();
+    }
+    public Page<Catalog> getCatalog(Pageable pageable){
+        Page<Catalog> catalogPage = catalogRepository.findAll(pageable);
+        return catalogPage;
     }
     public Optional<Catalog> getCatalogById(Integer id){
         return catalogRepository.findById(id);
