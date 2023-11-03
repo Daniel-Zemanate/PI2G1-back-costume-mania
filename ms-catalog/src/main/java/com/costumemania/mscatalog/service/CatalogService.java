@@ -26,12 +26,18 @@ public class CatalogService {
     public Optional<Catalog> getCatalogById(Integer id){
         return catalogRepository.findById(id);
     }
+    public Catalog getCatalogByIdSEC(Integer id){
+        return catalogRepository.findByIdSEC(id);
+    }
     public List<Catalog> getCatalogBySize (Size size) {
         return catalogRepository.findBySize(size);
     };
     public List<Catalog> getNews () {
         return catalogRepository.findNews();
     };
+    public Catalog save (Catalog c) {
+        return catalogRepository.save(c);
+    }
     public void delete (Integer id) {
         catalogRepository.deleteById(id);
     }

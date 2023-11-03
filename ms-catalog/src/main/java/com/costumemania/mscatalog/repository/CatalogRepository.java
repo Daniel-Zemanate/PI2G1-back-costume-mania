@@ -14,6 +14,8 @@ public interface CatalogRepository extends JpaRepository<Catalog, Integer> {
 
     List<Catalog> findAll ();
     Optional<Catalog> findById (Integer id);
+    @Query(value="SELECT * FROM catalog c WHERE c.id_catalog =?1", nativeQuery = true)
+    Catalog findByIdSEC (Integer id);
     List<Catalog> findBySize (Size size);
     @Query(value="SELECT * FROM catalog c ORDER BY c.id_catalog DESC LIMIT 10", nativeQuery = true)
     List<Catalog> findNews ();

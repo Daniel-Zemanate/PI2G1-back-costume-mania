@@ -31,4 +31,11 @@ public class Catalog {
 
     @Column(name = "price")
     private Float price;
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 }
