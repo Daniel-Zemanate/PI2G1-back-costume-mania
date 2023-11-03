@@ -4,6 +4,10 @@ import com.costumemania.mscatalog.model.Catalog;
 import com.costumemania.mscatalog.model.Size;
 import com.costumemania.mscatalog.service.CatalogService;
 import com.costumemania.mscatalog.service.SizeService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +29,12 @@ public class CatalogController {
     @GetMapping
     public ResponseEntity<List<Catalog>> getAll(){
         return ResponseEntity.ok().body(catalogService.getCatalog());
+    }
+
+    @GetMapping("/page/{page}")
+    public Page<Catalog> getAll(@PathVariable Integer page){
+        Pageable pageable = PageRequest.of(page, 20);
+        return catalogService.getCatalog(pageable);
     }
 
     @GetMapping("/{idCatalog}")
@@ -65,6 +75,23 @@ public class CatalogController {
     @GetMapping("/news")
     public ResponseEntity<List<Catalog>> getNews(){
         return ResponseEntity.ok().body(catalogService.getNews());
+    }
+
+    @PutMapping("{idCatalog}")
+    public ResponseEntity<Catalog> catalogSold(@PathVariable Integer idCatalog, @Param("quantity") Integer quantity) {
+        // verify ID
+        Optional<Catalog> searchModel = catalogService.getCatalogById(idCatalog);
+        if(searchModel.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        // verify quantity
+        Catalog catalog = catalogService.getCatalogByIdSEC(idCatalog);
+        if(catalog.getQuantity()-quantity<0){
+            return ResponseEntity.badRequest().build();
+        }
+        //else...
+        catalog.setQuantity(catalog.getQuantity()-quantity);
+        return ResponseEntity.accepted().body(catalogService.save(catalog));
     }
 
     @DeleteMapping("/{idCatalog}")
