@@ -18,7 +18,7 @@ spring:
 
 eureka:
   client:
-    enabled: false
+    enabled: true
 
 server:
   port: 8080

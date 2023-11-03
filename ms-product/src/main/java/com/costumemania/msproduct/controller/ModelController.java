@@ -84,6 +84,11 @@ public class ModelController {
         return ResponseEntity.ok().body(model);
     }
 
+    @GetMapping("/SEC/{id}")
+    public ResponseEntity<Model> getByIdModelSEC (@PathVariable Integer id){
+        return ResponseEntity.ok().body(modelService.getByIdModelSEC(id));
+    }
+
     @GetMapping("/name/{name}")
     public ResponseEntity<Optional<List<Model>>> getByNameModel(@PathVariable String name){
         // verify list by name empty

@@ -1,9 +1,13 @@
 package com.costumemania.mscatalog.controller;
 
 import com.costumemania.mscatalog.model.Catalog;
+import com.costumemania.mscatalog.model.CatalogDTO;
+import com.costumemania.mscatalog.model.Model;
 import com.costumemania.mscatalog.model.Size;
 import com.costumemania.mscatalog.service.CatalogService;
+import com.costumemania.mscatalog.service.ModelService;
 import com.costumemania.mscatalog.service.SizeService;
+import feign.FeignException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,9 +25,11 @@ import java.util.Optional;
 public class CatalogController {
     private final CatalogService catalogService;
     private final SizeService sizeService;
-    public CatalogController(CatalogService catalogService, SizeService sizeService) {
+    private final ModelService modelService;
+    public CatalogController(CatalogService catalogService, SizeService sizeService, ModelService modelService) {
         this.catalogService = catalogService;
         this.sizeService = sizeService;
+        this.modelService = modelService;
     }
 
     @GetMapping
@@ -75,6 +81,37 @@ public class CatalogController {
     @GetMapping("/news")
     public ResponseEntity<List<Catalog>> getNews(){
         return ResponseEntity.ok().body(catalogService.getNews());
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<Catalog> createModel(@RequestBody CatalogDTO catalogDTO){
+        // verify model with Feign
+        try {
+            ResponseEntity<Optional<Model>> response = modelService.getByIdModel(catalogDTO.getModel());
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // verify size
+        Optional<Size> searchSize = sizeService.getById(catalogDTO.getSize());
+        if(searchSize.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        // verify quantity
+        if(catalogDTO.getQuantity()<0){
+            return ResponseEntity.badRequest().build();
+        }
+        // verify price
+        if(catalogDTO.getPrice()<0){
+            return ResponseEntity.badRequest().build();
+        }
+        // create
+        Catalog catalogCreated = new Catalog();
+        catalogCreated.setModel(modelService.getByIdModelSEC(catalogDTO.getModel()));
+        catalogCreated.setSize(sizeService.getByIdSEC(catalogDTO.getSize()));
+        catalogCreated.setQuantity(catalogDTO.getQuantity());
+        catalogCreated.setPrice(catalogDTO.getPrice());
+        return ResponseEntity.accepted().body(catalogService.save(catalogCreated));
     }
 
     @PutMapping("{idCatalog}")

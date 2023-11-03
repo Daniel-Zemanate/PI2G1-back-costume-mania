@@ -23,6 +23,9 @@ public class ModelService {
     public Optional<Model> getByIdModel(Integer id){
         return modelRepository.findById(id);
     }
+    public Model getByIdModelSEC(Integer id){
+        return modelRepository.findByIdSEC(id);
+    }
     public Optional<List<Model>> getByNameModel(String name){
         return modelRepository.findByName(name);
     }

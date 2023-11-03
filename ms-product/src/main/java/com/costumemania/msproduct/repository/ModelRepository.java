@@ -10,6 +10,8 @@ import java.util.Optional;
 
 @Repository
 public interface ModelRepository extends JpaRepository<Model,Integer> {
+    @Query(value ="SELECT * FROM model m WHERE id_model=?1",nativeQuery = true)
+    Model findByIdSEC(Integer id);
     @Query( value ="SELECT * FROM model m WHERE m.name_model LIKE %?1%",nativeQuery = true)
     Optional<List<Model>> findByName(String nameModel);
     @Query( value ="SELECT * FROM model m INNER JOIN category c ON m.category=c.id_category WHERE c.name LIKE %?1%",nativeQuery = true)
