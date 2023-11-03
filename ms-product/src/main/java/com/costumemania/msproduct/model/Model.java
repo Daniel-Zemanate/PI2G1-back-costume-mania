@@ -17,15 +17,37 @@ public class Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_model",unique = true, nullable = false)
-    private Long idModel;
+    private Integer idModel;
 
     @Column(name = "name_model")
     private String nameModel;
+
     @ManyToOne
-    @JoinColumn(name = "id_category")
+    @JoinColumn(name = "category")
     private Category category;
 
     @Column(name = "url_image")
     private String urlImage;
 
+    public String getNameModel() {
+        return nameModel;
+    }
+    public Category getCategory() {
+        return category;
+    }
+    public String getUrlImage() {
+        return urlImage;
+    }
+    public void setNameModel(String nameModel) {
+        this.nameModel = nameModel;
+    }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
+    public void setIdModel(Integer idModel) {
+        this.idModel = idModel;
+    }
 }
