@@ -1,5 +1,6 @@
 package com.costumemania.mscatalog.service;
 
+
 import com.costumemania.mscatalog.model.Catalog;
 import com.costumemania.mscatalog.model.Size;
 import com.costumemania.mscatalog.repository.CatalogRepository;
@@ -15,6 +16,7 @@ import java.util.Optional;
 public class CatalogService {
     @Autowired
     CatalogRepository catalogRepository;
+
 
     public List<Catalog> getCatalog(){
         return catalogRepository.findAll();
@@ -32,6 +34,18 @@ public class CatalogService {
     public List<Catalog> getCatalogBySize (Size size) {
         return catalogRepository.findBySize(size);
     };
+    public List<Catalog> getCatalogByIdModel(Integer idModel){
+        return catalogRepository.findByIdModel(idModel);
+
+    }
+    public List<Catalog> getCatalogByNameModel(String nameModel) {
+        return catalogRepository.findByNameModel(nameModel);
+    }
+
+    public List<Catalog>getCatalogByIDCategoryNameModel(Integer idCategory,String nameModel){
+    return catalogRepository.findByIdCategoryNameModel(idCategory,nameModel);
+    }
+
     public List<Catalog> getNews () {
         return catalogRepository.findNews();
     };
@@ -41,4 +55,6 @@ public class CatalogService {
     public void delete (Integer id) {
         catalogRepository.deleteById(id);
     }
+
+
 }

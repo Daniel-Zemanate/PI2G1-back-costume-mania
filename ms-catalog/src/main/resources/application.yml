@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/costumemania
     username: root
-    password: 1234
+    password: root
   jpa:
     hibernate:
       ddl-auto: update
@@ -21,4 +21,4 @@ eureka:
     enabled: false
 
 server:
-  port: 8080
+  port: 8081
