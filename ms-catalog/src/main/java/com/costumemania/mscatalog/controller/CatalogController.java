@@ -114,6 +114,7 @@ public class CatalogController {
         return ResponseEntity.accepted().body(catalogService.save(catalogCreated));
     }
 
+    // method just for users to buy
     @PutMapping("{idCatalog}")
     public ResponseEntity<Catalog> catalogSold(@PathVariable Integer idCatalog, @Param("quantity") Integer quantity) {
         // verify ID
@@ -129,6 +130,39 @@ public class CatalogController {
         //else...
         catalog.setQuantity(catalog.getQuantity()-quantity);
         return ResponseEntity.accepted().body(catalogService.save(catalog));
+    }
+
+    // method only for admin
+    @PutMapping("/modify/{idCatalog}")
+    public ResponseEntity<Catalog> modifyCatalog(@PathVariable Integer idCatalog, @RequestBody CatalogDTO catalogDTO) {
+        // verify model with Feign
+        try {
+            ResponseEntity<Optional<Model>> response = modelService.getByIdModel(catalogDTO.getModel());
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // verify size
+        Optional<Size> searchSize = sizeService.getById(catalogDTO.getSize());
+        if(searchSize.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        // verify quantity
+        if(catalogDTO.getQuantity()<0){
+            return ResponseEntity.badRequest().build();
+        }
+        // verify price
+        if(catalogDTO.getPrice()<0){
+            return ResponseEntity.badRequest().build();
+        }
+        // create
+        Catalog catalogCreated = new Catalog();
+        catalogCreated.setIdCatalog(idCatalog);
+        catalogCreated.setModel(modelService.getByIdModelSEC(catalogDTO.getModel()));
+        catalogCreated.setSize(sizeService.getByIdSEC(catalogDTO.getSize()));
+        catalogCreated.setQuantity(catalogDTO.getQuantity());
+        catalogCreated.setPrice(catalogDTO.getPrice());
+        return ResponseEntity.accepted().body(catalogService.save(catalogCreated));
     }
 
     @DeleteMapping("/{idCatalog}")

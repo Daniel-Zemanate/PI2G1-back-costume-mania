@@ -47,4 +47,7 @@ public class Catalog {
     public void setPrice(Float price) {
         this.price = price;
     }
+    public void setIdCatalog(Integer idCatalog) {
+        this.idCatalog = idCatalog;
+    }
 }
