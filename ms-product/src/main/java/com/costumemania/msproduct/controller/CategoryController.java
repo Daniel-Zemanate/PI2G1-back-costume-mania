@@ -67,6 +67,17 @@ public class CategoryController {
         if (categoryProof.isEmpty()){
             return ResponseEntity.notFound().build();
         }
+        // deleting all the models and catalog items related to the category
+        // verify if there are results
+
+        /*Optional<List<Catalog>> catalogProof = catalogService.getCatalogByModel(idModel);
+        if (catalogProof.get().isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        // else
+        catalogService.deleteByModel(idModel);
+        return ResponseEntity.ok().body("Catalog items with ID model " + idModel + " deleted");*/
+
         // else...
         categoryService.delete(idCategory);
         return ResponseEntity.ok().body("Category item with ID " + idCategory + " deleted with all the related catalog");

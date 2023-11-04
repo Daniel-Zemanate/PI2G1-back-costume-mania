@@ -2,8 +2,10 @@ package com.costumemania.msproduct.repository;
 
 import com.costumemania.msproduct.model.Model;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,5 +22,9 @@ public interface ModelRepository extends JpaRepository<Model,Integer> {
     List<Model> findByNameAndCategory(String name, Integer category);
     @Query(value= "SELECT * FROM model m  WHERE m.category =?1",nativeQuery = true)
     List<Model> findByIdCategory(Integer idCategory);
+    @Transactional
+    @Modifying
+    @Query(value="DELETE FROM model m WHERE m.category =?1", nativeQuery = true)
+    void deleteByCategory (Integer idCategory);
 }
 

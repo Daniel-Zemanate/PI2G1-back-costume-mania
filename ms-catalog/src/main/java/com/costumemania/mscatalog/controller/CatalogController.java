@@ -39,7 +39,7 @@ public class CatalogController {
 
     @GetMapping("/page/{page}")
     public Page<Catalog> getAll(@PathVariable Integer page){
-        Pageable pageable = PageRequest.of(page, 20);
+        Pageable pageable = PageRequest.of(page, 12);
         return catalogService.getCatalog(pageable);
     }
 
@@ -51,7 +51,6 @@ public class CatalogController {
         if (catalogProof.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-
         // else...
         return ResponseEntity.ok().body(catalogProof);
     }
@@ -66,7 +65,6 @@ public class CatalogController {
         if (sizeList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-
         // else...
         List<List<Catalog>> result = new ArrayList<>();
 
@@ -85,6 +83,7 @@ public class CatalogController {
 
     @PostMapping("/create")
     public ResponseEntity<Catalog> createModel(@RequestBody CatalogDTO catalogDTO){
+
         // verify model with Feign
         try {
             ResponseEntity<Optional<Model>> response = modelService.getByIdModel(catalogDTO.getModel());
@@ -117,6 +116,7 @@ public class CatalogController {
     // method just for users to buy
     @PutMapping("{idCatalog}")
     public ResponseEntity<Catalog> catalogSold(@PathVariable Integer idCatalog, @Param("quantity") Integer quantity) {
+
         // verify ID
         Optional<Catalog> searchModel = catalogService.getCatalogById(idCatalog);
         if(searchModel.isEmpty()){
@@ -135,6 +135,7 @@ public class CatalogController {
     // method only for admin
     @PutMapping("/modify/{idCatalog}")
     public ResponseEntity<Catalog> modifyCatalog(@PathVariable Integer idCatalog, @RequestBody CatalogDTO catalogDTO) {
+
         // verify model with Feign
         try {
             ResponseEntity<Optional<Model>> response = modelService.getByIdModel(catalogDTO.getModel());
@@ -167,14 +168,27 @@ public class CatalogController {
 
     @DeleteMapping("/{idCatalog}")
     public ResponseEntity<String> delete(@PathVariable Integer idCatalog) {
+
         // first verify if the ID exist
         Optional<Catalog> catalogProof = catalogService.getCatalogById(idCatalog);
         if (catalogProof.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-
         // else...
         catalogService.delete(idCatalog);
         return ResponseEntity.ok().body("Catalog item with ID " + idCatalog + " deleted");
+    }
+
+    @DeleteMapping("/byModel/{idModel}")
+    public ResponseEntity<String> deleteByModel (@PathVariable Integer idModel) {
+
+        // verify if there are results
+        Optional<List<Catalog>> catalogProof = catalogService.getCatalogByModel(idModel);
+        if (catalogProof.get().isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        // else
+        catalogService.deleteByModel(idModel);
+        return ResponseEntity.ok().body("Catalog items with ID model " + idModel + " deleted");
     }
 }
