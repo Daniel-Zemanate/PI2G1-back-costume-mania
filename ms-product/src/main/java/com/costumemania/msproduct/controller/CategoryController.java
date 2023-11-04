@@ -21,6 +21,7 @@ public class CategoryController {
     public ResponseEntity<List<Category>> getAll() {
         return ResponseEntity.ok().body(categoryService.getAll());
     };
+
     @GetMapping("/{idCategory}")
     public ResponseEntity<Category> getdById (@PathVariable Integer idCategory) {
         // first verify if the ID exist
