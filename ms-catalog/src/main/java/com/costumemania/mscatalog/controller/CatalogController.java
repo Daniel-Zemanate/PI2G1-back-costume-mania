@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,6 +73,20 @@ public class CatalogController {
             result.add(listBySize);
         }
         return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/byModel/{idModel}")
+    public ResponseEntity<Optional<List<Catalog>>> getByModel(@PathVariable Integer idModel){
+
+        // first verify if the model exists with feign
+        try {
+            ResponseEntity<Optional<Model>> response = modelService.getByIdModel(idModel);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        return ResponseEntity.ok().body(catalogService.getCatalogByModel(idModel));
     }
 
     @GetMapping("/news")
