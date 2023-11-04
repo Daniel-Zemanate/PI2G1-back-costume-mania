@@ -28,4 +28,7 @@ public class ModelService {
     public  ResponseEntity<List<Model>> getModelByIdCategory(Integer idCategory) {
         return modelRepositoryFeign.getModelByIdCategory(idCategory);
     };
+    public ResponseEntity<Optional<List<Model>>> getByNameModel(String name) {
+        return modelRepositoryFeign.getByNameModel(name);
+    };
 }
