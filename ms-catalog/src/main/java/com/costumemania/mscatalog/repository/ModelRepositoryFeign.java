@@ -12,8 +12,8 @@ import java.util.Optional;
 public interface ModelRepositoryFeign {
 
     @GetMapping("/api/v1/model/SEC/{id}")
-    public Model getByIdModelSEC (@PathVariable Integer id);
+    Model getByIdModelSEC (@PathVariable Integer id);
 
     @GetMapping("/api/v1/model/{id}")
-    public ResponseEntity<Optional<Model>>getByIdModel(@PathVariable Integer id);
+    ResponseEntity<Optional<Model>>getByIdModel(@PathVariable Integer id);
 }

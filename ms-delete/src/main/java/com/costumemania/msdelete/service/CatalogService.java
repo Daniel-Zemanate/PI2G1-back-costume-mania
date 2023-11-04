@@ -1,6 +1,6 @@
-package com.costumemania.msproduct.service;
+package com.costumemania.msdelete.service;
 
-import com.costumemania.msproduct.repository.CatalogRepositoryFeign;
+import com.costumemania.msdelete.repository.CatalogRepositoryFeign;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

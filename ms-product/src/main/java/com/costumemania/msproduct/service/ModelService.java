@@ -38,10 +38,6 @@ public class ModelService {
     public List<Model> getByCategoryModel(String category){
         return modelRepository.findByCategory(category);
     }
-    public void deleteByIdModel(Integer id){
-       modelRepository.deleteById(id);
-    }
-    public void deleteByCategory (Integer idCategory) {
-        modelRepository.deleteByCategory(idCategory);
-    }
+    public void deleteModel(Integer idModel) { modelRepository.deleteById(idModel); }
+    public void deleteModelByCat(Integer idCategory) { modelRepository.deleteByCategory(idCategory); }
 }

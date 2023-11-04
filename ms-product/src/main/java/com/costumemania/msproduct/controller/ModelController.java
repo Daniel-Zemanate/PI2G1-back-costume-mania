@@ -3,7 +3,6 @@ package com.costumemania.msproduct.controller;
 import com.costumemania.msproduct.model.Category;
 import com.costumemania.msproduct.model.Model;
 import com.costumemania.msproduct.model.ModelDTO;
-import com.costumemania.msproduct.service.CatalogService;
 import com.costumemania.msproduct.service.CategoryService;
 import com.costumemania.msproduct.service.ModelService;
 import org.springframework.http.HttpStatus;
@@ -20,11 +19,9 @@ public class ModelController {
 
     private final ModelService modelService;
     private final CategoryService categoryService;
-    private final CatalogService catalogService;
-    public ModelController(ModelService modelService, CategoryService categoryService, CatalogService catalogService) {
+    public ModelController(ModelService modelService, CategoryService categoryService) {
         this.modelService = modelService;
         this.categoryService = categoryService;
-        this.catalogService = catalogService;
     }
 
     @PostMapping("/create")
@@ -154,43 +151,27 @@ public class ModelController {
 
     // DEJO DE ANDAR LA CONEXION CON CATALOGO!!!
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Object> deleteModel(@PathVariable Integer id){
+    @DeleteMapping("/delete/{idModel}")
+    public ResponseEntity<String> deleteModel(@PathVariable Integer idModel){
         // verify model empty
-        Optional<Model> model =modelService.getByIdModel(id);
+        Optional<Model> model =modelService.getByIdModel(idModel);
         if(model.isEmpty()){
            return ResponseEntity.notFound().build();
         }
-        // deleting catalog with that model
-        ResponseEntity<String> response = catalogService.deleteByModel(id);
-        String message;
-        if (response.getStatusCode()==HttpStatus.OK){
-            message=" and all the related catalog items deleted.";
-        } else {
-            message=" there wasn´t related catalog items.";
-        }
         // deleting model
-        modelService.deleteByIdModel(id);
-        return ResponseEntity.ok().body("Model item with ID " + id + " deleted," + message);
+        modelService.deleteModel(idModel);
+        return ResponseEntity.ok().body("Model item with ID " + idModel + " deleted.");
     }
 
     @DeleteMapping("/deleteByCategory/{idCategory}")
-    public ResponseEntity<Object> deleteModelByCategory(@PathVariable Integer idCategory){
+    public ResponseEntity<String> deleteModelByCategory(@PathVariable Integer idCategory){
         // verify if there are results
         List<Model> modelProof = modelService.getByIdCategoryModel(idCategory);
         if(modelProof.isEmpty()){
             return ResponseEntity.noContent().build();
         }
-        // deleting catalog with that category
-        String message =" there wasn´t related catalog items.";
-        for (int i=0; i<modelProof.size(); i++) {
-            ResponseEntity<String> response = catalogService.deleteByModel(modelProof.get(i).getIdModel());
-            if (response.getStatusCode()==HttpStatus.OK){
-                message = " and all the related catalog items deleted.";
-            }
-        }
         // deleting model
-        modelService.deleteByCategory(idCategory);
-        return ResponseEntity.ok().body("Model item with ID " + idCategory + " deleted," + message);
+        modelService.deleteModelByCat(idCategory);
+        return ResponseEntity.ok().body("Model items from Category ID " + idCategory + " deleted.");
     }
 }

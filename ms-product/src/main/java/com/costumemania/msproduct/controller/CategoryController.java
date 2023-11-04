@@ -61,30 +61,14 @@ public class CategoryController {
     }
 
     @DeleteMapping("/delete/{idCategory}")
-    public ResponseEntity<Object> delete (@PathVariable Integer idCategory) {
+    public ResponseEntity<String> delete (@PathVariable Integer idCategory) {
         // first verify if the ID exist
         Optional<Category> categoryProof = categoryService.getdById(idCategory);
         if (categoryProof.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        // deleting all the models and catalog items related to the category
-        // verify if there are results
-
-        /*Optional<List<Catalog>> catalogProof = catalogService.getCatalogByModel(idModel);
-        if (catalogProof.get().isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-        // else
-        catalogService.deleteByModel(idModel);
-        return ResponseEntity.ok().body("Catalog items with ID model " + idModel + " deleted");*/
-
         // else...
         categoryService.delete(idCategory);
-        return ResponseEntity.ok().body("Category item with ID " + idCategory + " deleted with all the related catalog");
-        // hacer vinculacion con catalogo para borrar categoria
-        /* 1. borrar todos los modelos de esa categoria
-        2. en modelo, eliminar to-do el catalogo de ese modelo
-        3. crear un nuevo endpoint que use una query para eliminar to-do junto
-         */
+        return ResponseEntity.ok().body("Category item with ID " + idCategory + " deleted.");
     }
 }
