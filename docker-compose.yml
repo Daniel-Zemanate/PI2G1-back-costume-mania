@@ -2,12 +2,14 @@ version: "3.8"
 
 volumes:
   vol-costume-mania:
+  vol-keycloak-data:
 networks:
   net-costume-mania:
 
 services:
   mysqldb:
     image: mysql:8.1
+    container_name: mysqldb
     restart: unless-stopped
 #   Create your personal .env file from .envTemplate
     env_file:
@@ -27,39 +29,60 @@ services:
     networks:
       - net-costume-mania
 
-#  ms-config-server:
-#    build:
-#      context: ./ms-config-server/
-#    container_name: ms-config-server
-#    restart: unless-stopped
-##   Create your personal .env file from .envTemplate
-#    env_file:
-#      - ./.env
-#    environment:
-#      - PORT=$MS_CONFIG_SERVER_DOCKER_PORT
-#    ports:
-#      - ${MS_CONFIG_SERVER_LOCAL_PORT}:${MS_CONFIG_SERVER_DOCKER_PORT}
-#    networks:
-#      - net-costume-mania
-#
-#  ms-eureka-server:
-#    build:
-#      context: ./ms-eureka-server/
-#    container_name: ms-eureka-server
-#    restart: unless-stopped
-#    #   Create your personal .env file from .envTemplate
-#    env_file:
-#      - ./.env
-#    environment:
-#      - PORT=$MS_EUREKA_SERVER_DOCKER_PORT
-#      - PROFILE=$MS_EUREKA_SERVER_PROFILE
-#      - CONFIG_SERVER_HOST_AND_PORT=$MS_CONFIG_SERVER_HOST_AND_PORT
-#    ports:
-#      - ${MS_EUREKA_SERVER_LOCAL_PORT}:${MS_EUREKA_SERVER_DOCKER_PORT}
-#    networks:
-#      - net-costume-mania
-#    depends_on:
-#      - ms-config-server
+  ms-keycloak:
+    image: quay.io/keycloak/keycloak:21.0.1
+    command:
+      - start-dev
+    container_name: ms-keycloak
+    restart: unless-stopped
+    #   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - KEYCLOAK_ADMIN=$MS_KEYCLOAK_ADMIN_USERNAME
+      - KEYCLOAK_ADMIN_PASSWORD=$MS_KEYCLOAK_ADMIN_PASSWORD
+    ports:
+      - "8180:8080"
+    volumes:
+      - vol-keycloak-data:/opt/jboss/keycloak/standalone/data
+    networks:
+      - net-costume-mania
+
+
+  ms-config-server:
+    build:
+      context: ./ms-config-server/
+    container_name: ms-config-server
+    restart: unless-stopped
+#   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - PORT=$MS_CONFIG_SERVER_DOCKER_PORT
+      - DEFAULT_LABEL=$MS_CONFIG_SERVER_DEFAULT_LABEL
+    ports:
+      - ${MS_CONFIG_SERVER_LOCAL_PORT}:${MS_CONFIG_SERVER_DOCKER_PORT}
+    networks:
+      - net-costume-mania
+
+  ms-eureka-server:
+    build:
+      context: ./ms-eureka-server/
+    container_name: ms-eureka-server
+    restart: unless-stopped
+    #   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
+      - PORT=$MS_EUREKA_SERVER_DOCKER_PORT
+      - PROFILE=$MS_EUREKA_SERVER_PROFILE
+    ports:
+      - ${MS_EUREKA_SERVER_LOCAL_PORT}:${MS_EUREKA_SERVER_DOCKER_PORT}
+    networks:
+      - net-costume-mania
+    depends_on:
+      - ms-config-server
 
 #  ms-gateway:
 #    build:
