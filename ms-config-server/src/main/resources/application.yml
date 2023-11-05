@@ -9,12 +9,9 @@ spring:
       server:
         git:
           uri: https://github.com/Daniel-Zemanate/PI2G1-back-costume-mania
-#          username: ${GITHUB_USERNAME}
-#          password: ${GITHUB_PERSONAL_ACCESS_TOKEN}
           timeout: 5
-#          TODO: change PI2G1-33 to 'main'
           default-label: ${DEFAULT_LABEL:main}
-#          force-pull: true
+          force-pull: true
           search-paths: Configuration
           cloneOnStart: true
           skipSslValidation: true

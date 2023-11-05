@@ -48,7 +48,6 @@ services:
     networks:
       - net-costume-mania
 
-
   ms-config-server:
     build:
       context: ./ms-config-server/
@@ -68,15 +67,17 @@ services:
   ms-eureka-server:
     build:
       context: ./ms-eureka-server/
+      args:
+        - PROFILE=$MS_EUREKA_SERVER_PROFILE
+        - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
+        - MS_CONFIG_SERVER_PORT=${MS_CONFIG_SERVER_DOCKER_PORT}
     container_name: ms-eureka-server
     restart: unless-stopped
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
     environment:
-      - CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
       - PORT=$MS_EUREKA_SERVER_DOCKER_PORT
-      - PROFILE=$MS_EUREKA_SERVER_PROFILE
     ports:
       - ${MS_EUREKA_SERVER_LOCAL_PORT}:${MS_EUREKA_SERVER_DOCKER_PORT}
     networks:
