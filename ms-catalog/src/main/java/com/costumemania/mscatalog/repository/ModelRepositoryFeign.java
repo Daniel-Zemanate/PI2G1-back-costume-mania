@@ -27,4 +27,7 @@ public interface ModelRepositoryFeign {
 
     @GetMapping("/api/v1/model/name/{name}")
     ResponseEntity<Optional<List<Model>>> getByNameModel(@PathVariable String name);
+
+    @GetMapping("/api/v1/model/name/{name}/category/{category}")
+    ResponseEntity<Optional<List<Model>>> getByNameAndCategoryModel(@PathVariable String name,@PathVariable Integer category);
 }

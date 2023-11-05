@@ -119,6 +119,97 @@ public class CatalogController {
         // else...
         return ResponseEntity.ok().body(result);
     }
+    // Falta Probar
+    @GetMapping("/byKeyWord/{keyWord}/byCategory/{idCategory}")
+    public ResponseEntity<List<Optional<List<Catalog>>>> getByKeyWordByCategory(@PathVariable String keyWord, @PathVariable Integer idCategory){
+
+        List<Optional<List<Model>>> modelList = new ArrayList<>();
+        // first verify if exists any model with feign
+        try {
+            Optional<List<Model>> modelByNameByIdCategory = modelService.getModelByNameAndIdCategory(keyWord,idCategory).getBody();
+            if (!modelByNameByIdCategory.get().isEmpty()) modelList.add(modelByNameByIdCategory);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // get every catalog with the keyword
+        List<Optional<List<Catalog>>> finalResult = new ArrayList<>();
+        try {
+            if (!modelList.isEmpty()) {
+                if (modelList.get(0).get().size() > 0) {
+                    for (int i = 0; i < modelList.get(0).get().size(); i++) {
+                        try {
+                            Optional<List<Catalog>> result = catalogService.getCatalogByModel(modelList.get(0).get().get(i).getIdModel());
+                            if (!result.get().isEmpty()) finalResult.add(result);
+                        } catch (FeignException e) {
+                            System.out.println("there isn´t catalog of model " + modelList.get(0).get().get(i).getIdModel());
+                        }
+                    }
+                }
+            }
+        } catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        return ResponseEntity.ok().body(finalResult);
+    }
+
+    /*
+
+    //falta logica de size
+    @GetMapping("/byKeyWord/{keyWord}/byCategory/{idCategory}/bySize/{bolleanAdult}")
+    public ResponseEntity<List<Optional<List<Catalog>>>> getByKeyWordByCategoryBySize(@PathVariable String keyWord, @PathVariable Integer idCategory,@PathVariable Integer bolleanAdult){
+
+        List<Optional<List<Model>>> modelList = new ArrayList<>();
+        // first verify if exists any model with feign
+        try {
+            Optional<List<Model>> modelByNameByIdCategory = modelService.getModelByNameAndIdCategory(keyWord,idCategory).getBody();
+            if (!modelByNameByIdCategory.get().isEmpty()) modelList.add(modelByNameByIdCategory);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+
+        // get every catalog with the keyword
+        List<Optional<List<Catalog>>> finalResult = new ArrayList<>();
+        try {
+            if (!modelList.isEmpty()) {
+                if (modelList.get(0).get().size() > 0) {
+                    for (int i = 0; i < modelList.get(0).get().size(); i++) {
+                        try {
+                            Optional<List<Catalog>> result = catalogService.getCatalogByModel(modelList.get(0).get().get(i).getIdModel());
+                            // first verify if the bollean is correct
+                            List<Size> sizeList = new ArrayList<>();
+                            sizeList = sizeService.getByAdult(bolleanAdult);
+
+                            if (sizeList.isEmpty()) {
+                                return ResponseEntity.notFound().build();
+                            }
+                            // else...
+                            List<List<Catalog>> result2 = new ArrayList<>();
+
+                            for (int j=0; j < sizeList.size(); j++) {
+                                List<Catalog> listBySize = new ArrayList<>();
+                                listBySize = catalogService.getCatalogBySize(sizeList.get(j));
+                                result2.add(listBySize);
+                            }
+
+
+
+                            if (!result.get().isEmpty()) finalResult.add(result);
+                        } catch (FeignException e) {
+                            System.out.println("there isn´t catalog of model " + modelList.get(0).get().get(i).getIdModel());
+                        }
+                    }
+                }
+            }
+        } catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        return ResponseEntity.ok().body(finalResult);
+    }
+*/
 
     @GetMapping("/byKeyWord/{keyWord}")
     public ResponseEntity<List<Optional<List<Catalog>>>> getByKeyWord(@PathVariable String keyWord){

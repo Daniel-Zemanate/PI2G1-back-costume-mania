@@ -31,4 +31,7 @@ public class ModelService {
     public ResponseEntity<Optional<List<Model>>> getByNameModel(String name) {
         return modelRepositoryFeign.getByNameModel(name);
     };
+    public ResponseEntity<Optional<List<Model>>> getModelByNameAndIdCategory(String name,Integer category){
+        return modelRepositoryFeign.getByNameAndCategoryModel(name,category);
+    }
 }
