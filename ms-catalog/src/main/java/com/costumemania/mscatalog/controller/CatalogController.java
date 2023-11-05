@@ -188,6 +188,45 @@ public class CatalogController {
         return ResponseEntity.ok().body(finalResult);
     }
 
+    @GetMapping("/byCategory/{idCategory}/bySize/{bolleanAdult}")
+    public ResponseEntity<List<Optional<Catalog>>> getByCategoryAndSize(@PathVariable Integer idCategory, @PathVariable Integer bolleanAdult){
+
+        // first verify if the category exists with feign
+        try {
+            modelService.getCategorydById(idCategory);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // get every model within the category
+        List<Model> modelList = new ArrayList<>();
+        try {
+            modelList = modelService.getModelByIdCategory(idCategory).getBody();
+        } catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // second verify if the bollean is correct
+        List<Size> sizeList = new ArrayList<>();
+        sizeList = sizeService.getByAdult(bolleanAdult);
+        if (sizeList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        List<Optional<Catalog>> finalList = new ArrayList<>();
+        if (!modelList.isEmpty()) {
+            if (modelList.size() > 0) {
+                for (int i = 0; i < modelList.size(); i++) {
+                    for (int j=0; j < sizeList.size(); j++) {
+                        Optional<Catalog> result = catalogService.findByModelAndSize(modelList.get(i).getIdModel(),sizeList.get(j).getId());
+                        if (!result.isEmpty()) finalList.add(result);
+                    }
+                }
+
+            }
+        }
+        return ResponseEntity.ok().body(finalList);
+    }
+
     @GetMapping("/byKeyWord/{keyWord}/bySize/{bolleanAdult}")
     public ResponseEntity<List<Optional<Catalog>>> getByKeyWordAndSize(@PathVariable String keyWord, @PathVariable Integer bolleanAdult){
 
@@ -221,7 +260,6 @@ public class CatalogController {
         }
         return ResponseEntity.ok().body(finalList);
     }
-
     /*
 
     //falta logica de size
