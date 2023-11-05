@@ -129,11 +129,11 @@ public class ModelController {
         return ResponseEntity.ok().body(listModel);
     }
 
-    @GetMapping("/name/{name}/category/{category}")
+    @GetMapping("/name/{name}/category/id/{category}")
     public ResponseEntity<List<Model>> getByNameAndCategoryModel(@PathVariable String name,@PathVariable Integer category){
         // verify list by name empty
-        Optional<List<Model>> model = modelService.getByNameModel(name);
-        if(model.isEmpty()){
+        Optional<List<Model>> seachrModel = modelService.getByNameModel(name);
+        if(seachrModel.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         // verify category empty
@@ -141,15 +141,13 @@ public class ModelController {
         if(searchedCategory.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        // verify list by category empty
-        List<Model> listModel = modelService.getByIdCategoryModel(category);
-        if (listModel.isEmpty()){
+        // verify final list
+        List<Model> finalList = modelService.getByNameAndCategoryModel(name, category);
+        if (finalList.isEmpty()){
             ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(modelService.getByNameAndCategoryModel(name,category));
+        return ResponseEntity.ok(finalList);
     }
-
-    // DEJO DE ANDAR LA CONEXION CON CATALOGO!!!
 
     @DeleteMapping("/delete/{idModel}")
     public ResponseEntity<String> deleteModel(@PathVariable Integer idModel){
