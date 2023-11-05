@@ -29,6 +29,9 @@ public class Model {
     @Column(name = "url_image")
     private String urlImage;
 
+    public Integer getIdModel() {
+        return idModel;
+    }
     public String getNameModel() {
         return nameModel;
     }

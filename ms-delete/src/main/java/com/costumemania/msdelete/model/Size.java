@@ -1,4 +1,4 @@
-package com.costumemania.mscatalog.model;
+package com.costumemania.msdelete.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,8 +27,4 @@ public class Size {
 
     @Column(name = "size_description")
     private String sizeDescription;
-
-    public Integer getId() {
-        return id;
-    }
 }

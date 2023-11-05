@@ -84,6 +84,11 @@ public class ModelController {
         return ResponseEntity.ok().body(model);
     }
 
+    @GetMapping("/SEC/{id}")
+    public ResponseEntity<Model> getByIdModelSEC (@PathVariable Integer id){
+        return ResponseEntity.ok().body(modelService.getByIdModelSEC(id));
+    }
+
     @GetMapping("/name/{name}")
     public ResponseEntity<Optional<List<Model>>> getByNameModel(@PathVariable String name){
         // verify list by name empty
@@ -124,11 +129,11 @@ public class ModelController {
         return ResponseEntity.ok().body(listModel);
     }
 
-    @GetMapping("/name/{name}/category/{category}")
+    @GetMapping("/name/{name}/category/id/{category}")
     public ResponseEntity<List<Model>> getByNameAndCategoryModel(@PathVariable String name,@PathVariable Integer category){
         // verify list by name empty
-        Optional<List<Model>> model = modelService.getByNameModel(name);
-        if(model.isEmpty()){
+        Optional<List<Model>> seachrModel = modelService.getByNameModel(name);
+        if(seachrModel.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         // verify category empty
@@ -136,22 +141,35 @@ public class ModelController {
         if(searchedCategory.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        // verify list by category empty
-        List<Model> listModel = modelService.getByIdCategoryModel(category);
-        if (listModel.isEmpty()){
+        // verify final list
+        List<Model> finalList = modelService.getByNameAndCategoryModel(name, category);
+        if (finalList.isEmpty()){
             ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(modelService.getByNameAndCategoryModel(name,category));
+        return ResponseEntity.ok(finalList);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Object> deleteModel(@PathVariable Integer id){
+    @DeleteMapping("/delete/{idModel}")
+    public ResponseEntity<String> deleteModel(@PathVariable Integer idModel){
         // verify model empty
-        Optional<Model> model =modelService.getByIdModel(id);
+        Optional<Model> model =modelService.getByIdModel(idModel);
         if(model.isEmpty()){
            return ResponseEntity.notFound().build();
         }
-        modelService.deleteByIdModel(id);
-        return ResponseEntity.ok().body("Model item with ID " + id + " deleted");
+        // deleting model
+        modelService.deleteModel(idModel);
+        return ResponseEntity.ok().body("Model item with ID " + idModel + " deleted.");
+    }
+
+    @DeleteMapping("/deleteByCategory/{idCategory}")
+    public ResponseEntity<String> deleteModelByCategory(@PathVariable Integer idCategory){
+        // verify if there are results
+        List<Model> modelProof = modelService.getByIdCategoryModel(idCategory);
+        if(modelProof.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        // deleting model
+        modelService.deleteModelByCat(idCategory);
+        return ResponseEntity.ok().body("Model items from Category ID " + idCategory + " deleted.");
     }
 }

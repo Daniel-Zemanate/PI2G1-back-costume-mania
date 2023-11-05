@@ -3,7 +3,7 @@ spring:
     config:
       enabled: false
   application:
-    name: ms-catalog
+    name: ms-delete
   datasource:
     url: jdbc:mysql://localhost:3306/costumemania
     username: root
@@ -21,4 +21,4 @@ eureka:
     enabled: true
 
 server:
-  port: 8080
+  port: 8083
