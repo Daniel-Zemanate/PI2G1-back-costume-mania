@@ -237,18 +237,18 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
 
-INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('1', '0', '6', 'Niños de a 5 a 7 años');
-INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('2', '0', '8', 'Niños de 7 a 9 años');
-INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('3', '0', '10', 'Niños de 9 a 11 años');
-INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('4', '0', '12', 'Niños de 11 a 13 años');
-INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('5', '0', '14', 'Niños de 13 a 15 años');
-INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('6', '0', '16', 'Niños de 15 a 17 años');
-INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('7', '1', 'XS', 'Adultos de altura 1.50m');
-INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('8', '1', 'S', 'Adultos de altura 1.60m');
-INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('9', '1', 'M', 'Adultos de altura 1.70m');
-INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('10', '1', 'L', 'Adultos de altura 1.70m peso +70k');
-INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('11', '1', 'XL', 'Adultos de altura +1.70m peso +85k');
-INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('12', '1', 'XXL', 'Adultos de altura +1.70m peso +100k');
+INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('1', '0', '6', 'Kids from 5 to 7 years old');
+INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('2', '0', '8', 'Kids from 7 to 9 years old');
+INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('3', '0', '10', 'Kids from 9 to 11 years old');
+INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('4', '0', '12', 'Kids from 11 to 13 years old');
+INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('5', '0', '14', 'Kids from 13 to 15 years old');
+INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('6', '0', '16', 'Kids from 15 to 17 years old');
+INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('7', '1', 'XS', 'Adult height 1.50m');
+INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('8', '1', 'S', 'Adult height 1.60m');
+INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('9', '1', 'M', 'Adult height 1.70m');
+INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('10', '1', 'L', 'Adult height 1.70m weight +70k');
+INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('11', '1', 'XL', 'Adult height +1.70m weight +85k');
+INSERT INTO `costumemania`.`size` (`id_size`, `adult`, `no_size`, `size_description`) VALUES ('12', '1', 'XXL', 'Adult height +1.70m weight +100k');
 
 
 INSERT INTO `costumemania`.`category` (`id_category`, `name`) VALUES ('1', 'Halloween');

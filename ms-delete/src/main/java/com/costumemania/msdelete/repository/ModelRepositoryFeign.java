@@ -13,12 +13,6 @@ import java.util.Optional;
 @FeignClient(name="ms-product")
 public interface ModelRepositoryFeign {
 
-    @GetMapping("/api/v1/model/SEC/{id}")
-    Model getByIdModelSEC (@PathVariable Integer id);
-
-    @GetMapping("/api/v1/model/{id}")
-    ResponseEntity<Optional<Model>>getByIdModel(@PathVariable Integer id);
-
     @GetMapping("/api/v1/model/category/id/{idCategory}")
     ResponseEntity<List<Model>> getByIdCategory(@PathVariable Integer idCategory);
 

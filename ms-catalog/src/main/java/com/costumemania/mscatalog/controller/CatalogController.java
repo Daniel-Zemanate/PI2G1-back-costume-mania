@@ -31,6 +31,8 @@ public class CatalogController {
         this.modelService = modelService;
     }
 
+    //////////////---------- TODO EL CATALOGO ----------//////////////
+
     @GetMapping
     public ResponseEntity<List<Catalog>> getAll(){
         return ResponseEntity.ok().body(catalogService.getCatalog());
@@ -41,6 +43,8 @@ public class CatalogController {
         Pageable pageable = PageRequest.of(page, 12);
         return catalogService.getCatalog(pageable);
     }
+
+    /////////////////////////////////////////////////////////////////
 
     @GetMapping("/{idCatalog}")
     public ResponseEntity<Optional<Catalog>> getById(@PathVariable Integer idCatalog){
@@ -53,6 +57,9 @@ public class CatalogController {
         // else...
         return ResponseEntity.ok().body(catalogProof);
     }
+
+
+    //////////////---------- CATALOGO FILTRADO ----------//////////////
 
     @GetMapping("/bySize/{bolleanAdult}")
     public ResponseEntity<List<List<Catalog>>> getBySize(@PathVariable Integer bolleanAdult){
@@ -293,6 +300,9 @@ public class CatalogController {
         }
         return ResponseEntity.ok().body(finalList);
     }
+
+    /////////////////////////////////////////////////////////////////
+
 
     @GetMapping("/news")
     public ResponseEntity<List<Catalog>> getNews(){
