@@ -27,4 +27,8 @@ public class Size {
 
     @Column(name = "size_description")
     private String sizeDescription;
+
+    public Integer getId() {
+        return id;
+    }
 }

@@ -154,7 +154,6 @@ public class CatalogController {
         return ResponseEntity.ok().body(finalResult);
     }
 
-    // Falta Probar
     @GetMapping("/byKeyWord/{keyWord}/byCategory/{idCategory}")
     public ResponseEntity<List<Optional<List<Catalog>>>> getByKeyWordByCategory(@PathVariable String keyWord, @PathVariable Integer idCategory){
 
@@ -187,6 +186,40 @@ public class CatalogController {
         }
         // else...
         return ResponseEntity.ok().body(finalResult);
+    }
+
+    @GetMapping("/byKeyWord/{keyWord}/bySize/{bolleanAdult}")
+    public ResponseEntity<List<Optional<Catalog>>> getByKeyWordAndSize(@PathVariable String keyWord, @PathVariable Integer bolleanAdult){
+
+        List<Optional<List<Model>>> modelList = new ArrayList<>();
+        // first verify if exists any model with feign
+        try {
+            Optional<List<Model>> modelByName = modelService.getByNameModel(keyWord).getBody();
+            if (!modelByName.get().isEmpty()) modelList.add(modelByName);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // second verify if the bollean is correct
+        List<Size> sizeList = new ArrayList<>();
+        sizeList = sizeService.getByAdult(bolleanAdult);
+        if (sizeList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        List<Optional<Catalog>> finalList = new ArrayList<>();
+        if (!modelList.isEmpty()) {
+            if (modelList.get(0).get().size() > 0) {
+                for (int i = 0; i < modelList.get(0).get().size(); i++) {
+                    for (int j=0; j < sizeList.size(); j++) {
+                        Optional<Catalog> result = catalogService.findByModelAndSize(modelList.get(0).get().get(i).getIdModel(),sizeList.get(j).getId());
+                        if (!result.isEmpty()) finalList.add(result);
+                    }
+                }
+
+            }
+        }
+        return ResponseEntity.ok().body(finalList);
     }
 
     /*
