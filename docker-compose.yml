@@ -11,6 +11,11 @@ services:
     image: mysql:8.1
     container_name: mysqldb
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 768M
 #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -35,6 +40,11 @@ services:
       - start-dev
     container_name: ms-keycloak
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 768M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -53,6 +63,11 @@ services:
       context: ./ms-config-server/
     container_name: ms-config-server
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 512M
 #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -73,6 +88,11 @@ services:
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     container_name: ms-eureka-server
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -93,6 +113,11 @@ services:
         - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
 #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
