@@ -2,8 +2,6 @@ server:
   port: ${PORT:8090}
 
 spring:
-  application:
-    name: ms-gateway
   #  ------ cloud parameters to exclude if local test is needed ------
   cloud:
 #    config:
@@ -13,18 +11,6 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: ms-bill
-          uri: lb://ms-bill
-          predicates:
-            - Path=/api/v1/bill/**
-        - id: ms-catalog
-          uri: lb://ms-catalog
-          predicates:
-            - Path=/api/v1/catalog/**
-        - id: ms-product
-          uri: lb://ms-product
-          predicates:
-            - Path=/api/v1/product/**
         - id: ms-users
           uri: lb://ms-users
           predicates:
@@ -38,10 +24,10 @@ management:
 
 eureka:
   client:
-    registerWithEureka: false
+    registerWithEureka: true
     fetchRegistry: true
     serviceURL:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://${EUREKA_SERVER_HOST:localhost}:${EUREKA_SERVER_PORT:8761}/eureka/
   management:
     endpoint:
       gateway:

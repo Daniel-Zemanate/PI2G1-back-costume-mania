@@ -70,7 +70,7 @@ services:
       args:
         - PROFILE=$MS_EUREKA_SERVER_PROFILE
         - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
-        - MS_CONFIG_SERVER_PORT=${MS_CONFIG_SERVER_DOCKER_PORT}
+        - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     container_name: ms-eureka-server
     restart: unless-stopped
     #   Create your personal .env file from .envTemplate
@@ -85,19 +85,25 @@ services:
     depends_on:
       - ms-config-server
 
-#  ms-gateway:
-#    build:
-#      context: ./ms-gateway/
-#    restart: unless-stopped
-##   Create your personal .env file from .envTemplate
-#    env_file:
-#      - ./.env
-#    environment:
-#      - PORT=$MS_GATEWAY_DOCKER_PORT
-#    ports:
-#      - ${MS_GATEWAY_LOCAL_PORT}:${MS_GATEWAY_DOCKER_PORT}
-#    networks:
-#      - net-costume-mania
-#    depends_on:
-#      - ms-config-server
-#      - ms-eureka-server
+  ms-gateway:
+    build:
+      context: ./ms-gateway/
+      args:
+        - PROFILE=$MS_EUREKA_SERVER_PROFILE
+        - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
+        - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
+    restart: unless-stopped
+#   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - PORT=$MS_GATEWAY_DOCKER_PORT
+      - EUREKA_SERVER_HOST=$MS_EUREKA_SERVER_HOST
+      - EUREKA_SERVER_PORT=$MS_GATEWAY_DOCKER_PORT
+    ports:
+      - ${MS_GATEWAY_LOCAL_PORT}:${MS_GATEWAY_DOCKER_PORT}
+    networks:
+      - net-costume-mania
+    depends_on:
+      - ms-config-server
+      - ms-eureka-server
