@@ -16,7 +16,7 @@ services:
         limits:
           cpus: "1.0"
           memory: 768M
-#   Create your personal .env file from .envTemplate
+    #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
     environment:
@@ -68,7 +68,7 @@ services:
         limits:
           cpus: "1.5"
           memory: 512M
-#   Create your personal .env file from .envTemplate
+    #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
     environment:
@@ -118,7 +118,7 @@ services:
         limits:
           cpus: "0.5"
           memory: 256M
-#   Create your personal .env file from .envTemplate
+    #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
     environment:
@@ -132,3 +132,36 @@ services:
     depends_on:
       - ms-config-server
       - ms-eureka-server
+
+
+  ms-users:
+    build:
+      context: ./ms-users/
+      args:
+        - PROFILE=$MS_USERS_PROFILE
+        - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
+        - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    #   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - PORT=$MS_USERS_DOCKER_PORT
+      - EUREKA_SERVER_HOST=$MS_EUREKA_SERVER_HOST
+      - EUREKA_SERVER_PORT=$MS_EUREKA_SERVER_DOCKER_PORT
+      - DB_URL=$MYSQLDB_HOST
+      - DB_PORT=$MYSQLDB_DOCKER_PORT
+      - DB_SERVICE=$MYSQLDB_DATABASE
+      - DB_USER=$MYSQLDB_USER
+      - DB_PASS=$MYSQLDB_PASSWORD
+    ports:
+      - ${MS_USERS_LOCAL_PORT}:${MS_USERS_DOCKER_PORT}
+    networks:
+      - net-costume-mania
+    depends_on:
+      - ms-gateway
