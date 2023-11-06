@@ -32,6 +32,12 @@ public class CatalogService {
     public List<Catalog> getCatalogBySize (Size size) {
         return catalogRepository.findBySize(size);
     };
+    public Optional<List<Catalog>> getCatalogByModel (Integer idModel) {
+        return catalogRepository.findByModel(idModel);
+    };
+    public Optional<Catalog> findByModelAndSize (Integer idModel, Integer size) {
+        return catalogRepository.findByModelAndSize(idModel, size);
+    };
     public List<Catalog> getNews () {
         return catalogRepository.findNews();
     };
@@ -40,5 +46,8 @@ public class CatalogService {
     }
     public void delete (Integer id) {
         catalogRepository.deleteById(id);
+    }
+    public void deleteByModel (Integer idModel) {
+        catalogRepository.deleteByModel(idModel);
     }
 }

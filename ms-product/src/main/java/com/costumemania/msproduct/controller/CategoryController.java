@@ -21,6 +21,7 @@ public class CategoryController {
     public ResponseEntity<List<Category>> getAll() {
         return ResponseEntity.ok().body(categoryService.getAll());
     };
+
     @GetMapping("/{idCategory}")
     public ResponseEntity<Category> getdById (@PathVariable Integer idCategory) {
         // first verify if the ID exist
@@ -61,7 +62,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/delete/{idCategory}")
-    public ResponseEntity<Object> delete (@PathVariable Integer idCategory) {
+    public ResponseEntity<String> delete (@PathVariable Integer idCategory) {
         // first verify if the ID exist
         Optional<Category> categoryProof = categoryService.getdById(idCategory);
         if (categoryProof.isEmpty()){
@@ -69,7 +70,6 @@ public class CategoryController {
         }
         // else...
         categoryService.delete(idCategory);
-        return ResponseEntity.ok().body("Category item with ID " + idCategory + " deleted");
-        // hacer vinculacion con catalogo para borrar categoria
+        return ResponseEntity.ok().body("Category item with ID " + idCategory + " deleted.");
     }
 }

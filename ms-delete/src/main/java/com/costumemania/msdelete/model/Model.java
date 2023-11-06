@@ -1,4 +1,4 @@
-package com.costumemania.mscatalog.model;
+package com.costumemania.msdelete.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
