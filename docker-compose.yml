@@ -89,7 +89,7 @@ services:
     build:
       context: ./ms-gateway/
       args:
-        - PROFILE=$MS_EUREKA_SERVER_PROFILE
+        - PROFILE=$MS_GATEWAY_PROFILE
         - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     restart: unless-stopped
@@ -99,7 +99,7 @@ services:
     environment:
       - PORT=$MS_GATEWAY_DOCKER_PORT
       - EUREKA_SERVER_HOST=$MS_EUREKA_SERVER_HOST
-      - EUREKA_SERVER_PORT=$MS_GATEWAY_DOCKER_PORT
+      - EUREKA_SERVER_PORT=$MS_EUREKA_SERVER_DOCKER_PORT
     ports:
       - ${MS_GATEWAY_LOCAL_PORT}:${MS_GATEWAY_DOCKER_PORT}
     networks:
