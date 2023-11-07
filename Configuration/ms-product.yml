@@ -6,7 +6,7 @@ spring:
     name: ms-product
   datasource:
     driverClassName: ${DDBB_DRIVER:com.mysql.cj.jdbc.Driver}
-    url: ${DDBB_URL:jdbc:mysql://localhost:3307/costumemania}
+    url: ${DDBB_URL}
     username: ${DDBB_USERNAME}
     password: ${DDBB_PASSWORD}
     jpa:
