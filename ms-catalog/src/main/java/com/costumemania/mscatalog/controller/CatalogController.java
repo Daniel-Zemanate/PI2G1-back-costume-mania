@@ -172,7 +172,7 @@ public class CatalogController {
     }
 
     @GetMapping("/byKeyWord/{keyWord}/byCategory/{idCategory}")
-    public ResponseEntity<List<Optional<List<Catalog>>>> getByKeyWordByCategory(@PathVariable String keyWord, @PathVariable Integer idCategory){
+    public ResponseEntity<List<Catalog>> getByKeyWordByCategory(@PathVariable String keyWord, @PathVariable Integer idCategory){
 
         List<List<Model>> modelList = new ArrayList<>();
         // first verify if exists any model with feign
@@ -184,14 +184,18 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // get every catalog with the keyword ant category
-        List<Optional<List<Catalog>>> finalResult = new ArrayList<>();
+        List<Catalog> finalResult = new ArrayList<>();
         try {
             if (!modelList.isEmpty()) {
                 if (modelList.get(0).size() > 0) {
                     for (int i = 0; i < modelList.get(0).size(); i++) {
                         try {
                             Optional<List<Catalog>> result = catalogService.getCatalogByModel(modelList.get(0).get(i).getIdModel());
-                            if (!result.get().isEmpty()) finalResult.add(result);
+                            if (!result.get().isEmpty()) {
+                                for (int j = 0; j < result.get().size(); j++) {
+                                    finalResult.add(result.get().get(j));
+                                }
+                            }
                         } catch (FeignException e) {
                             System.out.println("there isn´t catalog of model " + modelList.get(0).get(i).getIdModel());
                         }
