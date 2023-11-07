@@ -99,7 +99,7 @@ public class CatalogController {
     }
 
     @GetMapping("/byCategory/{idCategory}")
-    public ResponseEntity<List<Optional<List<Catalog>>>> getByCategory(@PathVariable Integer idCategory){
+    public ResponseEntity<List<Catalog>> getByCategory(@PathVariable Integer idCategory){
 
         // first verify if the category exists with feign
         try {
@@ -109,14 +109,18 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // get every model within the category
-        List<Optional<List<Catalog>>> result = new ArrayList<>();
+        List<Catalog> result = new ArrayList<>();
         try {
             List<Model> allModels = modelService.getModelByIdCategory(idCategory).getBody();
             if (allModels.size() > 0) {
                 for (int i = 0; i < allModels.size(); i++) {
                     try {
                         Optional<List<Catalog>> list = catalogService.getCatalogByModel(allModels.get(i).getIdModel());
-                        if (!list.get().isEmpty()) result.add(list);
+                        if (!list.get().isEmpty()) {
+                            for (int j = 0; j < list.get().size(); j++) {
+                                result.add(list.get().get(j));
+                            }
+                        }
                     } catch (FeignException e) {
                         System.out.println("there isn´t catalog of model " + allModels.get(i).getIdModel());
                     }
