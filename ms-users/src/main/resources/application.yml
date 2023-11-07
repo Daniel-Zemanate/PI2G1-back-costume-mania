@@ -3,3 +3,5 @@ spring:
     name: ms-users
   config:
     import: configserver:http://localhost:8888
+DB_USERNAME: root
+DB_PASSWORD: 123456

@@ -5,8 +5,8 @@ spring:
   application:
     name: ms-catalog
   datasource:
-    driverClassName: ${DDBB_USERNAME:com.mysql.cj.jdbc.Driver}
-    url: ${DDBB_URL}
+    driverClassName: ${DDBB_DRIVER:com.mysql.cj.jdbc.Driver}
+    url: ${DDBB_URL:jdbc:mysql://localhost:3307/costumemania}
     username: ${DDBB_USERNAME}
     password: ${DDBB_PASSWORD}
     jpa:
