@@ -54,7 +54,8 @@ services:
     ports:
       - "8180:8080"
     volumes:
-      - vol-keycloak-data:/opt/jboss/keycloak/standalone/data
+#      - vol-keycloak-data:/opt/jboss/keycloak/standalone/data
+      - vol-keycloak-data:/opt/keycloak
     networks:
       - net-costume-mania
 
@@ -125,6 +126,10 @@ services:
       - PORT=$MS_GATEWAY_DOCKER_PORT
       - EUREKA_SERVER_HOST=$MS_EUREKA_SERVER_HOST
       - EUREKA_SERVER_PORT=$MS_EUREKA_SERVER_DOCKER_PORT
+      - GATEWAY_SECRET=$CLIENT_GATEWAY_SECRET
+      - KEYCLOAK_HOST=$MS_KEYCLOAK_HOST
+      - KEYCLOAK_PORT=$MS_KEYCLOAK_DOCKER_PORT
+      - KEYCLOAK_REALM=$MS_KEYCLOAK_REALM
     ports:
       - ${MS_GATEWAY_LOCAL_PORT}:${MS_GATEWAY_DOCKER_PORT}
     networks:
@@ -159,6 +164,10 @@ services:
       - DB_SERVICE=$MYSQLDB_DATABASE
       - DB_USER=$MYSQLDB_USER
       - DB_PASS=$MYSQLDB_PASSWORD
+      - BACKEND_SECRET=$CLIENT_BACKEND_SECRET
+      - KEYCLOAK_HOST=$MS_KEYCLOAK_HOST
+      - KEYCLOAK_PORT=$MS_KEYCLOAK_DOCKER_PORT
+      - KEYCLOAK_REALM=$MS_KEYCLOAK_REALM
     ports:
       - ${MS_USERS_LOCAL_PORT}:${MS_USERS_DOCKER_PORT}
     networks:

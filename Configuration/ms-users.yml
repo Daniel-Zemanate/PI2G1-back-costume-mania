@@ -4,32 +4,46 @@ server:
     context-path: /api/v1
 
 spring:
-  #  ------ cloud parameters to exclude if local test is needed ------
-  #  cloud:
-  #    config:
-  #      enabled: false
+##  ------ cloud parameters to exclude if local test is needed ------
+#  cloud:
+#    config:
+#      enabled: false
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${DB_URL:localhost}:${DB_PORT:3307}/${DB_SERVICE:costumemania}
     username: ${DB_USER:costumemania}
     password: ${DB_PASS:123456}
-    jpa:
-      open-in-view: false
-      show-sql: true
+## This is left only for possible need in the future root: spring.
+#  sql:
+#    init:
+#      data-locations: classpath:${DB_SQLFILE}
+#      mode: always
+#      platform: mysql
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
       hibernate:
-        ddl-auto: update
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.MySQL8Dialect
-          format_sql: true
-      defer-datasource-initialization: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    defer-datasource-initialization: true
 
-# This is left only for possible need in the future.
-#    sql:
-#      init:
-#        data-locations: classpath:${DB_SQLFILE}
-#        mode: always
-#        platform: mysql
+#SECURITY
+  security:
+    oauth2:
+      client:
+        provider:
+          ms-gateway:
+            token-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8180}/realms/${KEYCLOAK_REALM:realm_costume_mania}/protocol/openid-connect/token
+        registration:
+          ms-gateway:
+            scope: openid
+            client-id: client_backend_costume_mania
+            client-secret: ${BACKEND_SECRET}
+            authorization-grant-type: client_credentials
+            redirect-uri: 'http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8180}/login/oauth2/code/keycloak'
 
 message: hello from ms-users
 

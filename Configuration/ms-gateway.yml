@@ -7,6 +7,8 @@ spring:
 #    config:
 #      enabled: false
     gateway:
+      default-filters:
+        - TokenRelay
       discovery:
         locator:
           enabled: true
@@ -15,6 +17,22 @@ spring:
           uri: lb://ms-users
           predicates:
             - Path=/api/v1/users/**
+          filters:
+            - RemoveRequestHeader=Cookie
+  security:
+    oauth2:
+      client:
+        provider:
+          ms-gateway:
+            issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8180}/realms/${KEYCLOAK_REALM:realm_costume_mania}
+        registration:
+          ms-gateway:
+            scope: openid
+            provider: ms-gateway
+            client-id: client_gateway_costume_mania #TODO: check if variable is needed
+            client-secret: ${GATEWAY_SECRET}
+            authorization-grant-type: authorization_code
+            redirect-uri: 'http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8180}/login/oauth2/code/keycloak'
 
 management:
   endpoints:
