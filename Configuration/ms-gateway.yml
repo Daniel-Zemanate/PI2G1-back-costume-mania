@@ -32,7 +32,7 @@ spring:
             client-id: client_gateway_costume_mania #TODO: check if variable is needed
             client-secret: ${GATEWAY_SECRET}
             authorization-grant-type: authorization_code
-            redirect-uri: 'http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8180}/login/oauth2/code/keycloak'
+            redirect-uri: 'http://${KEYCLOAK_REDIRECT_HOST:localhost}:${KEYCLOAK_REDIRECT_PORT:8180}/login/oauth2/code/keycloak'
 
 management:
   endpoints:

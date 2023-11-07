@@ -52,7 +52,7 @@ services:
       - KEYCLOAK_ADMIN=$MS_KEYCLOAK_ADMIN_USERNAME
       - KEYCLOAK_ADMIN_PASSWORD=$MS_KEYCLOAK_ADMIN_PASSWORD
     ports:
-      - "8180:8080"
+      - ${MS_KEYCLOAK_LOCAL_PORT}:${MS_KEYCLOAK_DOCKER_PORT}
     volumes:
 #      - vol-keycloak-data:/opt/jboss/keycloak/standalone/data
       - vol-keycloak-data:/opt/keycloak
@@ -130,6 +130,8 @@ services:
       - KEYCLOAK_HOST=$MS_KEYCLOAK_HOST
       - KEYCLOAK_PORT=$MS_KEYCLOAK_DOCKER_PORT
       - KEYCLOAK_REALM=$MS_KEYCLOAK_REALM
+      - KEYCLOAK_REDIRECT_HOST=localhost
+      - KEYCLOAK_REDIRECT_PORT=$MS_KEYCLOAK_LOCAL_PORT
     ports:
       - ${MS_GATEWAY_LOCAL_PORT}:${MS_GATEWAY_DOCKER_PORT}
     networks:
@@ -137,6 +139,8 @@ services:
     depends_on:
       - ms-config-server
       - ms-eureka-server
+      - ms-keycloak
+      - mysqldb
 
 
   ms-users:
@@ -168,6 +172,8 @@ services:
       - KEYCLOAK_HOST=$MS_KEYCLOAK_HOST
       - KEYCLOAK_PORT=$MS_KEYCLOAK_DOCKER_PORT
       - KEYCLOAK_REALM=$MS_KEYCLOAK_REALM
+      - KEYCLOAK_REDIRECT_HOST=localhost
+      - KEYCLOAK_REDIRECT_PORT=$MS_KEYCLOAK_LOCAL_PORT
     ports:
       - ${MS_USERS_LOCAL_PORT}:${MS_USERS_DOCKER_PORT}
     networks:

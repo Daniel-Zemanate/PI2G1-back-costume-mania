@@ -43,7 +43,7 @@ spring:
             client-id: client_backend_costume_mania
             client-secret: ${BACKEND_SECRET}
             authorization-grant-type: client_credentials
-            redirect-uri: 'http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8180}/login/oauth2/code/keycloak'
+            redirect-uri: 'http://${KEYCLOAK_REDIRECT_HOST:localhost}:${KEYCLOAK_REDIRECT_PORT:8180}/login/oauth2/code/keycloak'
 
 message: hello from ms-users
 
