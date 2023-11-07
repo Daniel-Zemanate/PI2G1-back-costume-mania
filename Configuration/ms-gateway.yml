@@ -29,6 +29,14 @@ spring:
           uri: lb://ms-users
           predicates:
             - Path=/api/v1/users/**
+        - id: ms-product-category
+          uri: lb://ms-product
+          predicates:
+            - Path=/api/v1/category/**
+        - id: ms-product-model
+          uri: lb://ms-product
+          predicates:
+            - Path=/api/v1/model/**
 
 management:
   endpoints:
