@@ -62,7 +62,7 @@ public class CatalogController {
     //////////////---------- CATALOGO FILTRADO ----------//////////////
 
     @GetMapping("/bySize/{bolleanAdult}")
-    public ResponseEntity<List<List<Catalog>>> getBySize(@PathVariable Integer bolleanAdult){
+    public ResponseEntity<List<Catalog>> getBySize(@PathVariable Integer bolleanAdult){
 
         // first verify if the bollean is correct
         List<Size> sizeList = new ArrayList<>();
@@ -72,12 +72,14 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // else...
-        List<List<Catalog>> result = new ArrayList<>();
+        List<Catalog> result = new ArrayList<>();
 
         for (int i=0; i < sizeList.size(); i++) {
             List<Catalog> listBySize = new ArrayList<>();
             listBySize = catalogService.getCatalogBySize(sizeList.get(i));
-            result.add(listBySize);
+            for (int j=0; j < listBySize.size(); j++) {
+                result.add(listBySize.get(j));
+            }
         }
         return ResponseEntity.ok().body(result);
     }
