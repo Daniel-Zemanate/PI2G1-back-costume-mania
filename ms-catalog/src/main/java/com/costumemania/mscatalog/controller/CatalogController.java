@@ -134,7 +134,7 @@ public class CatalogController {
     }
 
     @GetMapping("/byKeyWord/{keyWord}")
-    public ResponseEntity<List<Optional<List<Catalog>>>> getByKeyWord(@PathVariable String keyWord){
+    public ResponseEntity<List<Catalog>> getByKeyWord(@PathVariable String keyWord){
 
         List<Optional<List<Model>>> modelList = new ArrayList<>();
         // first verify if exists any model with feign
@@ -146,14 +146,18 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // get every catalog with the keyword
-        List<Optional<List<Catalog>>> finalResult = new ArrayList<>();
+        List<Catalog> finalResult = new ArrayList<>();
         try {
             if (!modelList.isEmpty()) {
                 if (modelList.get(0).get().size() > 0) {
                     for (int i = 0; i < modelList.get(0).get().size(); i++) {
                         try {
                             Optional<List<Catalog>> result = catalogService.getCatalogByModel(modelList.get(0).get().get(i).getIdModel());
-                            if (!result.get().isEmpty()) finalResult.add(result);
+                            if (!result.get().isEmpty()) {
+                                for (int j = 0; j < result.get().size(); j++) {
+                                    finalResult.add(result.get().get(j));
+                                }
+                            }
                         } catch (FeignException e) {
                             System.out.println("there isn´t catalog of model " + modelList.get(0).get().get(i).getIdModel());
                         }
