@@ -31,4 +31,23 @@ public class Catalog {
 
     @Column(name = "price")
     private Float price;
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+    public void setModel(Model model) {
+        this.model = model;
+    }
+    public void setSize(Size size) {
+        this.size = size;
+    }
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+    public void setIdCatalog(Integer idCatalog) {
+        this.idCatalog = idCatalog;
+    }
 }

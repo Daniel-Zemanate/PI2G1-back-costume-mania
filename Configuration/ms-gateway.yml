@@ -15,6 +15,10 @@ spring:
           uri: lb://ms-users
           predicates:
             - Path=/api/v1/users/**
+        - id: ms-favorite
+          uri: lb://ms-favorite
+          predicates:
+            - Path=/api/v1/fav/**
 
 management:
   endpoints:
