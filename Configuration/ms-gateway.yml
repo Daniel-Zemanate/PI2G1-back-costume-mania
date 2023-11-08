@@ -4,8 +4,8 @@ server:
 spring:
   #  ------ cloud parameters to exclude if local test is needed ------
   cloud:
-#    config:
-#      enabled: false
+    #    config:
+    #      enabled: false
     gateway:
       discovery:
         locator:

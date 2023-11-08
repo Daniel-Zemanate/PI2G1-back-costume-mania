@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "api/v1/size")
+@RequestMapping(path = "/api/v1/size")
 public class SizeController {
 
     private final SizeService sizeService;
