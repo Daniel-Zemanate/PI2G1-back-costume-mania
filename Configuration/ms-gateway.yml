@@ -1,5 +1,5 @@
 server:
-  port: ${PORT:8090}
+  port: ${PORT:8080}
 
 spring:
   #  ------ cloud parameters to exclude if local test is needed ------
