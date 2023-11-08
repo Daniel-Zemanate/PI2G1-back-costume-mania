@@ -371,12 +371,12 @@ INSERT INTO `costumemania`.`shipping` (`id_shipping`, `destination`, `cost`) VAL
 INSERT INTO `costumemania`.`shipping` (`id_shipping`, `destination`, `cost`) VALUES ('8', 'Cali, Colombia', '20.50');
 
 
-INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('1', 'En proceso');
-INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('2', 'En camino');
-INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('3', 'Entregado');
-INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('4', 'Cancelado por cliente');
-INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('5', 'Cancelado - Domicilio erróneo');
-INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('6', 'Cancelado por administrador');
+INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('1', 'In progress');
+INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('2', 'On the way');
+INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('3', 'Delivered');
+INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('4', 'Cancelled by the customer');
+INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('5', 'Canceled - Wrong addess');
+INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('6', 'Cancelled by admin');
 
 
 INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `users`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`,`shipping_date`) VALUES ('1', '00023', '2', '2', '1', 'calle 123', '1', '3', '2023-02-12', '2023-02-16');
