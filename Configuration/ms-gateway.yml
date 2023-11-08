@@ -25,14 +25,14 @@ spring:
           predicates:
             - Path=/api/v1/fav/**
         - id: ms-product
-            uri: lb://ms-product
-            predicates:
-              - Path=/api/v1/category/**
-              - Path=/api/v1/model/**
+          uri: lb://ms-product
+          predicates:
+            - Path=/api/v1/category/**
+            - Path=/api/v1/model/**
         - id: ms-users
-            uri: lb://ms-users
-            predicates:
-              - Path=/api/v1/users/**
+          uri: lb://ms-users
+          predicates:
+            - Path=/api/v1/users/**
 
 management:
   endpoints:
