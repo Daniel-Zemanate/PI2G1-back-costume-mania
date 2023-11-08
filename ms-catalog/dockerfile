@@ -1,0 +1,17 @@
+# Other image: # FROM openjdk:17-jdk-alpine
+FROM registry.access.redhat.com/ubi8/openjdk-17:1.17-4
+
+ARG PROFILE
+ARG MS_CONFIG_SERVER_HOST
+ARG MS_CONFIG_SERVER_PORT
+ENV PROFILE=$PROFILE
+ENV MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
+ENV MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_PORT
+# Add .jar file generated during compilation
+COPY target/ms-catalog-0.0.1-SNAPSHOT.jar /app/ms-catalog.jar
+
+# Working directory
+WORKDIR /app
+
+# Exec command to run the app
+ENTRYPOINT java -jar ./ms-catalog.jar
