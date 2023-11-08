@@ -10,26 +10,19 @@ spring:
   #      enabled: false
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_URL:localhost}:${DB_PORT:3307}/${DB_SERVICE:costumemania}
+    url: jdbc:mysql://${DB_URL:localhost}:${DB_PORT:3306}/${DB_SERVICE:costumemania}
     username: ${DB_USER:costumemania}
     password: ${DB_PASS:123456}
-    jpa:
-      open-in-view: false
-      show-sql: true
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
       hibernate:
-        ddl-auto: update
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.MySQL8Dialect
-          format_sql: true
-      defer-datasource-initialization: true
-
-# This is left only for possible need in the future.
-#    sql:
-#      init:
-#        data-locations: classpath:${DB_SQLFILE}
-#        mode: always
-#        platform: mysql
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    defer-datasource-initialization: true
 
 message: hello from ms-users
 
