@@ -15,7 +15,7 @@ spring:
           uri: lb://ms-catalog
           predicates:
             - Path=/api/v1/catalog/**
-            - Path=/api/v1/size/**
+#            - Path=/api/v1/size/**
         - id: ms-delete
           uri: lb://ms-delete
           predicates:
@@ -24,10 +24,13 @@ spring:
           uri: lb://ms-favorite
           predicates:
             - Path=/api/v1/fav/**
-        - id: ms-product
+        - id: ms-product-category
           uri: lb://ms-product
           predicates:
             - Path=/api/v1/category/**
+        - id: ms-product-model
+          uri: lb://ms-product
+          predicates:
             - Path=/api/v1/model/**
         - id: ms-users
           uri: lb://ms-users
