@@ -15,7 +15,10 @@ spring:
           uri: lb://ms-catalog
           predicates:
             - Path=/api/v1/catalog/**
-#            - Path=/api/v1/size/**
+        - id: ms-catalog-size
+          uri: lb://ms-catalog
+          predicates:
+            - Path=/api/v1/size/**
         - id: ms-delete
           uri: lb://ms-delete
           predicates:
