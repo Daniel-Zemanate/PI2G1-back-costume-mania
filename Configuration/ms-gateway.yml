@@ -11,14 +11,28 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: ms-users
-          uri: lb://ms-users
+        - id: ms-catalog
+          uri: lb://ms-catalog
           predicates:
-            - Path=/api/v1/users/**
+            - Path=/api/v1/catalog/**
+            - Path=/api/v1/size/**
+        - id: ms-delete
+          uri: lb://ms-delete
+          predicates:
+            - Path=/api/v1/deleteMS/**
         - id: ms-favorite
           uri: lb://ms-favorite
           predicates:
             - Path=/api/v1/fav/**
+        - id: ms-product
+            uri: lb://ms-product
+            predicates:
+              - Path=/api/v1/category/**
+              - Path=/api/v1/model/**
+        - id: ms-users
+            uri: lb://ms-users
+            predicates:
+              - Path=/api/v1/users/**
 
 management:
   endpoints:
