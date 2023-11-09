@@ -259,36 +259,36 @@ INSERT INTO `costumemania`.`category` (`id_category`, `name`) VALUES ('5', 'Sexy
 INSERT INTO `costumemania`.`category` (`id_category`, `name`) VALUES ('6', 'Old times');
 
 
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('1', 'Witch', '1');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('2', 'Devil', '1');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('3', 'Jack Skeleton', '1');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('4', 'Elsa from Frozen', '2');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('5', 'Jack Sparrow', '2');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('6', 'Isabella from Encanto', '2');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('7', 'Police Agent', '3');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('8', 'Firefighter', '3');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('9', 'Batman', '4');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('10', 'Wonder woman', '4');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('11', 'Spiderman', '4');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('12', 'Dark Queen', '5');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('13', 'Playboy Bunny', '5');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('14', 'FBI', '5');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('15', 'Victorian', '6');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('16', 'Gentleman', '6');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('1', 'Witch', '1', 'https://costumemania.s3.amazonaws.com/witch.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('2', 'Devil', '1', 'https://costumemania.s3.amazonaws.com/devil.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('3', 'Jack Skeleton', '1', 'https://costumemania.s3.amazonaws.com/jack.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('4', 'Elsa from Frozen', '2', 'https://costumemania.s3.amazonaws.com/elsa.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('5', 'Jack Sparrow', '2', 'https://costumemania.s3.amazonaws.com/jackSparrow.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('6', 'Isabella from Encanto', '2', 'https://costumemania.s3.amazonaws.com/isabella.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('7', 'Police Agent', '3', 'https://costumemania.s3.amazonaws.com/police.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('8', 'Firefighter', '3', 'https://costumemania.s3.amazonaws.com/fireman.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('9', 'Batman', '4', 'https://costumemania.s3.amazonaws.com/batman.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('10', 'Wonder woman', '4', 'https://costumemania.s3.amazonaws.com/wonderWoman.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('11', 'Spiderman', '4', 'https://costumemania.s3.amazonaws.com/spiderman.png');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('12', 'Dark Queen', '5', 'https://costumemania.s3.amazonaws.com/darkQueen.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('13', 'Playboy Bunny', '5', 'https://costumemania.s3.amazonaws.com/bunny.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('14', 'FBI', '5', 'https://costumemania.s3.amazonaws.com/fbi.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('15', 'Victorian', '6', 'https://costumemania.s3.amazonaws.com/victorian.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('16', 'Gentleman', '6', 'https://costumemania.s3.amazonaws.com/gentleman.jpg');
 
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('17', 'Witch child', '1');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('18', 'Devil child', '1');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('19', 'Jack Skeleton child', '1');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('20', 'Elsa from Frozen child', '2');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('21', 'Jack Sparrow child', '2');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('22', 'Isabella from Encanto child', '2');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('23', 'Police Agent child', '3');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('24', 'Firefighter child', '3');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('25', 'Batman child', '4');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('26', 'Wonder woman child', '4');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('27', 'Spiderman child', '4');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('28', 'Southern Lady child', '6');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('29', 'Granadero child', '6');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('17', 'Witch child', '1', 'https://costumemania.s3.amazonaws.com/witch_small.png');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('18', 'Devil child', '1', 'https://costumemania.s3.amazonaws.com/devil_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('19', 'Jack Skeleton child', '1', 'https://costumemania.s3.amazonaws.com/jack.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('20', 'Elsa from Frozen child', '2', 'https://costumemania.s3.amazonaws.com/elsa_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('21', 'Jack Sparrow child', '2', 'https://costumemania.s3.amazonaws.com/jackSparrow_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('22', 'Isabella from Encanto child', '2', 'https://costumemania.s3.amazonaws.com/isabella_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('23', 'Police Agent child', '3', 'https://costumemania.s3.amazonaws.com/police_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('24', 'Firefighter child', '3', 'https://costumemania.s3.amazonaws.com/fireman_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('25', 'Batman child', '4', 'https://costumemania.s3.amazonaws.com/batman_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('26', 'Wonder woman child', '4', 'https://costumemania.s3.amazonaws.com/wonderWoman_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('27', 'Spiderman child', '4', 'https://costumemania.s3.amazonaws.com/spiderman_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('28', 'Southern Lady child', '6', 'https://costumemania.s3.amazonaws.com/southernLady.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('29', 'Granadero child', '6', 'https://costumemania.s3.amazonaws.com/tinSoldier_small.jpg');
 
 
 INSERT INTO `costumemania`.`catalog` (`id_catalog`, `model`, `size`, `quantity`, `price`) VALUES ('1', '1', '9', '2', '50.50');
