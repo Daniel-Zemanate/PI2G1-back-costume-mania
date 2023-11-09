@@ -35,6 +35,10 @@ public class CatalogService {
     public Optional<List<Catalog>> getCatalogByModel (Integer idModel) {
         return catalogRepository.findByModel(idModel);
     };
+    public Optional<Page<Catalog>> getCatalogByModel (Integer idModel,Pageable pageable) {
+        Optional<Page<Catalog>> catalogPage =  catalogRepository.findByModelPageable(idModel,pageable);
+        return catalogPage;
+    };
     public Optional<Catalog> findByModelAndSize (Integer idModel, Integer size) {
         return catalogRepository.findByModelAndSize(idModel, size);
     };
