@@ -60,7 +60,7 @@ public class CatalogController {
     }
 
 
-    //////////////---------- CATALOGO FILTRADO ----------//////////////
+//////////////---------- CATALOGO FILTRADO ----------//////////////
 
     @GetMapping("/bySize/{bolleanAdult}")
     public ResponseEntity<List<Catalog>> getBySize(@PathVariable Integer bolleanAdult){
@@ -315,6 +315,8 @@ public class CatalogController {
         }
         return ResponseEntity.ok().body(finalList);
     }
+
+    /////////////////////////////////////////////////////////////////
 
     //////////////----------  CATALOGO FILTRADO CON PAGINADO----------//////////////
 
@@ -677,6 +679,7 @@ public class CatalogController {
 
         return ResponseEntity.ok().body(catalogPage);
     }
+    
     /////////////////////////////////////////////////////////////////
 
 
