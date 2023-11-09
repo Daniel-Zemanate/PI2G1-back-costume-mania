@@ -32,5 +32,11 @@ jobs:
       run: |
         cp .env-aws .env
 
+    - name: Down Docker Compose
+      run: sudo docker compose down
+
+    - name: Build Docker Compose
+      run: sudo docker compose build
+
     - name: Run Docker Compose
       run: sudo docker compose -f "docker-compose.yml" up -d
