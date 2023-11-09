@@ -6,8 +6,7 @@ name: Maven Package
 on:
   push:
     branches:
-      - PI2G1-33-NO-SEC
-      - PI2G1-33
+      - Develop
 
 jobs:
   build:
