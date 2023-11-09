@@ -2,6 +2,8 @@ package com.costumemania.mscatalog.repository;
 
 import com.costumemania.mscatalog.model.Catalog;
 import com.costumemania.mscatalog.model.Size;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,6 +23,9 @@ public interface CatalogRepository extends JpaRepository<Catalog, Integer> {
     List<Catalog> findBySize (Size size);
     @Query(value="SELECT * FROM catalog c INNER JOIN model m ON c.model=m.id_model WHERE c.model =?1", nativeQuery = true)
     Optional<List<Catalog>> findByModel (Integer idModel);
+
+    @Query(value="SELECT * FROM catalog c INNER JOIN model m ON c.model=m.id_model WHERE c.model =?1", nativeQuery = true)
+    Optional<Page<Catalog>> findByModelPageable (Integer idModel, Pageable pageable);
     @Query(value="SELECT * FROM catalog c INNER JOIN model m ON c.model=m.id_model WHERE c.model =?1 AND c.size =?2", nativeQuery = true)
     Optional<Catalog> findByModelAndSize (Integer idModel, Integer size);
     @Query(value="SELECT * FROM catalog c ORDER BY c.id_catalog DESC LIMIT 8", nativeQuery = true)

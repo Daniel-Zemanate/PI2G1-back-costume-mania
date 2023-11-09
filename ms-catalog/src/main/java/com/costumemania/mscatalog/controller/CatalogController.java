@@ -9,6 +9,7 @@ import com.costumemania.mscatalog.service.ModelService;
 import com.costumemania.mscatalog.service.SizeService;
 import feign.FeignException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
@@ -315,6 +316,367 @@ public class CatalogController {
         return ResponseEntity.ok().body(finalList);
     }
 
+    //////////////----------  CATALOGO FILTRADO CON PAGINADO----------//////////////
+
+    @GetMapping("/bySize/{bolleanAdult}/page/{page}")
+    public ResponseEntity<Page<Catalog>> getBySizePageable(@PathVariable Integer bolleanAdult,@PathVariable Integer page){
+
+        // first verify if the bollean is correct
+        List<Size> sizeList = new ArrayList<>();
+        sizeList = sizeService.getByAdult(bolleanAdult);
+
+        if (sizeList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        List<Catalog> result = new ArrayList<>();
+
+        for (int i=0; i < sizeList.size(); i++) {
+            List<Catalog> listBySize = new ArrayList<>();
+            listBySize = catalogService.getCatalogBySize(sizeList.get(i));
+            for (int j=0; j < listBySize.size(); j++) {
+                result.add(listBySize.get(j));
+            }
+        }
+        // else...
+        //pagination
+        int pageSize = 12;
+        int totalItems = result.size();
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        if (pageable.getOffset() > totalItems) {
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        List<Catalog> pageResult = result.subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
+
+        Page<Catalog> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
+
+        return ResponseEntity.ok().body(catalogPage);
+    }
+
+    @GetMapping("/byModel/{idModel}/page/{page}")
+    public ResponseEntity<Optional<Page<Catalog>>> getByModelPageable(@PathVariable Integer idModel,@PathVariable Integer page){
+
+        // first verify if the model exists with feign
+        try {
+            ResponseEntity<Optional<Model>> response = modelService.getByIdModel(idModel);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        Pageable pageable = PageRequest.of(page, 12);
+
+        Optional<Page<Catalog>> catalogPage = catalogService.getCatalogByModel(idModel,pageable);
+
+        return ResponseEntity.ok().body(catalogPage);
+
+    }
+
+    @GetMapping("/byCategory/{idCategory}/page/{page}")
+    public ResponseEntity<Page<Catalog>> getByCategoryPageable(@PathVariable Integer idCategory,@PathVariable Integer page){
+
+        // first verify if the category exists with feign
+        try {
+            modelService.getCategorydById(idCategory);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // get every model within the category
+        List<Catalog> result = new ArrayList<>();
+        try {
+            List<Model> allModels = modelService.getModelByIdCategory(idCategory).getBody();
+            if (allModels.size() > 0) {
+                for (int i = 0; i < allModels.size(); i++) {
+                    try {
+                        Optional<List<Catalog>> list = catalogService.getCatalogByModel(allModels.get(i).getIdModel());
+                        if (!list.get().isEmpty()) {
+                            for (int j = 0; j < list.get().size(); j++) {
+                                result.add(list.get().get(j));
+                            }
+                        }
+                    } catch (FeignException e) {
+                        System.out.println("there isn´t catalog of model " + allModels.get(i).getIdModel());
+                    }
+                }
+            }
+        } catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        //pagination
+        int pageSize = 12;
+        int totalItems = result.size();
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        if (pageable.getOffset() > totalItems) {
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        List<Catalog> pageResult = result.subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
+
+        Page<Catalog> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
+
+        return ResponseEntity.ok().body(catalogPage);
+    }
+
+
+    @GetMapping("/byKeyWord/{keyWord}/page/{page}")
+    public ResponseEntity<Page<Catalog>> getByKeyWordPageable(@PathVariable String keyWord,@PathVariable Integer page){
+
+        List<Optional<List<Model>>> modelList = new ArrayList<>();
+        // first verify if exists any model with feign
+        try {
+            Optional<List<Model>> modelByName = modelService.getByNameModel(keyWord).getBody();
+            if (!modelByName.get().isEmpty()) modelList.add(modelByName);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // get every catalog with the keyword
+        List<Catalog> finalResult = new ArrayList<>();
+        try {
+            if (!modelList.isEmpty()) {
+                if (modelList.get(0).get().size() > 0) {
+                    for (int i = 0; i < modelList.get(0).get().size(); i++) {
+                        try {
+                            Optional<List<Catalog>> result = catalogService.getCatalogByModel(modelList.get(0).get().get(i).getIdModel());
+                            if (!result.get().isEmpty()) {
+                                for (int j = 0; j < result.get().size(); j++) {
+                                    finalResult.add(result.get().get(j));
+                                }
+                            }
+                        } catch (FeignException e) {
+                            System.out.println("there isn´t catalog of model " + modelList.get(0).get().get(i).getIdModel());
+                        }
+                    }
+                }
+            }
+        } catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        //pagination
+        int pageSize = 12;
+        int totalItems = finalResult.size();
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        if (pageable.getOffset() > totalItems) {
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        List<Catalog> pageResult = finalResult.subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
+
+        Page<Catalog> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
+
+        return ResponseEntity.ok().body(catalogPage);
+    }
+
+
+    @GetMapping("/byKeyWord/{keyWord}/byCategory/{idCategory}/page/{page}")
+    public ResponseEntity<Page<Catalog>> getByKeyWordByCategoryPageable(@PathVariable String keyWord, @PathVariable Integer idCategory,@PathVariable Integer page){
+
+        List<List<Model>> modelList = new ArrayList<>();
+        // first verify if exists any model with feign
+        try {
+            List<Model> searchModel = modelService.getModelByNameAndIdCategory(keyWord,idCategory).getBody();
+            if (!searchModel.isEmpty()) modelList.add(searchModel);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // get every catalog with the keyword ant category
+        List<Catalog> finalResult = new ArrayList<>();
+        try {
+            if (!modelList.isEmpty()) {
+                if (modelList.get(0).size() > 0) {
+                    for (int i = 0; i < modelList.get(0).size(); i++) {
+                        try {
+                            Optional<List<Catalog>> result = catalogService.getCatalogByModel(modelList.get(0).get(i).getIdModel());
+                            if (!result.get().isEmpty()) {
+                                for (int j = 0; j < result.get().size(); j++) {
+                                    finalResult.add(result.get().get(j));
+                                }
+                            }
+                        } catch (FeignException e) {
+                            System.out.println("there isn´t catalog of model " + modelList.get(0).get(i).getIdModel());
+                        }
+                    }
+                }
+            }
+        } catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        //pagination
+        int pageSize = 12;
+        int totalItems = finalResult.size();
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        if (pageable.getOffset() > totalItems) {
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        List<Catalog> pageResult = finalResult.subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
+
+        Page<Catalog> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
+
+        return ResponseEntity.ok().body(catalogPage);
+    }
+
+    @GetMapping("/byCategory/{idCategory}/bySize/{bolleanAdult}/page/{page}")
+    public ResponseEntity<Page<Optional<Catalog>>> getByCategoryAndSizePageable(@PathVariable Integer idCategory, @PathVariable Integer bolleanAdult,@PathVariable Integer page){
+
+        // first verify if the category exists with feign
+        try {
+            modelService.getCategorydById(idCategory);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // get every model within the category
+        List<Model> modelList = new ArrayList<>();
+        try {
+            modelList = modelService.getModelByIdCategory(idCategory).getBody();
+        } catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // second verify if the bollean is correct
+        List<Size> sizeList = new ArrayList<>();
+        sizeList = sizeService.getByAdult(bolleanAdult);
+        if (sizeList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        List<Optional<Catalog>> finalList = new ArrayList<>();
+        if (!modelList.isEmpty()) {
+            if (modelList.size() > 0) {
+                for (int i = 0; i < modelList.size(); i++) {
+                    for (int j=0; j < sizeList.size(); j++) {
+                        Optional<Catalog> result = catalogService.findByModelAndSize(modelList.get(i).getIdModel(),sizeList.get(j).getId());
+                        if (!result.isEmpty()) finalList.add(result);
+                    }
+                }
+
+            }
+        }
+        //pagination
+        int pageSize = 12;
+        int totalItems = finalList .size();
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        if (pageable.getOffset() > totalItems) {
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        List<Optional<Catalog>> pageResult = finalList .subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
+
+        Page<Optional<Catalog>> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
+
+        return ResponseEntity.ok().body(catalogPage);
+    }
+
+    @GetMapping("/byKeyWord/{keyWord}/bySize/{bolleanAdult}/page/{page}")
+    public ResponseEntity<Page<Optional<Catalog>>> getByKeyWordAndSizePageable(@PathVariable String keyWord, @PathVariable Integer bolleanAdult,@PathVariable Integer page){
+
+        List<Optional<List<Model>>> modelList = new ArrayList<>();
+        // first verify if exists any model with feign
+        try {
+            Optional<List<Model>> modelByName = modelService.getByNameModel(keyWord).getBody();
+            if (!modelByName.get().isEmpty()) modelList.add(modelByName);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // second verify if the bollean is correct
+        List<Size> sizeList = new ArrayList<>();
+        sizeList = sizeService.getByAdult(bolleanAdult);
+        if (sizeList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        List<Optional<Catalog>> finalList = new ArrayList<>();
+        if (!modelList.isEmpty()) {
+            if (modelList.get(0).get().size() > 0) {
+                for (int i = 0; i < modelList.get(0).get().size(); i++) {
+                    for (int j=0; j < sizeList.size(); j++) {
+                        Optional<Catalog> result = catalogService.findByModelAndSize(modelList.get(0).get().get(i).getIdModel(),sizeList.get(j).getId());
+                        if (!result.isEmpty()) finalList.add(result);
+                    }
+                }
+
+            }
+        }
+        //pagination
+        int pageSize = 12;
+        int totalItems = finalList .size();
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        if (pageable.getOffset() > totalItems) {
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        List<Optional<Catalog>> pageResult = finalList .subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
+
+        Page<Optional<Catalog>> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
+
+        return ResponseEntity.ok().body(catalogPage);
+    }
+
+    @GetMapping("/byKeyWord/{keyWord}/byCategory/{idCategory}/bySize/{bolleanAdult}/page/{page}")
+    public ResponseEntity<Page<Optional<Catalog>>> getByKeyWordByCategoryBySizePageable(@PathVariable String keyWord, @PathVariable Integer idCategory, @PathVariable Integer bolleanAdult,@PathVariable Integer page) {
+
+        List<List<Model>> modelList = new ArrayList<>();
+        // first verify if exists any model with feign
+        try {
+            List<Model> searchModel = modelService.getModelByNameAndIdCategory(keyWord, idCategory).getBody();
+            if (!searchModel.isEmpty()) modelList.add(searchModel);
+        } catch (FeignException e) {
+            return ResponseEntity.notFound().build();
+        }
+        // second verify if the bollean is correct
+        List<Size> sizeList = new ArrayList<>();
+        sizeList = sizeService.getByAdult(bolleanAdult);
+        if (sizeList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        List<Optional<Catalog>> finalList = new ArrayList<>();
+        if (!modelList.isEmpty()) {
+            if (modelList.get(0).size() > 0) {
+                for (int i = 0; i < modelList.get(0).size(); i++) {
+                    for (int j=0; j < sizeList.size(); j++) {
+                        Optional<Catalog> result = catalogService.findByModelAndSize(modelList.get(0).get(i).getIdModel(),sizeList.get(j).getId());
+                        if (!result.isEmpty()) finalList.add(result);
+                    }
+                }
+
+            }
+        }
+        //pagination
+        int pageSize = 12;
+        int totalItems = finalList .size();
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        if (pageable.getOffset() > totalItems) {
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        List<Optional<Catalog>> pageResult = finalList .subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
+
+        Page<Optional<Catalog>> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
+
+        return ResponseEntity.ok().body(catalogPage);
+    }
     /////////////////////////////////////////////////////////////////
 
 
