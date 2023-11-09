@@ -28,7 +28,7 @@ DROP TABLE IF EXISTS `costumemania`.`category` ;
 
 CREATE TABLE IF NOT EXISTS `costumemania`.`category` (
   `id_category` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id_category`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 7
@@ -43,9 +43,9 @@ DROP TABLE IF EXISTS `costumemania`.`model` ;
 
 CREATE TABLE IF NOT EXISTS `costumemania`.`model` (
   `id_model` INT NOT NULL AUTO_INCREMENT,
-  `name_model` VARCHAR(45) NOT NULL,
+  `name_model` VARCHAR(255) NOT NULL,
   `category` INT NULL DEFAULT NULL,
-  `url_image` VARCHAR(45) NULL DEFAULT NULL,
+  `url_image` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`id_model`),
   INDEX `id_category_idx` (`category` ASC) VISIBLE,
   CONSTRAINT `id_category`
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `costumemania`.`size` (
   `id_size` INT NOT NULL AUTO_INCREMENT,
   `adult` TINYINT NOT NULL,
   `no_size` VARCHAR(3) NOT NULL,
-  `size_description` VARCHAR(45) NULL DEFAULT NULL,
+  `size_description` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`id_size`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 13
@@ -107,7 +107,7 @@ DROP TABLE IF EXISTS `costumemania`.`shipping` ;
 
 CREATE TABLE IF NOT EXISTS `costumemania`.`shipping` (
   `id_shipping` INT NOT NULL AUTO_INCREMENT,
-  `destination` VARCHAR(45) NOT NULL,
+  `destination` VARCHAR(255) NOT NULL,
   `cost` DECIMAL(4,2) NOT NULL,
   PRIMARY KEY (`id_shipping`))
 ENGINE = InnoDB
@@ -123,7 +123,7 @@ DROP TABLE IF EXISTS `costumemania`.`status` ;
 
 CREATE TABLE IF NOT EXISTS `costumemania`.`status` (
   `id_status` INT NOT NULL AUTO_INCREMENT,
-  `status` VARCHAR(45) NOT NULL,
+  `status` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id_status`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 7
@@ -138,7 +138,7 @@ DROP TABLE IF EXISTS `costumemania`.`role` ;
 
 CREATE TABLE IF NOT EXISTS `costumemania`.`role` (
   `id_role` INT NOT NULL AUTO_INCREMENT,
-  `role` VARCHAR(45) NOT NULL,
+  `role` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id_role`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 3
@@ -154,10 +154,10 @@ DROP TABLE IF EXISTS `costumemania`.`users` ;
 CREATE TABLE IF NOT EXISTS `costumemania`.`users` (
   `id_user` INT NOT NULL AUTO_INCREMENT,
   `role` INT NOT NULL,
-  `name` VARCHAR(45) NOT NULL,
-  `last_name` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(45) NOT NULL,
-  `pass` VARCHAR(45) NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `last_name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `pass` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id_user`),
   INDEX `id_role_idx` (`role` ASC) VISIBLE,
   CONSTRAINT `id_role`
@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `costumemania`.`sale` (
   `users` INT NOT NULL,
   `model` INT NOT NULL,
   `quantity` INT NOT NULL,
-  `shipping_address` VARCHAR(45) NOT NULL,
+  `shipping_address` VARCHAR(255) NOT NULL,
   `shipping_city` INT NOT NULL,
   `status` INT NULL DEFAULT '1',
   `sale_date` DATE NULL DEFAULT NULL,
