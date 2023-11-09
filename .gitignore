@@ -28,3 +28,6 @@ replay_pid*
 
 # IGNORE .env FILES
 *.env
+
+# IGNORE any SECRET text
+*SECRET*

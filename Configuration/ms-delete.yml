@@ -22,7 +22,7 @@ spring:
         format_sql: true
     defer-datasource-initialization: true
 
-message: hello from ms-product
+message: hello from ms-delete
 
 management:
   endpoints:

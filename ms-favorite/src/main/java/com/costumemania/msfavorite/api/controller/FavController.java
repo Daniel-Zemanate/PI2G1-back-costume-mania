@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "api/v1/fav")
+@RequestMapping(path = "/api/v1/fav")
 public class FavController {
 
      @Autowired

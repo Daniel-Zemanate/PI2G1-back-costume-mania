@@ -9,6 +9,9 @@ spring:
       server:
         git:
           uri: https://github.com/Daniel-Zemanate/PI2G1-back-costume-mania
-          default-label: PI2G1-33
+          timeout: 5
+          default-label: ${DEFAULT_LABEL:main}
           force-pull: true
           search-paths: Configuration
+          cloneOnStart: true
+          skipSslValidation: true
