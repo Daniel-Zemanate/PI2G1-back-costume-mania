@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.costumemania</groupId>
+    <artifactId>costumemania</artifactId>
+    <version>1</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>ms-config-server</module>
+        <module>ms-eureka-server</module>
+        <module>ms-gateway</module>
+        <module>ms-bills</module>
+        <module>ms-catalog</module>
+        <module>ms-product</module>
+        <module>ms-users</module>
+        <module>ms-favorite</module>
+        <module>ms-delete</module>
+    </modules>
+</project>
