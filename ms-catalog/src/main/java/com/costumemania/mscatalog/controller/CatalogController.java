@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "api/v1/catalog")
+@RequestMapping(path = "/api/v1/catalog")
 public class CatalogController {
     private final CatalogService catalogService;
     private final SizeService sizeService;

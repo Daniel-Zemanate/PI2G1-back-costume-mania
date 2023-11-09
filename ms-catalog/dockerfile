@@ -8,11 +8,10 @@ ENV PROFILE=$PROFILE
 ENV MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
 ENV MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_PORT
 # Add .jar file generated during compilation
-COPY target/ms-gateway-0.0.1-SNAPSHOT.jar /app/ms-gateway.jar
+COPY target/ms-catalog-0.0.1-SNAPSHOT.jar /app/ms-catalog.jar
 
 # Working directory
 WORKDIR /app
 
 # Exec command to run the app
-#CMD ["java", "-jar", "ms-eureka-server.jar", "--spring.profiles.active=$PROFILE", "--spring.config.import=$MS_CONFIG_SERVER_HOST"]
-ENTRYPOINT java -jar ./ms-gateway.jar
+ENTRYPOINT java -jar ./ms-catalog.jar
