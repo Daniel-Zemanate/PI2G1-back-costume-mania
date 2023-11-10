@@ -25,6 +25,7 @@ jobs:
         distribution: 'adopt'
 
     - name: Down Docker Compose
+      continue-on-error: true
       run: sudo docker compose down
 
     - name: Copy .env
