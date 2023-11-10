@@ -1,10 +1,7 @@
 package com.costumemania.msusers.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -12,30 +9,35 @@ import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Builder
+@Data
 @Entity
 @SQLDelete(sql = "UPDATE users SET soft_delete = true WHERE id=?")
 @Where(clause = "soft_delete=false")
 @Table(name = "users", indexes = @Index(name = "unique_email", columnList = "email", unique = true))
-public class User {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
     private Integer id;
 
-    @Column(name = "username")
+    @Column(name = "dni",length = 30, unique = true, nullable = false)
+    private String dni;
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
-    @Column(name = "email")
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
+
+    @Column(name = "password", nullable = false)
+    private String password;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "status")
-    private Boolean status;
+    private Boolean status = Boolean.TRUE;
 
     @Column(name = "soft_delete")
     private Boolean softDelete = Boolean.FALSE;
@@ -45,5 +47,8 @@ public class User {
 
     @Column(name = "updated_at")
     private LocalDate updatedAt;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 }
