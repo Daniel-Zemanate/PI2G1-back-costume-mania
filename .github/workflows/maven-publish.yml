@@ -28,6 +28,10 @@ jobs:
       continue-on-error: true
       run: sudo docker compose down
 
+    - name: Clean Docker
+      continue-on-error: true
+      run: sudo docker system prune -a -f
+
     - name: Copy .env
       run: |
         cp .env-aws .env
