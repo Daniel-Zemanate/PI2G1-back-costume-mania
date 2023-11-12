@@ -1,8 +1,8 @@
-package com.costumemania.msproduct;
+package com.costumemania.msfavorite;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MsProductApplicationTests {
+class MsFavoriteApplicationTests {
 }

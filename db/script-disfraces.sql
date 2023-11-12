@@ -43,9 +43,9 @@ DROP TABLE IF EXISTS `costumemania`.`model` ;
 
 CREATE TABLE IF NOT EXISTS `costumemania`.`model` (
   `id_model` INT NOT NULL AUTO_INCREMENT,
-  `name_model` VARCHAR(45) NOT NULL,
+  `name_model` VARCHAR(255) NOT NULL,
   `category` INT NULL DEFAULT NULL,
-  `url_image` VARCHAR(45) NULL DEFAULT NULL,
+  `url_image` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`id_model`),
   INDEX `id_category_idx` (`category` ASC) VISIBLE,
   CONSTRAINT `id_category`
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `costumemania`.`size` (
   `id_size` INT NOT NULL AUTO_INCREMENT,
   `adult` TINYINT NOT NULL,
   `no_size` VARCHAR(3) NOT NULL,
-  `size_description` VARCHAR(45) NULL DEFAULT NULL,
+  `size_description` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`id_size`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 13
@@ -107,7 +107,7 @@ DROP TABLE IF EXISTS `costumemania`.`shipping` ;
 
 CREATE TABLE IF NOT EXISTS `costumemania`.`shipping` (
   `id_shipping` INT NOT NULL AUTO_INCREMENT,
-  `destination` VARCHAR(45) NOT NULL,
+  `destination` VARCHAR(255) NOT NULL,
   `cost` DECIMAL(4,2) NOT NULL,
   PRIMARY KEY (`id_shipping`))
 ENGINE = InnoDB
@@ -123,7 +123,7 @@ DROP TABLE IF EXISTS `costumemania`.`status` ;
 
 CREATE TABLE IF NOT EXISTS `costumemania`.`status` (
   `id_status` INT NOT NULL AUTO_INCREMENT,
-  `status` VARCHAR(45) NOT NULL,
+  `status` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id_status`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 7
@@ -138,7 +138,7 @@ DROP TABLE IF EXISTS `costumemania`.`role` ;
 
 CREATE TABLE IF NOT EXISTS `costumemania`.`role` (
   `id_role` INT NOT NULL AUTO_INCREMENT,
-  `role` VARCHAR(45) NOT NULL,
+  `role` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id_role`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 3
@@ -154,10 +154,10 @@ DROP TABLE IF EXISTS `costumemania`.`users` ;
 CREATE TABLE IF NOT EXISTS `costumemania`.`users` (
   `id_user` INT NOT NULL AUTO_INCREMENT,
   `role` INT NOT NULL,
-  `name` VARCHAR(45) NOT NULL,
-  `last_name` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(45) NOT NULL,
-  `pass` VARCHAR(45) NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `last_name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `pass` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id_user`),
   INDEX `id_role_idx` (`role` ASC) VISIBLE,
   CONSTRAINT `id_role`
@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `costumemania`.`sale` (
   `users` INT NOT NULL,
   `model` INT NOT NULL,
   `quantity` INT NOT NULL,
-  `shipping_address` VARCHAR(45) NOT NULL,
+  `shipping_address` VARCHAR(255) NOT NULL,
   `shipping_city` INT NOT NULL,
   `status` INT NULL DEFAULT '1',
   `sale_date` DATE NULL DEFAULT NULL,
@@ -259,36 +259,36 @@ INSERT INTO `costumemania`.`category` (`id_category`, `name`) VALUES ('5', 'Sexy
 INSERT INTO `costumemania`.`category` (`id_category`, `name`) VALUES ('6', 'Old times');
 
 
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('1', 'Witch', '1');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('2', 'Devil', '1');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('3', 'Jack Skeleton', '1');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('4', 'Elsa from Frozen', '2');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('5', 'Jack Sparrow', '2');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('6', 'Isabella from Encanto', '2');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('7', 'Police Agent', '3');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('8', 'Firefighter', '3');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('9', 'Batman', '4');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('10', 'Wonder woman', '4');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('11', 'Spiderman', '4');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('12', 'Dark Queen', '5');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('13', 'Playboy Bunny', '5');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('14', 'FBI', '5');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('15', 'Victorian', '6');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('16', 'Gentleman', '6');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('1', 'Witch', '1', 'https://costumemania.s3.amazonaws.com/witch.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('2', 'Devil', '1', 'https://costumemania.s3.amazonaws.com/devil.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('3', 'Jack Skeleton', '1', 'https://costumemania.s3.amazonaws.com/jack.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('4', 'Elsa from Frozen', '2', 'https://costumemania.s3.amazonaws.com/elsa.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('5', 'Jack Sparrow', '2', 'https://costumemania.s3.amazonaws.com/jackSparrow.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('6', 'Isabella from Encanto', '2', 'https://costumemania.s3.amazonaws.com/isabella.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('7', 'Police Agent', '3', 'https://costumemania.s3.amazonaws.com/police.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('8', 'Firefighter', '3', 'https://costumemania.s3.amazonaws.com/fireman.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('9', 'Batman', '4', 'https://costumemania.s3.amazonaws.com/batman.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('10', 'Wonder woman', '4', 'https://costumemania.s3.amazonaws.com/wonderWoman.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('11', 'Spiderman', '4', 'https://costumemania.s3.amazonaws.com/spiderman.png');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('12', 'Dark Queen', '5', 'https://costumemania.s3.amazonaws.com/darkQueen.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('13', 'Playboy Bunny', '5', 'https://costumemania.s3.amazonaws.com/bunny.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('14', 'FBI', '5', 'https://costumemania.s3.amazonaws.com/fbi.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('15', 'Victorian', '6', 'https://costumemania.s3.amazonaws.com/victorian.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('16', 'Gentleman', '6', 'https://costumemania.s3.amazonaws.com/gentleman.jpg');
 
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('17', 'Witch child', '1');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('18', 'Devil child', '1');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('19', 'Jack Skeleton child', '1');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('20', 'Elsa from Frozen child', '2');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('21', 'Jack Sparrow child', '2');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('22', 'Isabella from Encanto child', '2');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('23', 'Police Agent child', '3');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('24', 'Firefighter child', '3');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('25', 'Batman child', '4');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('26', 'Wonder woman child', '4');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('27', 'Spiderman child', '4');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('28', 'Southern Lady child', '6');
-INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`) VALUES ('29', 'Granadero child', '6');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('17', 'Witch child', '1', 'https://costumemania.s3.amazonaws.com/witch_small.png');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('18', 'Devil child', '1', 'https://costumemania.s3.amazonaws.com/devil_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('19', 'Jack Skeleton child', '1', 'https://costumemania.s3.amazonaws.com/jack.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('20', 'Elsa from Frozen child', '2', 'https://costumemania.s3.amazonaws.com/elsa_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('21', 'Jack Sparrow child', '2', 'https://costumemania.s3.amazonaws.com/jackSparrow_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('22', 'Isabella from Encanto child', '2', 'https://costumemania.s3.amazonaws.com/isabella_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('23', 'Police Agent child', '3', 'https://costumemania.s3.amazonaws.com/police_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('24', 'Firefighter child', '3', 'https://costumemania.s3.amazonaws.com/fireman_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('25', 'Batman child', '4', 'https://costumemania.s3.amazonaws.com/batman_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('26', 'Wonder woman child', '4', 'https://costumemania.s3.amazonaws.com/wonderWoman_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('27', 'Spiderman child', '4', 'https://costumemania.s3.amazonaws.com/spiderman_small.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('28', 'Southern Lady child', '6', 'https://costumemania.s3.amazonaws.com/southernLady.jpg');
+INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`) VALUES ('29', 'Granadero child', '6', 'https://costumemania.s3.amazonaws.com/tinSoldier_small.jpg');
 
 
 INSERT INTO `costumemania`.`catalog` (`id_catalog`, `model`, `size`, `quantity`, `price`) VALUES ('1', '1', '9', '2', '50.50');
@@ -371,12 +371,12 @@ INSERT INTO `costumemania`.`shipping` (`id_shipping`, `destination`, `cost`) VAL
 INSERT INTO `costumemania`.`shipping` (`id_shipping`, `destination`, `cost`) VALUES ('8', 'Cali, Colombia', '20.50');
 
 
-INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('1', 'En proceso');
-INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('2', 'En camino');
-INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('3', 'Entregado');
-INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('4', 'Cancelado por cliente');
-INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('5', 'Cancelado - Domicilio erróneo');
-INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('6', 'Cancelado por administrador');
+INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('1', 'In progress');
+INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('2', 'On the way');
+INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('3', 'Delivered');
+INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('4', 'Cancelled by the customer');
+INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('5', 'Canceled - Wrong addess');
+INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('6', 'Cancelled by admin');
 
 
 INSERT INTO `costumemania`.`sale` (`id_sale`, `no_invoice`, `users`, `model`, `quantity`, `shipping_address`, `shipping_city`, `status`, `sale_date`,`shipping_date`) VALUES ('1', '00023', '2', '2', '1', 'calle 123', '1', '3', '2023-02-12', '2023-02-16');

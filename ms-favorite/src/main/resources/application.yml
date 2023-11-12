@@ -1,5 +1,5 @@
 spring:
   application:
-    name: ms-delete
+    name: ms-favorite
   config:
     import: configserver:http://localhost:8888
