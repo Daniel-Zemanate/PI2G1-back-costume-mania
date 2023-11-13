@@ -1,6 +1,7 @@
 package com.costumemania.msusers.model.dto;
 
 import com.costumemania.msusers.model.entity.Role;
+import com.costumemania.msusers.model.entity.UserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -29,5 +30,21 @@ public class UserAccountResponse {
     LocalDate updatedAt;
     Role role;
 
+    public static UserAccountResponse fromUserEntity(UserEntity user){
+        UserAccountResponse userResponse = UserAccountResponse.builder()
+                .id(user.getId())
+                .dni(user.getDni())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .status(user.getStatus())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
+                .role(user.getRole())
+                .build();
+
+        return null;
+    }
 
 }

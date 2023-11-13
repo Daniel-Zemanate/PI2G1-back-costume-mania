@@ -69,18 +69,7 @@ public class UserServiceImplementation implements IUserService {
         Optional<UserEntity> userExists = userRepository.findByUsername(username);
         if (userExists.isEmpty()) throw new NotFoundException(String.format("Username: %s Not found", username));
 
-        UserAccountResponse userResponse = UserAccountResponse.builder()
-                .id(userExists.get().getId())
-                .dni(userExists.get().getDni())
-                .username(userExists.get().getUsername())
-                .email(userExists.get().getEmail())
-                .firstName(userExists.get().getFirstName())
-                .lastName(userExists.get().getLastName())
-                .status(userExists.get().getStatus())
-                .createdAt(userExists.get().getCreatedAt())
-                .updatedAt(userExists.get().getUpdatedAt())
-                .role(userExists.get().getRole())
-                .build();
+        UserAccountResponse userResponse = UserAccountResponse.fromUserEntity(userExists.get());
         return userResponse;
     }
 
@@ -107,18 +96,7 @@ public class UserServiceImplementation implements IUserService {
     @Override
     public Set<UserAccountResponse> getAllUsers() {
         Set<UserAccountResponse> setUsers = userRepository.findAll().stream()
-                .map(user -> UserAccountResponse.builder()
-                        .id(user.getId())
-                        .dni(user.getDni())
-                        .username(user.getUsername())
-                        .email(user.getEmail())
-                        .firstName(user.getFirstName())
-                        .lastName(user.getLastName())
-                        .status(user.getStatus())
-                        .createdAt(user.getCreatedAt())
-                        .updatedAt(user.getUpdatedAt())
-                        .role(user.getRole())
-                        .build()).collect(Collectors.toSet());
+                .map(user -> UserAccountResponse.fromUserEntity(user)).collect(Collectors.toSet());
         return setUsers;
     }
 }
