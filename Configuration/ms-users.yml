@@ -44,6 +44,12 @@ spring:
         jwt:
           issuer-uri: http://localhost:8180/realms/realm_costume_mania
           jwk-set-uri: http://localhost:8180/realms/realm_costume_mania/protocol/openid-connect/certs
+jwt:
+  auth:
+    converter:
+      principal-attribute: preferred_username
+      resource-id: client_backend_costume_mania
+
 
 message: hello from ms-users
 
