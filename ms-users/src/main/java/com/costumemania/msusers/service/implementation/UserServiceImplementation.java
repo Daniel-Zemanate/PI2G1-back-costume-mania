@@ -22,13 +22,17 @@ public class UserServiceImplementation implements IUserService {
 
     private IUserRepository userRepository;
 
-    private PasswordEncoder passwordEncoder;
+//    private PasswordEncoder passwordEncoder;
+//
+//    public UserServiceImplementation(IUserRepository userRepository, PasswordEncoder passwordEncoder) {
+//        this.userRepository = userRepository;
+//        this.passwordEncoder = passwordEncoder;
+//    }
 
-    public UserServiceImplementation(IUserRepository userRepository, PasswordEncoder passwordEncoder) {
+
+    public UserServiceImplementation(IUserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
-
 
     @Override
     public UserAccountResponse createUser(CreateUserRequest user) {
@@ -37,7 +41,8 @@ public class UserServiceImplementation implements IUserService {
                 .dni(user.getDni())
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .password(passwordEncoder.encode(user.getPassword()))//TODO: ENCRYPT PASS
+//                .password(passwordEncoder.encode(user.getPassword()))//TODO: ENCRYPT PASS
+                .password(user.getPassword())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .status(true)
@@ -48,18 +53,7 @@ public class UserServiceImplementation implements IUserService {
                 .build();
         userEntity = userRepository.save(userEntity);
 
-        UserAccountResponse userResponse = UserAccountResponse.builder()
-                .id(userEntity.getId())
-                .dni(userEntity.getDni())
-                .username(userEntity.getUsername())
-                .email(userEntity.getEmail())
-                .firstName(userEntity.getFirstName())
-                .lastName(userEntity.getLastName())
-                .status(userEntity.getStatus())
-                .createdAt(userEntity.getCreatedAt())
-                .updatedAt(userEntity.getUpdatedAt())
-                .role(userEntity.getRole())
-                .build();
+        UserAccountResponse userResponse = UserAccountResponse.fromUserEntity(userEntity);
 
         return userResponse;
     }

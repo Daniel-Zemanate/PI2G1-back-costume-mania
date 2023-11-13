@@ -44,7 +44,7 @@ public class UserAccountResponse {
                 .role(user.getRole())
                 .build();
 
-        return null;
+        return userResponse;
     }
 
 }

@@ -3,7 +3,6 @@ package com.costumemania.msusers.controller;
 import com.costumemania.msusers.model.dto.CreateUserRequest;
 import com.costumemania.msusers.model.dto.UserAccountResponse;
 import com.costumemania.msusers.service.IUserService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +25,8 @@ public class UserController {
 
 
     @PostMapping(path = "/create")
-    public ResponseEntity<?> create(@RequestBody @Valid CreateUserRequest userRequest) {
+//    public ResponseEntity<?> create(@RequestBody @Valid CreateUserRequest userRequest) {
+    public ResponseEntity<?> create(@RequestBody CreateUserRequest userRequest) {
 
         UserAccountResponse userResponse;
         try {
