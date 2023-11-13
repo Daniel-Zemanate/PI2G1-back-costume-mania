@@ -23,6 +23,27 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
     defer-datasource-initialization: true
+#  #SECURITY
+#  security:
+#    oauth2:
+#      client:
+#        provider:
+#          ms-gateway:
+#            token-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8180}/realms/${KEYCLOAK_REALM:realm_costume_mania}/protocol/openid-connect/token
+#        registration:
+#          ms-gateway:
+#            scope: openid
+#            client-id: client_backend_costume_mania
+#            client-secret: ${BACKEND_SECRET}
+#            authorization-grant-type: client_credentials
+#            redirect-uri: 'http://${KEYCLOAK_REDIRECT_HOST:localhost}:${KEYCLOAK_REDIRECT_PORT:8180}/login/oauth2/code/keycloak'
+
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/realm_costume_mania
+          jwk-set-uri: http://localhost:8180/realms/realm_costume_mania/protocol/openid-connect/certs
 
 message: hello from ms-users
 
