@@ -3,6 +3,7 @@ package com.costumemania.msusers.controller;
 import com.costumemania.msusers.model.dto.CreateUserRequest;
 import com.costumemania.msusers.model.dto.UserAccountResponse;
 import com.costumemania.msusers.service.IUserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@RestController()
+@RestController
 @RequestMapping(path = "/users")
 public class UserController {
 
@@ -25,19 +26,19 @@ public class UserController {
 
 
     @PostMapping(path = "/create")
-    public ResponseEntity<?> create(@RequestBody CreateUserRequest userRequest) {
+    public ResponseEntity<?> create(@RequestBody @Valid CreateUserRequest userRequest) {
 
         UserAccountResponse userResponse;
         try {
             userResponse = userService.createUser(userRequest);
         } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatusCode.valueOf(500));
+            return new ResponseEntity<>("Unexpected system error during your request", HttpStatusCode.valueOf(500));
         }
         return new ResponseEntity<>(userResponse, HttpStatusCode.valueOf(201));
     }
 
     @GetMapping(path = "/me")
-    public ResponseEntity<?> userInfo(@RequestParam(required = true) String username) {
+    public ResponseEntity<?> userByUsername(@RequestParam(required = true) String username) {
         UserAccountResponse userResponse;
 
         if (username.isEmpty() || username.isBlank()) {
@@ -52,8 +53,8 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
-    @GetMapping(path = "/me")
-    public ResponseEntity<?> userInfo(@RequestParam(required = true) int id) {
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<?> userById(@PathVariable(name = "id") int id) {
         UserAccountResponse userResponse;
 
         if (id < 0) {
@@ -74,7 +75,7 @@ public class UserController {
         try {
             setUsers = userService.getAllUsers();
         } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatusCode.valueOf(500));
+            return new ResponseEntity<>("Unexpected system error during your request", HttpStatusCode.valueOf(500));
         }
 
         return ResponseEntity.ok(setUsers);

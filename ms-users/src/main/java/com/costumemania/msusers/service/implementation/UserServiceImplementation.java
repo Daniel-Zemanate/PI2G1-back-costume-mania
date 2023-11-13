@@ -6,7 +6,10 @@ import com.costumemania.msusers.model.entity.Role;
 import com.costumemania.msusers.model.entity.UserEntity;
 import com.costumemania.msusers.repository.IUserRepository;
 import com.costumemania.msusers.service.IUserService;
+import com.mysql.cj.jdbc.exceptions.SQLError;
 import jakarta.ws.rs.NotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,9 +22,13 @@ public class UserServiceImplementation implements IUserService {
 
     private IUserRepository userRepository;
 
-    public UserServiceImplementation(IUserRepository userRepository) {
+    private PasswordEncoder passwordEncoder;
+
+    public UserServiceImplementation(IUserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
+
 
     @Override
     public UserAccountResponse createUser(CreateUserRequest user) {
@@ -30,9 +37,11 @@ public class UserServiceImplementation implements IUserService {
                 .dni(user.getDni())
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .password(user.getPassword())//TODO: ENCRYPT PASS
+                .password(passwordEncoder.encode(user.getPassword()))//TODO: ENCRYPT PASS
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
+                .status(true)
+                .softDelete(false)
                 .createdAt(LocalDate.now())
                 .updatedAt(LocalDate.now())
                 .role(Role.USER)

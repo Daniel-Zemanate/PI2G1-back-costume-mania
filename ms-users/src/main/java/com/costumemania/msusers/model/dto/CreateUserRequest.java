@@ -21,7 +21,7 @@ public class CreateUserRequest {
     @NotBlank(message = "Username can not be blank")
     String username;
     @NotNull(message = "Email can not be null")
-    @Email(message = "Wrong email format", regexp = "(([^<>()\\[\\]\\.,;:\\s@\\”]+(\\.[^<>()\\[\\]\\.,;:\\s@\\”]+)*)|(\\”.+\\”))@(([^<>()[\\]\\.,;:\\s@\\”]+\\.)+[^<>()[\\]\\.,;:\\s@\\”]{2,})")
+    @Email(message = "Wrong email format",regexp = "^[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,}$")
     String email;
     @NotNull(message = "Password can not be null")
     @NotBlank(message = "Password can not be blank")
