@@ -529,6 +529,9 @@ public class CatalogController {
                     }
                 }
             }
+            if (catalogResponses.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
             //pagination
             int pageSize = 12;
             int totalItems = catalogResponses.size();
@@ -614,6 +617,9 @@ public class CatalogController {
                 }
             }
         }
+        if (catalogResponses.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         //pagination
         int pageSize = 12;
         int totalItems = catalogResponses.size();
@@ -695,6 +701,9 @@ public class CatalogController {
                     }
                 }
             }
+        }
+        if (catalogResponses.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
         //pagination
         int pageSize = 12;
@@ -786,6 +795,9 @@ public class CatalogController {
                 catalogResponses.add(transformCatalog(listCatalog));
             }
         }
+        if (catalogResponses.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         //pagination
         int pageSize = 12;
         int totalItems = catalogResponses.size();
@@ -866,6 +878,9 @@ public class CatalogController {
                 catalogResponses.add(transformCatalog(listCatalog));
             }
         }
+        if (catalogResponses.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         //pagination
         int pageSize = 12;
         int totalItems = catalogResponses.size();
@@ -943,6 +958,9 @@ public class CatalogController {
             if (!listCatalog.isEmpty()) {
                 catalogResponses.add(transformCatalog(listCatalog));
             }
+        }
+        if (catalogResponses.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
         //pagination
         int pageSize = 12;
