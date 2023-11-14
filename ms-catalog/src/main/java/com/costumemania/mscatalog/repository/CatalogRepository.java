@@ -32,6 +32,9 @@ public interface CatalogRepository extends JpaRepository<Catalog, Integer> {
     @Query(value="select * from catalog c inner join model m on c.model=m.id_model inner join size s on c.size=s.id_size inner join category cat on m.category=cat.id_category WHERE m.category =?1 AND c.model =?2", nativeQuery = true)
     List<Catalog> findByCategory (Integer category, Integer idModel);
 
+    @Query(value="select * from catalog c inner join model m on c.model=m.id_model inner join size s on c.size=s.id_size inner join category cat on m.category=cat.id_category WHERE c.model=?1 and s.adult=?2 and s.no_size=?3", nativeQuery = true)
+    Optional<Catalog> validateCreate (Integer idModel, Integer booleanAdult, String size);
+
     @Query(value="SELECT * FROM catalog c INNER JOIN model m ON c.model=m.id_model WHERE c.model =?1", nativeQuery = true)
     Optional<Page<Catalog>> findByModelPageable (Integer idModel, Pageable pageable);
     @Query(value="SELECT * FROM catalog c INNER JOIN model m ON c.model=m.id_model WHERE c.model =?1 AND c.size =?2", nativeQuery = true)

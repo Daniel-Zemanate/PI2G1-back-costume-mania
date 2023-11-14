@@ -45,6 +45,10 @@ public class CatalogService {
         return catalogRepository.findByCategory(category, idModel);
     };
 
+    public Optional<Catalog> validateCreate (Integer idModel, Integer booleanAdult, String size) {
+        return catalogRepository.validateCreate(idModel, booleanAdult, size);
+    };
+
     // EN PRINCIPIO NO NECESITAMOS EL PAGINADO PORQUE EL MODELO VA A DEVOLVER UN SOLO ITEM
     public Optional<Page<Catalog>> getCatalogByModel (Integer idModel,Pageable pageable) {
         Optional<Page<Catalog>> catalogPage =  catalogRepository.findByModelPageable(idModel,pageable);

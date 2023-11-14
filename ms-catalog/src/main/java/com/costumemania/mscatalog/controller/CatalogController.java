@@ -977,36 +977,41 @@ public class CatalogController {
     
     /////////////////////////////////////////////////////////////////
 
-
+    // public
     @GetMapping("/news")
     public ResponseEntity<List<Catalog>> getNews(){
         return ResponseEntity.ok().body(catalogService.getNews());
     }
 
+    // adm
     @PostMapping("/create")
     public ResponseEntity<Catalog> createModel(@RequestBody CatalogDTO catalogDTO){
-
-        // verify model with Feign
+        // verify model with Feign - 404
         try {
             ResponseEntity<Optional<Model>> response = modelService.getByIdModel(catalogDTO.getModel());
         }
         catch (FeignException e){
             return ResponseEntity.notFound().build();
         }
-        // verify size
+        // verify size - 404
         Optional<Size> searchSize = sizeService.getById(catalogDTO.getSize());
         if(searchSize.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        // verify quantity
+        // verify if this Catalog exists - 422 Unprocessable Content
+        Optional<Catalog> searchCatalog = catalogService.validateCreate(catalogDTO.getModel(), searchSize.get().getAdult(), searchSize.get().getNoSize());
+        if(searchCatalog.isPresent()){
+            return ResponseEntity.unprocessableEntity().build();
+        }
+        // verify quantity - 400
         if(catalogDTO.getQuantity()<0){
             return ResponseEntity.badRequest().build();
         }
-        // verify price
+        // verify price - 400
         if(catalogDTO.getPrice()<0){
             return ResponseEntity.badRequest().build();
         }
-        // create
+        // create - 202
         Catalog catalogCreated = new Catalog();
         catalogCreated.setModel(modelService.getByIdModelSEC(catalogDTO.getModel()));
         catalogCreated.setSize(sizeService.getByIdSEC(catalogDTO.getSize()));
