@@ -41,6 +41,10 @@ public class CatalogService {
         return catalogRepository.findBySize(bollean, idModel);
     };
 
+    public List<Catalog> findByCategory (Integer category, Integer idModel) {
+        return catalogRepository.findByCategory(category, idModel);
+    };
+
     // EN PRINCIPIO NO NECESITAMOS EL PAGINADO PORQUE EL MODELO VA A DEVOLVER UN SOLO ITEM
     public Optional<Page<Catalog>> getCatalogByModel (Integer idModel,Pageable pageable) {
         Optional<Page<Catalog>> catalogPage =  catalogRepository.findByModelPageable(idModel,pageable);

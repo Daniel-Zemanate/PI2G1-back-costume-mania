@@ -465,8 +465,8 @@ public class CatalogController {
     }
 
     // public - devuelve Catalogo paginado
-    @GetMapping("/byCategory/{idCategory}/page/{page}")
-    public ResponseEntity<Page<Catalog>> getByCategoryPageable(@PathVariable Integer idCategory,@PathVariable Integer page){
+    @GetMapping("/byCategory2/{idCategory}/page/{page}")
+    public ResponseEntity<Page<Catalog>> getByCategoryPageable2(@PathVariable Integer idCategory,@PathVariable Integer page){
         // first verify if the category exists with feign
         try {
             modelService.getCategorydById(idCategory);
@@ -483,9 +483,7 @@ public class CatalogController {
                     try {
                         Optional<List<Catalog>> list = catalogService.getCatalogByModel(allModels.get(i).getIdModel());
                         if (!list.get().isEmpty()) {
-                            for (int j = 0; j < list.get().size(); j++) {
-                                result.add(list.get().get(j));
-                            }
+                            result.addAll(list.get());
                         }
                     } catch (FeignException e) {
                         System.out.println("there isn´t catalog of model " + allModels.get(i).getIdModel());
@@ -507,6 +505,44 @@ public class CatalogController {
         List<Catalog> pageResult = result.subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
         Page<Catalog> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
         return ResponseEntity.ok().body(catalogPage);
+    }
+    // public - devuelve CatalogoResponse paginado
+    @GetMapping("/byCategory/{idCategory}/page/{page}")
+    public ResponseEntity<Page<CatalogResponse>> getByCategoryPageable(@PathVariable Integer idCategory,@PathVariable Integer page){
+        // first verify if the category exists with feign
+        try {
+            modelService.getCategorydById(idCategory);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // get every model within the category
+        List<Catalog> result = new ArrayList<>();
+        try {
+            List<Model> allModels = modelService.getModelByIdCategory(idCategory).getBody();
+            List<CatalogResponse> catalogResponses = new ArrayList<>();
+            if (allModels.size() > 0) {
+                for (Model model : allModels) {
+                    List<Catalog> listCatalog = catalogService.findByCategory(idCategory, model.getIdModel());
+                    if (!listCatalog.isEmpty()) {
+                        catalogResponses.add(transformCatalog(listCatalog));
+                    }
+                }
+            }
+            //pagination
+            int pageSize = 12;
+            int totalItems = catalogResponses.size();
+            Pageable pageable = PageRequest.of(page, pageSize);
+            if (pageable.getOffset() > totalItems) {
+                return ResponseEntity.notFound().build();
+            }
+            // else...
+            List<CatalogResponse> pageResult = catalogResponses.subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
+            Page<CatalogResponse> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
+            return ResponseEntity.ok().body(catalogPage);
+        } catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // public - devuelve Catalogo paginado
