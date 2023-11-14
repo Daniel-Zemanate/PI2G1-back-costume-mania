@@ -33,8 +33,12 @@ public class CatalogService {
     public Catalog getCatalogByIdSEC(Integer id){
         return catalogRepository.findByIdSEC(id);
     }
+
     public List<Catalog> getCatalogBySize (Size size) {
         return catalogRepository.findBySize(size);
+    };
+    public List<Catalog> getCatalogBySize (Integer bollean, Integer idModel) {
+        return catalogRepository.findBySize(bollean, idModel);
     };
 
     // EN PRINCIPIO NO NECESITAMOS EL PAGINADO PORQUE EL MODELO VA A DEVOLVER UN SOLO ITEM
