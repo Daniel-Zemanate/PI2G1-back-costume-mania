@@ -33,16 +33,15 @@ public class CatalogController {
     // FUNCTION to transform catalog to CatalogResponse
     private CatalogResponse transformCatalog (List<Catalog> c) {
         List<CatalogResponse.SizeByModel> listSize = new ArrayList<>();
-        for (int i=0; i<c.size(); i++) {
+        for (Catalog catalog : c) {
             // quantity validation (now disabled)
             // if (c.get(i).getQuantity()>0) {
-                listSize.add(new CatalogResponse.SizeByModel(c.get(i).getIdCatalog(),
-                        c.get(i).getSize().getNoSize(),
-                        c.get(i).getQuantity()));
+            listSize.add(new CatalogResponse.SizeByModel(catalog.getIdCatalog(),
+                    catalog.getSize().getNoSize(),
+                    catalog.getQuantity()));
             // }
-        };
-
-        CatalogResponse catalogResponse = new CatalogResponse(
+        }
+        return new CatalogResponse(
                 c.get(0).getModel().getNameModel(),
                 c.get(0).getModel().getIdModel(),
                 c.get(0).getModel().getCategory().getName(),
@@ -51,8 +50,6 @@ public class CatalogController {
                 c.get(0).getPrice(),
                 listSize
         );
-
-        return catalogResponse;
     }
     //////////////////////////////////////////////////////////////////
 
@@ -102,9 +99,9 @@ public class CatalogController {
 
     /////////////////////////////////////////////////////////////////
 
+    // public
     @GetMapping("/{idCatalog}")
     public ResponseEntity<Optional<Catalog>> getById(@PathVariable Integer idCatalog){
-
         // first verify if the ID exist
         Optional<Catalog> catalogProof = catalogService.getCatalogById(idCatalog);
         if (catalogProof.isEmpty()){
@@ -117,9 +114,9 @@ public class CatalogController {
 
 //////////////---------- CATALOGO FILTRADO ----------//////////////
 
-    @GetMapping("/byModel/{idModel}")
-    public ResponseEntity<Optional<List<Catalog>>> getByModel(@PathVariable Integer idModel){
-
+    // public - Devuelve listado tipo catálogo
+    @GetMapping("/byModel2/{idModel}")
+    public ResponseEntity<Optional<List<Catalog>>> getByModel2(@PathVariable Integer idModel){
         // first verify if the model exists with feign
         try {
             ResponseEntity<Optional<Model>> response = modelService.getByIdModel(idModel);
@@ -129,6 +126,22 @@ public class CatalogController {
         }
         // else...
         return ResponseEntity.ok().body(catalogService.getCatalogByModel(idModel));
+    }
+    // public - Devuelve listado tipo catálogoResponse
+    @GetMapping("/byModel/{idModel}")
+    public ResponseEntity<CatalogResponse> getByModel(@PathVariable Integer idModel){
+        // first verify if the model exists with feign
+        try {
+            ResponseEntity<Optional<Model>> response = modelService.getByIdModel(idModel);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        if (catalogService.getCatalogByModel(idModel).get().isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(transformCatalog(catalogService.getCatalogByModel(idModel).get()));
     }
 
 
