@@ -22,6 +22,7 @@ public class CategoryController {
         return ResponseEntity.ok().body(categoryService.getAll());
     };
 
+    // public
     @GetMapping("/{idCategory}")
     public ResponseEntity<Category> getdById (@PathVariable Integer idCategory) {
         // first verify if the ID exist
@@ -33,6 +34,7 @@ public class CategoryController {
         return ResponseEntity.ok().body(categoryService.categorydById(idCategory));
     };
 
+    // public
     @GetMapping("/name/{categoryName}")
     public ResponseEntity<Object> getByName (@PathVariable String categoryName) {
         // first verify if the name exist
@@ -44,11 +46,18 @@ public class CategoryController {
         return ResponseEntity.ok().body(categoryProof);
     };
 
+    // adm
     @PostMapping("/create")
     public ResponseEntity<Category> create (@RequestBody Category c) {
+        // verify if this category exists - 422
+        Optional<Category> searchCategory = categoryService.getByName(c.getName());
+        if (searchCategory.isPresent()) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
         return ResponseEntity.accepted().body(categoryService.create(c));
     }
 
+    // adm
     @PutMapping("/{idCategory}")
     public ResponseEntity<Category> update (@PathVariable Integer idCategory, @RequestBody Category c) {
         // first verify if the ID exist
@@ -61,6 +70,7 @@ public class CategoryController {
         return ResponseEntity.ok().body(categoryService.create(c));
     }
 
+    // adm - deprecated
     @DeleteMapping("/delete/{idCategory}")
     public ResponseEntity<String> delete (@PathVariable Integer idCategory) {
         // first verify if the ID exist
