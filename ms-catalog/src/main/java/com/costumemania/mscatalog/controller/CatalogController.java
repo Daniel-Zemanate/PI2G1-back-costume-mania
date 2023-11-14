@@ -1020,13 +1020,12 @@ public class CatalogController {
         return ResponseEntity.accepted().body(catalogService.save(catalogCreated));
     }
 
-    // method just for users to buy
+    // users - to buy
     @PutMapping("{idCatalog}")
     public ResponseEntity<Catalog> catalogSold(@PathVariable Integer idCatalog, @Param("quantity") Integer quantity) {
-
-        // verify ID
-        Optional<Catalog> searchModel = catalogService.getCatalogById(idCatalog);
-        if(searchModel.isEmpty()){
+        // verify if catalog exists - 404
+        Optional<Catalog> searchCatalog = catalogService.getCatalogById(idCatalog);
+        if (searchCatalog.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         // verify quantity
@@ -1039,31 +1038,35 @@ public class CatalogController {
         return ResponseEntity.accepted().body(catalogService.save(catalog));
     }
 
-    // method only for admin
+    // adm
     @PutMapping("/modify/{idCatalog}")
     public ResponseEntity<Catalog> modifyCatalog(@PathVariable Integer idCatalog, @RequestBody CatalogDTO catalogDTO) {
-
-        // verify model with Feign
+        // verify if catalog exists - 404
+        Optional<Catalog> searchCatalog = catalogService.getCatalogById(idCatalog);
+        if (searchCatalog.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        // verify model with Feign - 404
         try {
             ResponseEntity<Optional<Model>> response = modelService.getByIdModel(catalogDTO.getModel());
         }
         catch (FeignException e){
             return ResponseEntity.notFound().build();
         }
-        // verify size
+        // verify size - 404
         Optional<Size> searchSize = sizeService.getById(catalogDTO.getSize());
         if(searchSize.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        // verify quantity
+        // verify quantity - 400
         if(catalogDTO.getQuantity()<0){
             return ResponseEntity.badRequest().build();
         }
-        // verify price
+        // verify price - 400
         if(catalogDTO.getPrice()<0){
             return ResponseEntity.badRequest().build();
         }
-        // create
+        // create - 202
         Catalog catalogCreated = new Catalog();
         catalogCreated.setIdCatalog(idCatalog);
         catalogCreated.setModel(modelService.getByIdModelSEC(catalogDTO.getModel()));
@@ -1073,9 +1076,9 @@ public class CatalogController {
         return ResponseEntity.accepted().body(catalogService.save(catalogCreated));
     }
 
+    // adm - deprecated
     @DeleteMapping("/{idCatalog}")
     public ResponseEntity<String> delete(@PathVariable Integer idCatalog) {
-
         // first verify if the ID exist
         Optional<Catalog> catalogProof = catalogService.getCatalogById(idCatalog);
         if (catalogProof.isEmpty()){
@@ -1086,6 +1089,7 @@ public class CatalogController {
         return ResponseEntity.ok().body("Catalog item with ID " + idCatalog + " deleted");
     }
 
+    // adm - deprecated
     @DeleteMapping("/byModel/{idModel}")
     public ResponseEntity<String> deleteByModel (@PathVariable Integer idModel) {
 
