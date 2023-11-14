@@ -8,12 +8,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -22,18 +23,21 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(csrf -> csrf.disable())
-                .securityMatcher("/api/v1/users/**")
-                .authorizeHttpRequests(httpRequests -> {
-                    httpRequests
-                            .anyRequest().authenticated();
-                })
-                .oauth2ResourceServer(oAuth -> {
-                    oAuth.jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter));
-                })
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .build();
+
+        http.csrf(AbstractHttpConfigurer::disable);
+
+        http.authorizeHttpRequests(httpRequests -> {
+            httpRequests.requestMatchers("/api/v1/users/*").permitAll();//TODO: VALIDATE PERMIT ALL FOR SOME ENDPOINTS
+            httpRequests.anyRequest().authenticated();
+        });
+
+        http.oauth2ResourceServer(oAuth -> oAuth
+                .jwt(jwtConfigure -> jwtConfigure
+                        .jwtAuthenticationConverter(jwtAuthenticationConverter)));
+
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        return http.build();
     }
 
 }

@@ -6,6 +6,7 @@ import com.costumemania.msusers.service.IUserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -84,7 +85,7 @@ public class UserController {
 
     //    This endpoind is only used to check ms-config-server
     @GetMapping(path = "/config-message")
-    private String configMessage() {
+    public String configMessage() {
         return message;
     }
 }

@@ -5,3 +5,10 @@ spring:
     active: ${PROFILE:default}
   config:
     import: optional:configserver:http://${MS_CONFIG_SERVER_HOST:localhost}:${MS_CONFIG_SERVER_PORT:8888}?fail-fast=true&max-attempts=10&max-interval=3000&multiplier=1.2&initial-interval=1100
+
+##In case trace level is required for security debug
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security: TRACE
