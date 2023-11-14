@@ -29,6 +29,9 @@ public class ModelService {
     public Optional<List<Model>> getByNameModel(String name){
         return modelRepository.findByName(name);
     }
+    public Optional<Model> validateCreate (String name) {
+        return modelRepository.validateCreate(name);
+    };
     public List<Model> getByNameAndCategoryModel(String name,Integer category){
         return modelRepository.findByNameAndCategory(name,category);
     }
