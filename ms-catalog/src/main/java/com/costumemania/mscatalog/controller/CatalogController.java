@@ -546,8 +546,8 @@ public class CatalogController {
     }
 
     // public - devuelve Catalogo paginado
-    @GetMapping("/byKeyWord/{keyWord}/page/{page}")
-    public ResponseEntity<Page<Catalog>> getByKeyWordPageable(@PathVariable String keyWord,@PathVariable Integer page){
+    @GetMapping("/byKeyWord2/{keyWord}/page/{page}")
+    public ResponseEntity<Page<Catalog>> getByKeyWordPageable2(@PathVariable String keyWord,@PathVariable Integer page){
         List<Optional<List<Model>>> modelList = new ArrayList<>();
         // first verify if exists any model with feign
         try {
@@ -566,9 +566,7 @@ public class CatalogController {
                         try {
                             Optional<List<Catalog>> result = catalogService.getCatalogByModel(modelList.get(0).get().get(i).getIdModel());
                             if (!result.get().isEmpty()) {
-                                for (int j = 0; j < result.get().size(); j++) {
-                                    finalResult.add(result.get().get(j));
-                                }
+                                finalResult.addAll(result.get());
                             }
                         } catch (FeignException e) {
                             System.out.println("there isn´t catalog of model " + modelList.get(0).get().get(i).getIdModel());
@@ -590,6 +588,42 @@ public class CatalogController {
         // else...
         List<Catalog> pageResult = finalResult.subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
         Page<Catalog> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
+        return ResponseEntity.ok().body(catalogPage);
+    }
+    // public - devuelve CatalogoResponse paginado
+    @GetMapping("/byKeyWord/{keyWord}/page/{page}")
+    public ResponseEntity<Page<CatalogResponse>> getByKeyWordPageable(@PathVariable String keyWord,@PathVariable Integer page){
+        List<Optional<List<Model>>> modelList = new ArrayList<>();
+        // first verify if exists any model with feign
+        try {
+            Optional<List<Model>> modelByName = modelService.getByNameModel(keyWord).getBody();
+            if (!modelByName.get().isEmpty()) modelList.add(modelByName);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // get every catalog with the keyword
+        List <CatalogResponse> catalogResponses = new ArrayList<>();
+        if (!modelList.isEmpty()) {
+            if (!modelList.get(0).get().isEmpty()) {
+                for (int i = 0; i < modelList.get(0).get().size(); i++) {
+                    Optional<List<Catalog>> listCatalog = catalogService.getCatalogByModel(modelList.get(0).get().get(i).getIdModel());
+                    if (!listCatalog.get().isEmpty()) {
+                        catalogResponses.add(transformCatalog(listCatalog.get()));
+                    }
+                }
+            }
+        }
+        //pagination
+        int pageSize = 12;
+        int totalItems = catalogResponses.size();
+        Pageable pageable = PageRequest.of(page, pageSize);
+        if (pageable.getOffset() > totalItems) {
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        List<CatalogResponse> pageResult = catalogResponses.subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
+        Page<CatalogResponse> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
         return ResponseEntity.ok().body(catalogPage);
     }
 
