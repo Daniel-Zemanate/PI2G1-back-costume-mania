@@ -1,0 +1,62 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  #  ------ cloud parameters to exclude if local test is needed ------
+  cloud:
+    #    config:
+    #      enabled: false
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: ms-catalog
+          uri: lb://ms-catalog
+          predicates:
+            - Path=/api/v1/catalog/**
+        - id: ms-catalog-size
+          uri: lb://ms-catalog
+          predicates:
+            - Path=/api/v1/size/**
+        - id: ms-delete
+          uri: lb://ms-delete
+          predicates:
+            - Path=/api/v1/deleteMS/**
+        - id: ms-favorite
+          uri: lb://ms-favorite
+          predicates:
+            - Path=/api/v1/fav/**
+        - id: ms-product-category
+          uri: lb://ms-product
+          predicates:
+            - Path=/api/v1/category/**
+        - id: ms-product-model
+          uri: lb://ms-product
+          predicates:
+            - Path=/api/v1/model/**
+        - id: ms-users
+          uri: lb://ms-users
+          predicates:
+            - Path=/api/v1/users/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceURL:
+      defaultZone: http://${EUREKA_SERVER_HOST:localhost}:${EUREKA_SERVER_PORT:8761}/eureka/
+  management:
+    endpoint:
+      gateway:
+        enabled: true
+    endpoints:
+      web:
+        exposure:
+          include: gateway

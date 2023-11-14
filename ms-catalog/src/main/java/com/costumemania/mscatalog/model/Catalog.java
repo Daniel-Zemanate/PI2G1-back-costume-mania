@@ -16,11 +16,14 @@ public class Catalog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_catalog",unique = true, nullable = false)
-    private Long idCatalog;
+    private Integer idCatalog;
 
     @ManyToOne
-    @JoinColumn(name = "id_size")
-    @Column(name = "size")
+    @JoinColumn(name = "model")
+    private Model model;
+
+    @ManyToOne
+    @JoinColumn(name = "size")
     private Size size;
 
     @Column(name = "quantity")
@@ -28,4 +31,23 @@ public class Catalog {
 
     @Column(name = "price")
     private Float price;
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+    public void setModel(Model model) {
+        this.model = model;
+    }
+    public void setSize(Size size) {
+        this.size = size;
+    }
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+    public void setIdCatalog(Integer idCatalog) {
+        this.idCatalog = idCatalog;
+    }
 }

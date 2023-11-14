@@ -4,9 +4,14 @@ server:
 spring:
   application:
     name: ms-eureka-server
+#  ------ cloud parameters to exclude if local test is needed ------
+#  cloud:
+#    config:
+#      enabled: false
 eureka:
   instance:
-    hostname: localhost
+    hostname: ${EUREKA_SERVER_HOST:localhost}
+    prefer-ip-address: true
   client:
     registerWithEureka: false
     fetchRegistry: false

@@ -1,18 +1,297 @@
 version: "3.8"
 
+volumes:
+  vol-costume-mania:
+  vol-keycloak-data:
+networks:
+  net-costume-mania:
+
 services:
   mysqldb:
     image: mysql:8.1
-#   Create your personal .env file from .envTemplate
-    env_file: ./.env
+    container_name: mysqldb
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 768M
+    #   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
     environment:
       - MYSQL_USER=$MYSQLDB_USER
       - MYSQL_PASSWORD=$MYSQLDB_PASSWORD
       - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
       - MYSQL_DATABASE=$MYSQLDB_DATABASE
     ports:
-      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+      - ${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}
     logging:
       driver: none
     volumes:
-      - ./db:/docker-entrypoint-initdb.d
+      - ./db/script-disfraces.sql:/docker-entrypoint-initdb.d/script.sql
+      - vol-costume-mania:/var/lib/mysql
+    networks:
+      - net-costume-mania
+
+  ms-keycloak:
+    image: quay.io/keycloak/keycloak:21.0.1
+    command:
+      - start-dev
+    container_name: ms-keycloak
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 768M
+    #   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - KEYCLOAK_ADMIN=$MS_KEYCLOAK_ADMIN_USERNAME
+      - KEYCLOAK_ADMIN_PASSWORD=$MS_KEYCLOAK_ADMIN_PASSWORD
+    ports:
+      - ${MS_KEYCLOAK_LOCAL_PORT}:${MS_KEYCLOAK_DOCKER_PORT}
+    volumes:
+      - vol-keycloak-data:/opt/jboss/keycloak/standalone/data
+    networks:
+      - net-costume-mania
+
+  ms-config-server:
+    build:
+      context: ./ms-config-server/
+    container_name: ms-config-server
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+    #   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - PORT=$MS_CONFIG_SERVER_DOCKER_PORT
+      - DEFAULT_LABEL=$MS_CONFIG_SERVER_DEFAULT_LABEL
+    ports:
+      - ${MS_CONFIG_SERVER_LOCAL_PORT}:${MS_CONFIG_SERVER_DOCKER_PORT}
+    networks:
+      - net-costume-mania
+
+  ms-eureka-server:
+    build:
+      context: ./ms-eureka-server/
+      args:
+        - PROFILE=$MS_EUREKA_SERVER_PROFILE
+        - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
+        - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
+    container_name: ms-eureka-server
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    #   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - PORT=$MS_EUREKA_SERVER_DOCKER_PORT
+    ports:
+      - ${MS_EUREKA_SERVER_LOCAL_PORT}:${MS_EUREKA_SERVER_DOCKER_PORT}
+    networks:
+      - net-costume-mania
+    depends_on:
+      - ms-config-server
+
+  ms-gateway:
+    build:
+      context: ./ms-gateway/
+      args:
+        - PROFILE=$MS_GATEWAY_PROFILE
+        - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
+        - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    #   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - PORT=$MS_GATEWAY_DOCKER_PORT
+      - EUREKA_SERVER_HOST=$MS_EUREKA_SERVER_HOST
+      - EUREKA_SERVER_PORT=$MS_EUREKA_SERVER_DOCKER_PORT
+    ports:
+      - ${MS_GATEWAY_LOCAL_PORT}:${MS_GATEWAY_DOCKER_PORT}
+    networks:
+      - net-costume-mania
+    depends_on:
+      - mysqldb
+      - ms-config-server
+      - ms-eureka-server
+
+  ms-catalog:
+    build:
+      context: ./ms-catalog/
+      args:
+        - PROFILE=$MS_CATALOG_PROFILE
+        - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
+        - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    #   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - PORT=$MS_CATALOG_DOCKER_PORT
+      - EUREKA_SERVER_HOST=$MS_EUREKA_SERVER_HOST
+      - EUREKA_SERVER_PORT=$MS_EUREKA_SERVER_DOCKER_PORT
+      - DB_URL=$MYSQLDB_HOST
+      - DB_PORT=$MYSQLDB_DOCKER_PORT
+      - DB_SERVICE=$MYSQLDB_DATABASE
+      - DB_USER=$MYSQLDB_USER
+      - DB_PASS=$MYSQLDB_PASSWORD
+    ports:
+      - ${MS_CATALOG_LOCAL_PORT}:${MS_CATALOG_DOCKER_PORT}
+    networks:
+      - net-costume-mania
+    depends_on:
+      - ms-gateway
+
+
+  ms-delete:
+    build:
+      context: ./ms-delete/
+      args:
+        - PROFILE=$MS_DELETE_PROFILE
+        - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
+        - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    #   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - PORT=$MS_DELETE_DOCKER_PORT
+      - EUREKA_SERVER_HOST=$MS_EUREKA_SERVER_HOST
+      - EUREKA_SERVER_PORT=$MS_EUREKA_SERVER_DOCKER_PORT
+      - DB_URL=$MYSQLDB_HOST
+      - DB_PORT=$MYSQLDB_DOCKER_PORT
+      - DB_SERVICE=$MYSQLDB_DATABASE
+      - DB_USER=$MYSQLDB_USER
+      - DB_PASS=$MYSQLDB_PASSWORD
+    ports:
+      - ${MS_DELETE_LOCAL_PORT}:${MS_DELETE_DOCKER_PORT}
+    networks:
+      - net-costume-mania
+    depends_on:
+      - ms-gateway
+
+  ms-favorite:
+    build:
+      context: ./ms-favorite/
+      args:
+        - PROFILE=$MS_FAVORITE_PROFILE
+        - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
+        - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    #   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - PORT=$MS_FAVORITE_DOCKER_PORT
+      - EUREKA_SERVER_HOST=$MS_EUREKA_SERVER_HOST
+      - EUREKA_SERVER_PORT=$MS_EUREKA_SERVER_DOCKER_PORT
+      - DB_URL=$MYSQLDB_HOST
+      - DB_PORT=$MYSQLDB_DOCKER_PORT
+      - DB_SERVICE=$MYSQLDB_DATABASE
+      - DB_USER=$MYSQLDB_USER
+      - DB_PASS=$MYSQLDB_PASSWORD
+    ports:
+      - ${MS_FAVORITE_LOCAL_PORT}:${MS_FAVORITE_DOCKER_PORT}
+    networks:
+      - net-costume-mania
+    depends_on:
+      - ms-gateway
+
+
+  ms-product:
+    build:
+      context: ./ms-product/
+      args:
+        - PROFILE=$MS_PRODUCT_PROFILE
+        - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
+        - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    #   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - PORT=$MS_PRODUCT_DOCKER_PORT
+      - EUREKA_SERVER_HOST=$MS_EUREKA_SERVER_HOST
+      - EUREKA_SERVER_PORT=$MS_EUREKA_SERVER_DOCKER_PORT
+      - DB_URL=$MYSQLDB_HOST
+      - DB_PORT=$MYSQLDB_DOCKER_PORT
+      - DB_SERVICE=$MYSQLDB_DATABASE
+      - DB_USER=$MYSQLDB_USER
+      - DB_PASS=$MYSQLDB_PASSWORD
+    ports:
+      - ${MS_PRODUCT_LOCAL_PORT}:${MS_PRODUCT_DOCKER_PORT}
+    networks:
+      - net-costume-mania
+    depends_on:
+      - ms-gateway
+
+  ms-users:
+    build:
+      context: ./ms-users/
+      args:
+        - PROFILE=$MS_USERS_PROFILE
+        - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
+        - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    #   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - PORT=$MS_USERS_DOCKER_PORT
+      - EUREKA_SERVER_HOST=$MS_EUREKA_SERVER_HOST
+      - EUREKA_SERVER_PORT=$MS_EUREKA_SERVER_DOCKER_PORT
+      - DB_URL=$MYSQLDB_HOST
+      - DB_PORT=$MYSQLDB_DOCKER_PORT
+      - DB_SERVICE=$MYSQLDB_DATABASE
+      - DB_USER=$MYSQLDB_USER
+      - DB_PASS=$MYSQLDB_PASSWORD
+    ports:
+      - ${MS_USERS_LOCAL_PORT}:${MS_USERS_DOCKER_PORT}
+    networks:
+      - net-costume-mania
+    depends_on:
+      - ms-gateway

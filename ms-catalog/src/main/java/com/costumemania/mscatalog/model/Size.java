@@ -17,7 +17,7 @@ public class Size {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_size",unique = true, nullable = false)
-    private Long idSize;
+    private Integer id;
 
     @Column(name = "adult")
     private Integer adult;
@@ -27,4 +27,8 @@ public class Size {
 
     @Column(name = "size_description")
     private String sizeDescription;
+
+    public Integer getId() {
+        return id;
+    }
 }
