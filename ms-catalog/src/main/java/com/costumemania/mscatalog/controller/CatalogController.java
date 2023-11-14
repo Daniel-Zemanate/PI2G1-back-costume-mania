@@ -1,9 +1,6 @@
 package com.costumemania.mscatalog.controller;
 
-import com.costumemania.mscatalog.model.Catalog;
-import com.costumemania.mscatalog.model.CatalogDTO;
-import com.costumemania.mscatalog.model.Model;
-import com.costumemania.mscatalog.model.Size;
+import com.costumemania.mscatalog.model.*;
 import com.costumemania.mscatalog.service.CatalogService;
 import com.costumemania.mscatalog.service.ModelService;
 import com.costumemania.mscatalog.service.SizeService;
@@ -32,17 +29,75 @@ public class CatalogController {
         this.modelService = modelService;
     }
 
+    //////////////////////////////////////////////////////////////////
+    // FUNCTION to transform catalog to CatalogResponse
+    private CatalogResponse transformCatalog (List<Catalog> c) {
+        List<CatalogResponse.SizeByModel> listSize = new ArrayList<>();
+        for (int i=0; i<c.size(); i++) {
+            // quantity validation (now disabled)
+            // if (c.get(i).getQuantity()>0) {
+                listSize.add(new CatalogResponse.SizeByModel(c.get(i).getIdCatalog(),
+                        c.get(i).getSize().getNoSize(),
+                        c.get(i).getQuantity()));
+            // }
+        };
+
+        CatalogResponse catalogResponse = new CatalogResponse(
+                c.get(0).getModel().getNameModel(),
+                c.get(0).getModel().getIdModel(),
+                c.get(0).getModel().getCategory().getName(),
+                c.get(0).getModel().getUrlImage(),
+                c.get(0).getSize().getAdult(),
+                c.get(0).getPrice(),
+                listSize
+        );
+
+        return catalogResponse;
+    }
+    //////////////////////////////////////////////////////////////////
+
     //////////////---------- TODO EL CATALOGO ----------//////////////
 
+    // public
     @GetMapping
     public ResponseEntity<List<Catalog>> getAll(){
         return ResponseEntity.ok().body(catalogService.getCatalog());
     }
 
+    // public
     @GetMapping("/page/{page}")
     public Page<Catalog> getAll(@PathVariable Integer page){
         Pageable pageable = PageRequest.of(page, 12);
         return catalogService.getCatalog(pageable);
+    }
+
+    // public
+    @GetMapping("/all/page/{page}")
+    public ResponseEntity<Page<CatalogResponse>> getAllGroup(@PathVariable Integer page){
+        try {
+            List<Model> modelIterator = modelService.getAllModel().getBody();
+            List <CatalogResponse> catalogResponses = new ArrayList<>();
+            for (int i=0; i<modelIterator.size(); i++) {
+                Optional<List<Catalog>> listCatalog = catalogService.getCatalogByModel(modelIterator.get(i).getIdModel());
+                if (!listCatalog.get().isEmpty()) {
+                    catalogResponses.add(transformCatalog(listCatalog.get()));
+                }
+            }
+            //pagination
+            int pageSize = 12;
+            int totalItems = catalogResponses.size();
+            Pageable pageable = PageRequest.of(page, pageSize);
+            if (pageable.getOffset() > totalItems) {
+                return ResponseEntity.notFound().build();
+            }
+            // else...
+            List<CatalogResponse> pageResult = catalogResponses.subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
+            Page<CatalogResponse> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
+            return ResponseEntity.ok().body(catalogPage);
+        }
+        catch (FeignException e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     /////////////////////////////////////////////////////////////////
@@ -61,6 +116,21 @@ public class CatalogController {
 
 
 //////////////---------- CATALOGO FILTRADO ----------//////////////
+
+    @GetMapping("/byModel/{idModel}")
+    public ResponseEntity<Optional<List<Catalog>>> getByModel(@PathVariable Integer idModel){
+
+        // first verify if the model exists with feign
+        try {
+            ResponseEntity<Optional<Model>> response = modelService.getByIdModel(idModel);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        return ResponseEntity.ok().body(catalogService.getCatalogByModel(idModel));
+    }
+
 
     @GetMapping("/bySize/{bolleanAdult}")
     public ResponseEntity<List<Catalog>> getBySize(@PathVariable Integer bolleanAdult){
@@ -85,19 +155,6 @@ public class CatalogController {
         return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping("/byModel/{idModel}")
-    public ResponseEntity<Optional<List<Catalog>>> getByModel(@PathVariable Integer idModel){
-
-        // first verify if the model exists with feign
-        try {
-            ResponseEntity<Optional<Model>> response = modelService.getByIdModel(idModel);
-        }
-        catch (FeignException e){
-            return ResponseEntity.notFound().build();
-        }
-        // else...
-        return ResponseEntity.ok().body(catalogService.getCatalogByModel(idModel));
-    }
 
     @GetMapping("/byCategory/{idCategory}")
     public ResponseEntity<List<Catalog>> getByCategory(@PathVariable Integer idCategory){
