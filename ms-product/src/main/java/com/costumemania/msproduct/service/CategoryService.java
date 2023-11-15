@@ -16,6 +16,9 @@ public class CategoryService {
     public List<Category> getAll() {
         return categoryRepository.findAll();
     };
+    public List<Category> getAllComplete() {
+        return categoryRepository.findAllComplete();
+    };
     public Optional<Category> getdById (Integer id) {
         return categoryRepository.findById(id);
     };
