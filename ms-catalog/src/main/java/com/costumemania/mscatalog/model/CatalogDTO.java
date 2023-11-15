@@ -5,12 +5,14 @@ public class CatalogDTO {
     private Integer size;
     private Integer quantity;
     private Float price;
+    private Integer status;
 
-    public CatalogDTO(Integer model, Integer size, Integer quantity, Float price) {
+    public CatalogDTO(Integer model, Integer size, Integer quantity, Float price, Integer status) {
         this.model = model;
         this.size = size;
         this.quantity = quantity;
         this.price = price;
+        this.status = status;
     }
 
     public Integer getModel() {
@@ -24,5 +26,8 @@ public class CatalogDTO {
     }
     public Float getPrice() {
         return price;
+    }
+    public Integer getStatus() {
+        return status;
     }
 }

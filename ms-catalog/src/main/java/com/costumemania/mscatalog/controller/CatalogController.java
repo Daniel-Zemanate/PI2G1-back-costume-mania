@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -55,27 +56,35 @@ public class CatalogController {
 
     //////////////---------- TODO EL CATALOGO ----------//////////////
 
-    // public
+    // public - devuelve absolutamente todo, en items de catálogo
     @GetMapping
     public ResponseEntity<List<Catalog>> getAll(){
         return ResponseEntity.ok().body(catalogService.getCatalog());
     }
 
-    // public
+    // public - devuelve absolutamente todo, en items de catálogo
     @GetMapping("/page/{page}")
     public Page<Catalog> getAll(@PathVariable Integer page){
         Pageable pageable = PageRequest.of(page, 12);
         return catalogService.getCatalog(pageable);
     }
 
-    // public
+    // public - Devuelve solo los items que están activos, agrupados por modelo
     @GetMapping("/all/page/{page}")
     public ResponseEntity<Page<CatalogResponse>> getAllGroup(@PathVariable Integer page){
         try {
             List<Model> modelIterator = modelService.getAllModel().getBody();
+            /*List<Model> modelIterator = new ArrayList<>();
+            // get active models
+            for (Model model : allModels) {
+                if (model.getStatus().getId()==1){
+                    modelIterator.add(model);
+                }
+            }*/
+            // get active catalog
             List <CatalogResponse> catalogResponses = new ArrayList<>();
             for (Model model : modelIterator) {
-                Optional<List<Catalog>> listCatalog = catalogService.getCatalogByModel(model.getIdModel());
+                Optional<List<Catalog>> listCatalog = catalogService.getActiveCatalogByModel(model.getIdModel());
                 if (!listCatalog.get().isEmpty()) {
                     catalogResponses.add(transformCatalog(listCatalog.get()));
                 }
@@ -99,7 +108,7 @@ public class CatalogController {
 
     /////////////////////////////////////////////////////////////////
 
-    // public
+    // public - devuelve los inactivos también
     @GetMapping("/{idCatalog}")
     public ResponseEntity<Optional<Catalog>> getById(@PathVariable Integer idCatalog){
         // first verify if the ID exist
@@ -141,7 +150,7 @@ public class CatalogController {
         if (catalogService.getCatalogByModel(idModel).get().isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok().body(transformCatalog(catalogService.getCatalogByModel(idModel).get()));
+        return ResponseEntity.ok().body(transformCatalog(catalogService.getActiveCatalogByModel(idModel).get()));
     }
 
     // public - devuelve Catalogo y sin paginar
@@ -426,7 +435,7 @@ public class CatalogController {
             List<Model> modelIterator = modelService.getAllModel().getBody();
             List<CatalogResponse> catalogResponses = new ArrayList<>();
             for (Model model : modelIterator) {
-                List<Catalog> listCatalog = catalogService.getCatalogBySize(bolleanAdult, model.getIdModel());
+                List<Catalog> listCatalog = catalogService.getActiveCatalogBySize(bolleanAdult, model.getIdModel());
                 if (!listCatalog.isEmpty()) {
                     catalogResponses.add(transformCatalog(listCatalog));
                 }
@@ -523,7 +532,7 @@ public class CatalogController {
             List<CatalogResponse> catalogResponses = new ArrayList<>();
             if (allModels.size() > 0) {
                 for (Model model : allModels) {
-                    List<Catalog> listCatalog = catalogService.findByCategory(idCategory, model.getIdModel());
+                    List<Catalog> listCatalog = catalogService.findActiveByCategory(idCategory, model.getIdModel());
                     if (!listCatalog.isEmpty()) {
                         catalogResponses.add(transformCatalog(listCatalog));
                     }
@@ -610,7 +619,7 @@ public class CatalogController {
         if (!modelList.isEmpty()) {
             if (!modelList.get(0).get().isEmpty()) {
                 for (int i = 0; i < modelList.get(0).get().size(); i++) {
-                    Optional<List<Catalog>> listCatalog = catalogService.getCatalogByModel(modelList.get(0).get().get(i).getIdModel());
+                    Optional<List<Catalog>> listCatalog = catalogService.getActiveCatalogByModel(modelList.get(0).get().get(i).getIdModel());
                     if (!listCatalog.get().isEmpty()) {
                         catalogResponses.add(transformCatalog(listCatalog.get()));
                     }
@@ -695,7 +704,7 @@ public class CatalogController {
         if (!modelList.isEmpty()) {
             if (!modelList.get(0).isEmpty()) {
                 for (int i = 0; i < modelList.get(0).size(); i++) {
-                    Optional<List<Catalog>> listCatalog = catalogService.getCatalogByModel(modelList.get(0).get(i).getIdModel());
+                    Optional<List<Catalog>> listCatalog = catalogService.getActiveCatalogByModel(modelList.get(0).get(i).getIdModel());
                     if (!listCatalog.get().isEmpty()) {
                         catalogResponses.add(transformCatalog(listCatalog.get()));
                     }
@@ -790,7 +799,7 @@ public class CatalogController {
         // else...
         List<CatalogResponse> catalogResponses = new ArrayList<>();
         for (Model model : modelList) {
-            List<Catalog> listCatalog = catalogService.getCatalogBySize(bolleanAdult, model.getIdModel());
+            List<Catalog> listCatalog = catalogService.getActiveCatalogBySize(bolleanAdult, model.getIdModel());
             if (!listCatalog.isEmpty()) {
                 catalogResponses.add(transformCatalog(listCatalog));
             }
@@ -873,7 +882,7 @@ public class CatalogController {
         // else...
         List<CatalogResponse> catalogResponses = new ArrayList<>();
         for (Model model : modelList) {
-            List<Catalog> listCatalog = catalogService.getCatalogBySize(bolleanAdult, model.getIdModel());
+            List<Catalog> listCatalog = catalogService.getActiveCatalogBySize(bolleanAdult, model.getIdModel());
             if (!listCatalog.isEmpty()) {
                 catalogResponses.add(transformCatalog(listCatalog));
             }
@@ -954,7 +963,7 @@ public class CatalogController {
         // else...
         List<CatalogResponse> catalogResponses = new ArrayList<>();
         for (Model model : modelList) {
-            List<Catalog> listCatalog = catalogService.getCatalogBySize(bolleanAdult, model.getIdModel());
+            List<Catalog> listCatalog = catalogService.getActiveCatalogBySize(bolleanAdult, model.getIdModel());
             if (!listCatalog.isEmpty()) {
                 catalogResponses.add(transformCatalog(listCatalog));
             }
@@ -977,7 +986,7 @@ public class CatalogController {
     
     /////////////////////////////////////////////////////////////////
 
-    // public
+    // public - Solo trae los activos
     @GetMapping("/news")
     public ResponseEntity<List<Catalog>> getNews(){
         return ResponseEntity.ok().body(catalogService.getNews());
@@ -1017,6 +1026,7 @@ public class CatalogController {
         catalogCreated.setSize(sizeService.getByIdSEC(catalogDTO.getSize()));
         catalogCreated.setQuantity(catalogDTO.getQuantity());
         catalogCreated.setPrice(catalogDTO.getPrice());
+        catalogCreated.setStatus(new StatusComponent(1, "active"));
         return ResponseEntity.accepted().body(catalogService.save(catalogCreated));
     }
 
@@ -1041,7 +1051,7 @@ public class CatalogController {
     // adm
     @PutMapping("/modify/{idCatalog}")
     public ResponseEntity<Catalog> modifyCatalog(@PathVariable Integer idCatalog, @RequestBody CatalogDTO catalogDTO) {
-        // verify if catalog exists - 404
+        // verify if catalog exists (active or inactive) - 404
         Optional<Catalog> searchCatalog = catalogService.getCatalogById(idCatalog);
         if (searchCatalog.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -1066,13 +1076,28 @@ public class CatalogController {
         if(catalogDTO.getPrice()<0){
             return ResponseEntity.badRequest().build();
         }
-        // create - 202
+        // create Catalog
         Catalog catalogCreated = new Catalog();
         catalogCreated.setIdCatalog(idCatalog);
         catalogCreated.setModel(modelService.getByIdModelSEC(catalogDTO.getModel()));
         catalogCreated.setSize(sizeService.getByIdSEC(catalogDTO.getSize()));
         catalogCreated.setQuantity(catalogDTO.getQuantity());
         catalogCreated.setPrice(catalogDTO.getPrice());
+        if (catalogDTO.getStatus() == 1) {
+            catalogCreated.setStatus(new StatusComponent(1, "active"));
+        } else if (catalogDTO.getStatus() == 2) {
+            catalogCreated.setStatus(new StatusComponent(2, "inactive"));
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+        // verify if this Catalog exists - 422 Unprocessable Content
+        if (!Objects.equals(catalogDTO.getModel(), searchCatalog.get().getModel().getIdModel()) || !Objects.equals(catalogDTO.getSize(), searchCatalog.get().getSize().getId())) {
+            Optional<Catalog> searchNewCatalog = catalogService.validateCreate(catalogCreated.getModel().getIdModel(), catalogCreated.getSize().getAdult(), catalogCreated.getSize().getNoSize());
+            if(searchNewCatalog.isPresent()){
+                return ResponseEntity.unprocessableEntity().build();
+            }
+        }
+        // create - 202
         return ResponseEntity.accepted().body(catalogService.save(catalogCreated));
     }
 
@@ -1092,7 +1117,6 @@ public class CatalogController {
     // adm - deprecated
     @DeleteMapping("/byModel/{idModel}")
     public ResponseEntity<String> deleteByModel (@PathVariable Integer idModel) {
-
         // verify if there are results
         Optional<List<Catalog>> catalogProof = catalogService.getCatalogByModel(idModel);
         if (catalogProof.get().isEmpty()){

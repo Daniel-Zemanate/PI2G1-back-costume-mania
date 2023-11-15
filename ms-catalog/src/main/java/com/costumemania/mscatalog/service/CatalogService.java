@@ -26,6 +26,9 @@ public class CatalogService {
     public Optional<List<Catalog>> getCatalogByModel (Integer idModel) {
         return catalogRepository.findByModel(idModel);
     };
+    public Optional<List<Catalog>> getActiveCatalogByModel (Integer idModel) {
+        return catalogRepository.findActiveByModel(idModel);
+    };
 
     public Optional<Catalog> getCatalogById(Integer id){
         return catalogRepository.findById(id);
@@ -40,9 +43,15 @@ public class CatalogService {
     public List<Catalog> getCatalogBySize (Integer bollean, Integer idModel) {
         return catalogRepository.findBySize(bollean, idModel);
     };
+    public List<Catalog> getActiveCatalogBySize (Integer bollean, Integer idModel) {
+        return catalogRepository.findActiveBySize(bollean, idModel);
+    };
 
     public List<Catalog> findByCategory (Integer category, Integer idModel) {
         return catalogRepository.findByCategory(category, idModel);
+    };
+    public List<Catalog> findActiveByCategory (Integer category, Integer idModel) {
+        return catalogRepository.findActiveByCategory(category, idModel);
     };
 
     public Optional<Catalog> validateCreate (Integer idModel, Integer booleanAdult, String size) {

@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "statuscomponent")
 public class StatusComponent {
@@ -15,6 +13,12 @@ public class StatusComponent {
     private Integer id;
     @Column(name = "description")
     private String description;
+
+    public StatusComponent() {}
+    public StatusComponent(Integer id, String description) {
+        this.id = id;
+        this.description = description;
+    }
 
     public Integer getId() {
         return id;
