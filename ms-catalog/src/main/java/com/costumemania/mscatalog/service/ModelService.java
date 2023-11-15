@@ -16,6 +16,9 @@ public class ModelService {
     @Autowired
     ModelRepositoryFeign modelRepositoryFeign;
 
+    public ResponseEntity<List<Model>> getAllModel() {
+        return modelRepositoryFeign.getAllModel();
+    };
     public ResponseEntity<Optional<Model>> getByIdModel(Integer id){
         return modelRepositoryFeign.getByIdModel(id);
     }

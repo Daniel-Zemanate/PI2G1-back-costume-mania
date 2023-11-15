@@ -50,4 +50,16 @@ public class Catalog {
     public void setIdCatalog(Integer idCatalog) {
         this.idCatalog = idCatalog;
     }
+    public Integer getIdCatalog() {
+        return idCatalog;
+    }
+    public Model getModel() {
+        return model;
+    }
+    public Size getSize() {
+        return size;
+    }
+    public Float getPrice() {
+        return price;
+    }
 }

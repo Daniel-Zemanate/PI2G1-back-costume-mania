@@ -27,4 +27,13 @@ public class Model {
     public Integer getIdModel() {
         return idModel;
     }
+    public String getNameModel() {
+        return nameModel;
+    }
+    public Category getCategory() {
+        return category;
+    }
+    public String getUrlImage() {
+        return urlImage;
+    }
 }
