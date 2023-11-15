@@ -21,6 +21,10 @@ public class Category {
     @Column(name = "name")
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "status_category")
+    private StatusComponent statusCategory;
+
     public Integer getIdCategory() {
         return idCategory;
     }
@@ -29,5 +33,14 @@ public class Category {
     }
     public String getName() {
         return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public StatusComponent getStatusCategory() {
+        return statusCategory;
+    }
+    public void setStatusCategory(StatusComponent statusCategory) {
+        this.statusCategory = statusCategory;
     }
 }
