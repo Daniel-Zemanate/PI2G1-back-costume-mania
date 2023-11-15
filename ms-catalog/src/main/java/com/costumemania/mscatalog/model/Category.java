@@ -17,4 +17,11 @@ public class Category {
     private Integer idCategory;
     @Column(name = "name")
     private String name;
+
+    public Integer getIdCategory() {
+        return idCategory;
+    }
+    public String getName() {
+        return name;
+    }
 }

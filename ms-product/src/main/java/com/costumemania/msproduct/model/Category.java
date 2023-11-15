@@ -27,4 +27,7 @@ public class Category {
     public void setIdCategory(Integer idCategory) {
         this.idCategory = idCategory;
     }
+    public String getName() {
+        return name;
+    }
 }
