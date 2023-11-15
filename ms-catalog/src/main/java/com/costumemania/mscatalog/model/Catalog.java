@@ -32,6 +32,10 @@ public class Catalog {
     @Column(name = "price")
     private Float price;
 
+    @ManyToOne
+    @JoinColumn(name = "status_catalog")
+    private StatusComponent statusCatalog;
+
     public Integer getQuantity() {
         return quantity;
     }
@@ -61,5 +65,11 @@ public class Catalog {
     }
     public Float getPrice() {
         return price;
+    }
+    public StatusComponent getStatus() {
+        return statusCatalog;
+    }
+    public void setStatus(StatusComponent status) {
+        this.statusCatalog = status;
     }
 }

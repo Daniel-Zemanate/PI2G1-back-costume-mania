@@ -17,11 +17,17 @@ public class Category {
     private Integer idCategory;
     @Column(name = "name")
     private String name;
+    @ManyToOne
+    @JoinColumn(name = "status_category")
+    private StatusComponent statusCategory;
 
     public Integer getIdCategory() {
         return idCategory;
     }
     public String getName() {
         return name;
+    }
+    public StatusComponent getStatus() {
+        return statusCategory;
     }
 }
