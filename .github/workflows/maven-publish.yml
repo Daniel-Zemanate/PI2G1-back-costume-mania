@@ -32,9 +32,9 @@ jobs:
       continue-on-error: true
       run: sudo docker rm -f $(docker ps -a -q)
 
-#    - name: Clean Docker - Remove Containers
-#      continue-on-error: true
-#      run: sudo docker volume rm $(docker volume ls -q)
+    - name: Clean Docker - Remove Containers
+      continue-on-error: true
+      run: sudo docker volume rm $(docker volume ls -q)
 
     - name: Clean Docker
       continue-on-error: true
