@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -1101,6 +1102,46 @@ public class CatalogController {
         return ResponseEntity.accepted().body(catalogService.save(catalogCreated));
     }
 
+
+    ///////////////////--------- APIS to DELETE CATALOG------------///////////////////
+
+    // adm - deshabilita catalogo
+    @PutMapping("/delete/{idCatalog}")
+    public ResponseEntity<Catalog> makeInactiv (@PathVariable Integer idCatalog) {
+        // verify if catalog exists (active or inactive) - 404
+        Optional<Catalog> searchCatalog = catalogService.getCatalogById(idCatalog);
+        if (searchCatalog.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        // modify state
+        searchCatalog.get().setStatus(new StatusComponent(2, "inactive"));
+        return ResponseEntity.ok().body(catalogService.save(searchCatalog.get()));
+    }
+    // adm - deshabilita catalogo por modelo
+    @PutMapping("/deleteByM/{idModel}")
+    public ResponseEntity<String> makeInactivByModel (@PathVariable Integer idModel) {
+        Optional<List<Catalog>> searchCatalog = catalogService.getCatalogByModel(idModel);
+        if (searchCatalog.get().isEmpty()) {
+            return ResponseEntity.ok().body("there isn´t catalog with that model");
+        }
+        // modify state
+        catalogService.inactiveByModel(idModel);
+        return ResponseEntity.ok().body("all catalog with model " + idModel + " disabled");
+    }
+    // adm - deshabilita catalogo por categoria
+    @PutMapping("/deleteByC/{idCategory}")
+    public ResponseEntity<String> makeInactivByCat (@PathVariable Integer idCategory) {
+        try {
+            modelService.getCategorydById(idCategory);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // modify state
+        catalogService.inactiveByCategory(idCategory);
+        return ResponseEntity.ok().body("all catalog with category " + idCategory + " disabled");
+    }
+
     // adm - deprecated
     @DeleteMapping("/{idCatalog}")
     public ResponseEntity<String> delete(@PathVariable Integer idCatalog) {
@@ -1113,7 +1154,6 @@ public class CatalogController {
         catalogService.delete(idCatalog);
         return ResponseEntity.ok().body("Catalog item with ID " + idCatalog + " deleted");
     }
-
     // adm - deprecated
     @DeleteMapping("/byModel/{idModel}")
     public ResponseEntity<String> deleteByModel (@PathVariable Integer idModel) {

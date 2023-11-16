@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class DeleteController {
         this.catalogService = catalogService;
     }
 
-    @DeleteMapping("/deleteModel/{idModel}")
+    @PutMapping("/deleteModel/{idModel}")
     public ResponseEntity<String> deleteModel(@PathVariable Integer idModel){
 
         String message = ", and all the related catalog to that model.";
@@ -45,7 +46,7 @@ public class DeleteController {
         return ResponseEntity.ok().body("Model item with ID " + idModel + " deleted" + message);
     }
 
-    @DeleteMapping("/deleteCategory/{idCategory}")
+    @PutMapping("/deleteCategory/{idCategory}")
     public ResponseEntity<String> deleteCategory(@PathVariable Integer idCategory){
 
         // deleting catalog. If there isn´t any, continue with model

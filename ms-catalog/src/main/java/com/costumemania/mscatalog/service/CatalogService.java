@@ -78,4 +78,10 @@ public class CatalogService {
     public void deleteByModel (Integer idModel) {
         catalogRepository.deleteByModel(idModel);
     }
+    public void inactiveByModel (Integer idModel) {
+        catalogRepository.inactiveByModel(idModel);
+    };
+    public void inactiveByCategory (Integer idCategory) {
+        catalogRepository.inactiveByCategory(idCategory);
+    };
 }

@@ -51,4 +51,12 @@ public interface CatalogRepository extends JpaRepository<Catalog, Integer> {
     @Modifying
     @Query(value="DELETE FROM catalog c WHERE c.model =?1", nativeQuery = true)
     void deleteByModel (Integer idModel);
+    @Transactional
+    @Modifying
+    @Query(value="UPDATE catalog c inner join model m on c.model=m.id_model inner join category ca on m.category=ca.id_category SET c.status_catalog = 2 WHERE c.model=?1", nativeQuery = true)
+    void inactiveByModel (Integer idModel);
+    @Transactional
+    @Modifying
+    @Query(value="UPDATE catalog c inner join model m on c.model=m.id_model inner join category ca on m.category=ca.id_category SET c.status_catalog = 2 WHERE m.category=?1", nativeQuery = true)
+    void inactiveByCategory (Integer idCategory);
 }
