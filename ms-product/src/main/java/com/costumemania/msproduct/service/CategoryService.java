@@ -22,7 +22,7 @@ public class CategoryService {
     public Optional<Category> getdById (Integer id) {
         return categoryRepository.findById(id);
     };
-    public Category categorydById (Integer id) {
+    public Optional<Category> categorydById (Integer id) {
         return categoryRepository.categoryById(id);
     };
     public Optional<Category> getByName (String name) {

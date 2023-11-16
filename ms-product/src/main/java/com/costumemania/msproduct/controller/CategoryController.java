@@ -41,7 +41,7 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         }
         // else...
-        return ResponseEntity.ok().body(categoryService.categorydById(idCategory));
+        return ResponseEntity.ok().body(categoryProof.get());
     };
     // adm - devuelve la categoria sin importar si está activa o no
     @GetMapping("/adm/{idCategory}")
@@ -52,19 +52,19 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         }
         // else...
-        return ResponseEntity.ok().body(categoryService.categorydById(idCategory));
+        return ResponseEntity.ok().body(categoryProof.get());
     };
 
     // adm - devuelve la categoria sin importar si está activa o no
     @GetMapping("/name/{categoryName}")
-    public ResponseEntity<Object> getByName (@PathVariable String categoryName) {
+    public ResponseEntity<Category> getByName (@PathVariable String categoryName) {
         // first verify if the name exist
         Optional<Category> categoryProof = categoryService.getByName(categoryName);
         if (categoryProof.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         // else...
-        return ResponseEntity.ok().body(categoryProof);
+        return ResponseEntity.ok().body(categoryProof.get());
     };
 
     // adm
