@@ -28,6 +28,6 @@ public class Shipping {
     private Float cost;
 
     @OneToMany
-    @JoinColumn(name = "id_shipping")
+    @JoinColumn(name = "shipping_city")
     private Set<Sale> sales;
 }

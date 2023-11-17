@@ -33,7 +33,9 @@ public class ShippingService {
         shippingRepository.deleteById(id);
     }
 
-
+    public Optional<Shipping> getByDestinationByCostShipping(String destiny,Float cost){
+        return shippingRepository.findByDestinationByCost(destiny,cost);
+    }
 
 
 }

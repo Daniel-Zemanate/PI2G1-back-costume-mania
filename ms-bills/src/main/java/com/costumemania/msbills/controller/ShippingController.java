@@ -5,10 +5,7 @@ import com.costumemania.msbills.service.ShippingService;
 import jakarta.ws.rs.Path;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,11 +20,32 @@ public class ShippingController {
     public ShippingController(ShippingService shippingService) {
         this.shippingService = shippingService;
     }
-
+    @GetMapping
     public ResponseEntity<List<Shipping>> getAllShipping(){
         return ResponseEntity.ok(shippingService.getAllShipping());
     }
 
+    @PostMapping("/create/")
+    public ResponseEntity<Shipping> createShipping(@RequestBody Shipping shipping){
+        //verify if already exist
+        Optional<Shipping> searchShipping = shippingService.getByDestinationByCostShipping(shipping.getDestination(), shipping.getCost());
+        if (searchShipping.isPresent()) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+        //verify category
+       return ResponseEntity.accepted().body(shippingService.saveShipping(shipping));
+    }
+    @PutMapping("/idModify/{id}")
+    public ResponseEntity<Shipping> updateShipping (@PathVariable Integer id, @RequestBody Shipping s) {
+        // first verify if the ID exist
+        Optional<Shipping> shippingProof = shippingService.getByIdShipping(id);
+        if (shippingProof.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        s.setShippingId(shippingProof.get().getShippingId());
+        return ResponseEntity.ok().body(shippingService.saveShipping(s));
+    }
    @GetMapping("/{id}")
     public ResponseEntity<Optional<Shipping>> getByShipping(@PathVariable Integer id){
 
@@ -51,7 +69,7 @@ public class ShippingController {
        return ResponseEntity.ok().body(shipping);
    }
 
-   @DeleteMapping("/delete/{idShipping}")
+   @DeleteMapping("/delete/{id}")
         public ResponseEntity<String> deleteShipping(@PathVariable Integer id){
 
             //verify shipping empty
@@ -60,6 +78,6 @@ public class ShippingController {
                return ResponseEntity.noContent().build();
            }
            shippingService.deleteShipping(id);
-           return ResponseEntity.ok().body("Shipping item with ID" + id + "deleted.");
+           return ResponseEntity.ok().body("Shipping item with ID " + id + " deleted.");
    }
 }
