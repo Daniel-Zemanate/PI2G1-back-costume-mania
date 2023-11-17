@@ -1,5 +1,6 @@
 package com.costumemania.msdelete.service;
 
+import com.costumemania.msdelete.model.Category;
 import com.costumemania.msdelete.model.Model;
 import com.costumemania.msdelete.repository.ModelRepositoryFeign;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,4 +31,16 @@ public class ModelService {
     public ResponseEntity<String> delete(@PathVariable Integer idCategory) {
         return modelRepositoryFeign.delete(idCategory);
     };
+
+    public ResponseEntity<Model> makeInactive(@PathVariable Integer idModel) {
+        return modelRepositoryFeign.makeInactive(idModel);
+    }
+
+    public ResponseEntity<String> makeInactivByCat (@PathVariable Integer idCategory) {
+        return modelRepositoryFeign.makeInactivByCat(idCategory);
+    };
+
+    public ResponseEntity<Category> makeInactiveCat (@PathVariable Integer idCategory) {
+        return modelRepositoryFeign.makeInactiveCat(idCategory);
+    }
 }

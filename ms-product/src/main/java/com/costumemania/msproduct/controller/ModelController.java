@@ -6,6 +6,7 @@ import com.costumemania.msproduct.model.ModelDTO;
 import com.costumemania.msproduct.model.StatusComponent;
 import com.costumemania.msproduct.service.CategoryService;
 import com.costumemania.msproduct.service.ModelService;
+import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -211,6 +212,17 @@ public class ModelController {
         // modify state
         modelProof.get().setStatusModel(new StatusComponent(2, "inactive"));
         return ResponseEntity.ok().body(modelService.saveModel(modelProof.get()));
+    }
+    // adm - deshabilita catalogo por categoria
+    @PutMapping("/deleteByC/{idCategory}")
+    public ResponseEntity<String> makeInactivByCat (@PathVariable Integer idCategory) {
+        Optional<Category> categoryProof = categoryService.getdById(idCategory);
+        if (categoryProof.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        // modify state
+        modelService.inactiveByCategory(idCategory);
+        return ResponseEntity.ok().body("Every models within category " + idCategory + " disabled");
     }
 
     // adm - deprecated

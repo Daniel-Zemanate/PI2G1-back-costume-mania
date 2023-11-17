@@ -46,4 +46,7 @@ public class ModelService {
     }
     public void deleteModel(Integer idModel) { modelRepository.deleteById(idModel); }
     public void deleteModelByCat(Integer idCategory) { modelRepository.deleteByCategory(idCategory); }
+    public void inactiveByCategory (Integer idCategory) {
+        modelRepository.inactiveByCategory(idCategory);
+    };
 }
