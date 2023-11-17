@@ -29,6 +29,10 @@ public class Model {
     @Column(name = "url_image")
     private String urlImage;
 
+    @ManyToOne
+    @JoinColumn(name = "status_model")
+    private StatusComponent statusModel;
+
     public Integer getIdModel() {
         return idModel;
     }
@@ -52,5 +56,11 @@ public class Model {
     }
     public void setIdModel(Integer idModel) {
         this.idModel = idModel;
+    }
+    public StatusComponent getStatusModel() {
+        return statusModel;
+    }
+    public void setStatusModel(StatusComponent statusModel) {
+        this.statusModel = statusModel;
     }
 }
