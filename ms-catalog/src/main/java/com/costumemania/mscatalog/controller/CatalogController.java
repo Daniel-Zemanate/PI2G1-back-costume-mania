@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -55,27 +56,28 @@ public class CatalogController {
 
     //////////////---------- TODO EL CATALOGO ----------//////////////
 
-    // public
+    // public - devuelve absolutamente todo, en items de catálogo
     @GetMapping
     public ResponseEntity<List<Catalog>> getAll(){
         return ResponseEntity.ok().body(catalogService.getCatalog());
     }
 
-    // public
+    // public - devuelve absolutamente todo, en items de catálogo
     @GetMapping("/page/{page}")
     public Page<Catalog> getAll(@PathVariable Integer page){
         Pageable pageable = PageRequest.of(page, 12);
         return catalogService.getCatalog(pageable);
     }
 
-    // public
+    // public - Devuelve solo los items que están activos, agrupados por modelo
     @GetMapping("/all/page/{page}")
     public ResponseEntity<Page<CatalogResponse>> getAllGroup(@PathVariable Integer page){
         try {
             List<Model> modelIterator = modelService.getAllModel().getBody();
+            // get active catalog
             List <CatalogResponse> catalogResponses = new ArrayList<>();
             for (Model model : modelIterator) {
-                Optional<List<Catalog>> listCatalog = catalogService.getCatalogByModel(model.getIdModel());
+                Optional<List<Catalog>> listCatalog = catalogService.getActiveCatalogByModel(model.getIdModel());
                 if (!listCatalog.get().isEmpty()) {
                     catalogResponses.add(transformCatalog(listCatalog.get()));
                 }
@@ -99,7 +101,7 @@ public class CatalogController {
 
     /////////////////////////////////////////////////////////////////
 
-    // public
+    // public - devuelve los inactivos también
     @GetMapping("/{idCatalog}")
     public ResponseEntity<Optional<Catalog>> getById(@PathVariable Integer idCatalog){
         // first verify if the ID exist
@@ -141,26 +143,22 @@ public class CatalogController {
         if (catalogService.getCatalogByModel(idModel).get().isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok().body(transformCatalog(catalogService.getCatalogByModel(idModel).get()));
+        return ResponseEntity.ok().body(transformCatalog(catalogService.getActiveCatalogByModel(idModel).get()));
     }
 
     // public - devuelve Catalogo y sin paginar
     @GetMapping("/bySize/{bolleanAdult}")
     public ResponseEntity<List<Catalog>> getBySize(@PathVariable Integer bolleanAdult){
         // first verify if the bollean is correct
-        List<Size> sizeList = new ArrayList<>();
-        sizeList = sizeService.getByAdult(bolleanAdult);
+        List<Size> sizeList = sizeService.getByAdult(bolleanAdult);
         if (sizeList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         // else...
         List<Catalog> result = new ArrayList<>();
-        for (int i=0; i < sizeList.size(); i++) {
-            List<Catalog> listBySize = new ArrayList<>();
-            listBySize = catalogService.getCatalogBySize(sizeList.get(i));
-            for (int j=0; j < listBySize.size(); j++) {
-                result.add(listBySize.get(j));
-            }
+        for (Size size : sizeList) {
+            List<Catalog> listBySize = catalogService.getCatalogBySize(size);
+            result.addAll(listBySize);
         }
         return ResponseEntity.ok().body(result);
     }
@@ -180,16 +178,14 @@ public class CatalogController {
         try {
             List<Model> allModels = modelService.getModelByIdCategory(idCategory).getBody();
             if (allModels.size() > 0) {
-                for (int i = 0; i < allModels.size(); i++) {
+                for (Model allModel : allModels) {
                     try {
-                        Optional<List<Catalog>> list = catalogService.getCatalogByModel(allModels.get(i).getIdModel());
+                        Optional<List<Catalog>> list = catalogService.getCatalogByModel(allModel.getIdModel());
                         if (!list.get().isEmpty()) {
-                            for (int j = 0; j < list.get().size(); j++) {
-                                result.add(list.get().get(j));
-                            }
+                            result.addAll(list.get());
                         }
                     } catch (FeignException e) {
-                        System.out.println("there isn´t catalog of model " + allModels.get(i).getIdModel());
+                        System.out.println("there isn´t catalog of model " + allModel.getIdModel());
                     }
                 }
             }
@@ -221,9 +217,7 @@ public class CatalogController {
                         try {
                             Optional<List<Catalog>> result = catalogService.getCatalogByModel(modelList.get(0).get().get(i).getIdModel());
                             if (!result.get().isEmpty()) {
-                                for (int j = 0; j < result.get().size(); j++) {
-                                    finalResult.add(result.get().get(j));
-                                }
+                                finalResult.addAll(result.get());
                             }
                         } catch (FeignException e) {
                             System.out.println("there isn´t catalog of model " + modelList.get(0).get().get(i).getIdModel());
@@ -259,9 +253,7 @@ public class CatalogController {
                         try {
                             Optional<List<Catalog>> result = catalogService.getCatalogByModel(modelList.get(0).get(i).getIdModel());
                             if (!result.get().isEmpty()) {
-                                for (int j = 0; j < result.get().size(); j++) {
-                                    finalResult.add(result.get().get(j));
-                                }
+                                finalResult.addAll(result.get());
                             }
                         } catch (FeignException e) {
                             System.out.println("there isn´t catalog of model " + modelList.get(0).get(i).getIdModel());
@@ -278,7 +270,7 @@ public class CatalogController {
 
     // public - devuelve Catalogo y sin paginar
     @GetMapping("/byCategory/{idCategory}/bySize/{bolleanAdult}")
-    public ResponseEntity<List<Optional<Catalog>>> getByCategoryAndSize(@PathVariable Integer idCategory, @PathVariable Integer bolleanAdult){
+    public ResponseEntity<List<Catalog>> getByCategoryAndSize(@PathVariable Integer idCategory, @PathVariable Integer bolleanAdult){
         // first verify if the category exists with feign
         try {
             modelService.getCategorydById(idCategory);
@@ -294,19 +286,18 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // second verify if the bollean is correct
-        List<Size> sizeList = new ArrayList<>();
-        sizeList = sizeService.getByAdult(bolleanAdult);
+        List<Size> sizeList = sizeService.getByAdult(bolleanAdult);
         if (sizeList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         // else...
-        List<Optional<Catalog>> finalList = new ArrayList<>();
+        List<Catalog> finalList = new ArrayList<>();
         if (!modelList.isEmpty()) {
             if (modelList.size() > 0) {
-                for (int i = 0; i < modelList.size(); i++) {
-                    for (int j=0; j < sizeList.size(); j++) {
-                        Optional<Catalog> result = catalogService.findByModelAndSize(modelList.get(i).getIdModel(),sizeList.get(j).getId());
-                        if (!result.isEmpty()) finalList.add(result);
+                for (Model model : modelList) {
+                    for (Size size : sizeList) {
+                        Optional<List<Catalog>> result = catalogService.findByModelAndSize(model.getIdModel(), size.getId());
+                        if (!result.get().isEmpty()) finalList.addAll(result.get());
                     }
                 }
 
@@ -317,7 +308,7 @@ public class CatalogController {
 
     // public - devuelve Catalogo y sin paginar
     @GetMapping("/byKeyWord/{keyWord}/bySize/{bolleanAdult}")
-    public ResponseEntity<List<Optional<Catalog>>> getByKeyWordAndSize(@PathVariable String keyWord, @PathVariable Integer bolleanAdult){
+    public ResponseEntity<List<Catalog>> getByKeyWordAndSize(@PathVariable String keyWord, @PathVariable Integer bolleanAdult){
         List<Optional<List<Model>>> modelList = new ArrayList<>();
         // first verify if exists any model with feign
         try {
@@ -328,19 +319,18 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // second verify if the bollean is correct
-        List<Size> sizeList = new ArrayList<>();
-        sizeList = sizeService.getByAdult(bolleanAdult);
+        List<Size> sizeList = sizeService.getByAdult(bolleanAdult);
         if (sizeList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         // else...
-        List<Optional<Catalog>> finalList = new ArrayList<>();
+        List<Catalog> finalList = new ArrayList<>();
         if (!modelList.isEmpty()) {
             if (modelList.get(0).get().size() > 0) {
                 for (int i = 0; i < modelList.get(0).get().size(); i++) {
-                    for (int j=0; j < sizeList.size(); j++) {
-                        Optional<Catalog> result = catalogService.findByModelAndSize(modelList.get(0).get().get(i).getIdModel(),sizeList.get(j).getId());
-                        if (!result.isEmpty()) finalList.add(result);
+                    for (Size size : sizeList) {
+                        Optional<List<Catalog>> result = catalogService.findByModelAndSize(modelList.get(0).get().get(i).getIdModel(), size.getId());
+                        if (!result.get().isEmpty()) finalList.addAll(result.get());
                     }
                 }
 
@@ -351,7 +341,7 @@ public class CatalogController {
 
     // public - devuelve Catalogo y sin paginar
     @GetMapping("/byKeyWord/{keyWord}/byCategory/{idCategory}/bySize/{bolleanAdult}")
-    public ResponseEntity<List<Optional<Catalog>>> getByKeyWordByCategoryBySize(@PathVariable String keyWord, @PathVariable Integer idCategory, @PathVariable Integer bolleanAdult) {
+    public ResponseEntity<List<Catalog>> getByKeyWordByCategoryBySize(@PathVariable String keyWord, @PathVariable Integer idCategory, @PathVariable Integer bolleanAdult) {
         List<List<Model>> modelList = new ArrayList<>();
         // first verify if exists any model with feign
         try {
@@ -361,19 +351,18 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // second verify if the bollean is correct
-        List<Size> sizeList = new ArrayList<>();
-        sizeList = sizeService.getByAdult(bolleanAdult);
+        List<Size> sizeList = sizeService.getByAdult(bolleanAdult);
         if (sizeList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         // else...
-        List<Optional<Catalog>> finalList = new ArrayList<>();
+        List<Catalog> finalList = new ArrayList<>();
         if (!modelList.isEmpty()) {
             if (modelList.get(0).size() > 0) {
                 for (int i = 0; i < modelList.get(0).size(); i++) {
-                    for (int j=0; j < sizeList.size(); j++) {
-                        Optional<Catalog> result = catalogService.findByModelAndSize(modelList.get(0).get(i).getIdModel(),sizeList.get(j).getId());
-                        if (!result.isEmpty()) finalList.add(result);
+                    for (Size size : sizeList) {
+                        Optional<List<Catalog>> result = catalogService.findByModelAndSize(modelList.get(0).get(i).getIdModel(), size.getId());
+                        if (!result.get().isEmpty()) finalList.addAll(result.get());
                     }
                 }
 
@@ -413,7 +402,7 @@ public class CatalogController {
         Page<Catalog> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
         return ResponseEntity.ok().body(catalogPage);
     }
-    // public - devuelve CatalogoResponse paginado
+    // public - devuelve CatalogoResponse paginado - solo activos
     @GetMapping("/bySize/{bolleanAdult}/page/{page}")
     public ResponseEntity<Page<CatalogResponse>> getBySizePageable(@PathVariable Integer bolleanAdult,@PathVariable Integer page){
         // first verify if the bollean is correct
@@ -426,7 +415,7 @@ public class CatalogController {
             List<Model> modelIterator = modelService.getAllModel().getBody();
             List<CatalogResponse> catalogResponses = new ArrayList<>();
             for (Model model : modelIterator) {
-                List<Catalog> listCatalog = catalogService.getCatalogBySize(bolleanAdult, model.getIdModel());
+                List<Catalog> listCatalog = catalogService.getActiveCatalogBySize(bolleanAdult, model.getIdModel());
                 if (!listCatalog.isEmpty()) {
                     catalogResponses.add(transformCatalog(listCatalog));
                 }
@@ -448,23 +437,7 @@ public class CatalogController {
         }
     }
 
-    // public - devuelve Catalogo paginado
-    @GetMapping("/byModel/{idModel}/page/{page}")
-    public ResponseEntity<Optional<Page<Catalog>>> getByModelPageable(@PathVariable Integer idModel,@PathVariable Integer page){
-        // first verify if the model exists with feign
-        try {
-            ResponseEntity<Optional<Model>> response = modelService.getByIdModel(idModel);
-        }
-        catch (FeignException e){
-            return ResponseEntity.notFound().build();
-        }
-        // else...
-        Pageable pageable = PageRequest.of(page, 12);
-        Optional<Page<Catalog>> catalogPage = catalogService.getCatalogByModel(idModel,pageable);
-        return ResponseEntity.ok().body(catalogPage);
-    }
-
-    // public - devuelve Catalogo paginado
+    // public - devuelve Catalogo paginado Act e Inact
     @GetMapping("/byCategory2/{idCategory}/page/{page}")
     public ResponseEntity<Page<Catalog>> getByCategoryPageable2(@PathVariable Integer idCategory,@PathVariable Integer page){
         // first verify if the category exists with feign
@@ -523,7 +496,7 @@ public class CatalogController {
             List<CatalogResponse> catalogResponses = new ArrayList<>();
             if (allModels.size() > 0) {
                 for (Model model : allModels) {
-                    List<Catalog> listCatalog = catalogService.findByCategory(idCategory, model.getIdModel());
+                    List<Catalog> listCatalog = catalogService.findActiveByCategory(idCategory, model.getIdModel());
                     if (!listCatalog.isEmpty()) {
                         catalogResponses.add(transformCatalog(listCatalog));
                     }
@@ -610,7 +583,7 @@ public class CatalogController {
         if (!modelList.isEmpty()) {
             if (!modelList.get(0).get().isEmpty()) {
                 for (int i = 0; i < modelList.get(0).get().size(); i++) {
-                    Optional<List<Catalog>> listCatalog = catalogService.getCatalogByModel(modelList.get(0).get().get(i).getIdModel());
+                    Optional<List<Catalog>> listCatalog = catalogService.getActiveCatalogByModel(modelList.get(0).get().get(i).getIdModel());
                     if (!listCatalog.get().isEmpty()) {
                         catalogResponses.add(transformCatalog(listCatalog.get()));
                     }
@@ -695,7 +668,7 @@ public class CatalogController {
         if (!modelList.isEmpty()) {
             if (!modelList.get(0).isEmpty()) {
                 for (int i = 0; i < modelList.get(0).size(); i++) {
-                    Optional<List<Catalog>> listCatalog = catalogService.getCatalogByModel(modelList.get(0).get(i).getIdModel());
+                    Optional<List<Catalog>> listCatalog = catalogService.getActiveCatalogByModel(modelList.get(0).get(i).getIdModel());
                     if (!listCatalog.get().isEmpty()) {
                         catalogResponses.add(transformCatalog(listCatalog.get()));
                     }
@@ -720,7 +693,7 @@ public class CatalogController {
 
     // public - devuelve Catalogo paginado
     @GetMapping("/byCategory2/{idCategory}/bySize/{bolleanAdult}/page/{page}")
-    public ResponseEntity<Page<Optional<Catalog>>> getByCategoryAndSizePageable2(@PathVariable Integer idCategory, @PathVariable Integer bolleanAdult,@PathVariable Integer page){
+    public ResponseEntity<Page<Catalog>> getByCategoryAndSizePageable2(@PathVariable Integer idCategory, @PathVariable Integer bolleanAdult,@PathVariable Integer page){
         // first verify if the category exists with feign
         try {
             modelService.getCategorydById(idCategory);
@@ -741,13 +714,13 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // else...
-        List<Optional<Catalog>> finalList = new ArrayList<>();
+        List<Catalog> finalList = new ArrayList<>();
         if (!modelList.isEmpty()) {
             if (modelList.size() > 0) {
-                for (int i = 0; i < modelList.size(); i++) {
-                    for (int j=0; j < sizeList.size(); j++) {
-                        Optional<Catalog> result = catalogService.findByModelAndSize(modelList.get(i).getIdModel(),sizeList.get(j).getId());
-                        if (!result.isEmpty()) finalList.add(result);
+                for (Model model : modelList) {
+                    for (Size size : sizeList) {
+                        Optional<List<Catalog>> result = catalogService.findByModelAndSize(model.getIdModel(), size.getId());
+                        if (!result.get().isEmpty()) finalList.addAll(result.get());
                     }
                 }
 
@@ -761,8 +734,8 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // else...
-        List<Optional<Catalog>> pageResult = finalList .subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
-        Page<Optional<Catalog>> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
+        List<Catalog> pageResult = finalList .subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
+        Page<Catalog> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
         return ResponseEntity.ok().body(catalogPage);
     }
     // public - devuelve CatalogoResponse paginado
@@ -790,7 +763,7 @@ public class CatalogController {
         // else...
         List<CatalogResponse> catalogResponses = new ArrayList<>();
         for (Model model : modelList) {
-            List<Catalog> listCatalog = catalogService.getCatalogBySize(bolleanAdult, model.getIdModel());
+            List<Catalog> listCatalog = catalogService.getActiveCatalogBySize(bolleanAdult, model.getIdModel());
             if (!listCatalog.isEmpty()) {
                 catalogResponses.add(transformCatalog(listCatalog));
             }
@@ -813,7 +786,7 @@ public class CatalogController {
 
     // public - devuelve Catalogo paginado
     @GetMapping("/byKeyWord2/{keyWord}/bySize/{bolleanAdult}/page/{page}")
-    public ResponseEntity<Page<Optional<Catalog>>> getByKeyWordAndSizePageable2(@PathVariable String keyWord, @PathVariable Integer bolleanAdult,@PathVariable Integer page){
+    public ResponseEntity<Page<Catalog>> getByKeyWordAndSizePageable2(@PathVariable String keyWord, @PathVariable Integer bolleanAdult,@PathVariable Integer page){
         List<Optional<List<Model>>> modelList = new ArrayList<>();
         // first verify if exists any model with feign
         try {
@@ -829,13 +802,13 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // else...
-        List<Optional<Catalog>> finalList = new ArrayList<>();
+        List<Catalog> finalList = new ArrayList<>();
         if (!modelList.isEmpty()) {
             if (modelList.get(0).get().size() > 0) {
                 for (int i = 0; i < modelList.get(0).get().size(); i++) {
                     for (Size size : sizeList) {
-                        Optional<Catalog> result = catalogService.findByModelAndSize(modelList.get(0).get().get(i).getIdModel(), size.getId());
-                        if (!result.isEmpty()) finalList.add(result);
+                        Optional<List<Catalog>> result = catalogService.findByModelAndSize(modelList.get(0).get().get(i).getIdModel(), size.getId());
+                        if (!result.get().isEmpty()) finalList.addAll(result.get());
                     }
                 }
 
@@ -849,8 +822,8 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // else...
-        List<Optional<Catalog>> pageResult = finalList .subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
-        Page<Optional<Catalog>> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
+        List<Catalog> pageResult = finalList .subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
+        Page<Catalog> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
         return ResponseEntity.ok().body(catalogPage);
     }
     // public - devuelve CatalogoResponse paginado
@@ -873,7 +846,7 @@ public class CatalogController {
         // else...
         List<CatalogResponse> catalogResponses = new ArrayList<>();
         for (Model model : modelList) {
-            List<Catalog> listCatalog = catalogService.getCatalogBySize(bolleanAdult, model.getIdModel());
+            List<Catalog> listCatalog = catalogService.getActiveCatalogBySize(bolleanAdult, model.getIdModel());
             if (!listCatalog.isEmpty()) {
                 catalogResponses.add(transformCatalog(listCatalog));
             }
@@ -896,7 +869,7 @@ public class CatalogController {
 
     // public - devuelve Catalogo paginado
     @GetMapping("/byKeyWord2/{keyWord}/byCategory/{idCategory}/bySize/{bolleanAdult}/page/{page}")
-    public ResponseEntity<Page<Optional<Catalog>>> getByKeyWordByCategoryBySizePageable2(@PathVariable String keyWord, @PathVariable Integer idCategory, @PathVariable Integer bolleanAdult,@PathVariable Integer page) {
+    public ResponseEntity<Page<Catalog>> getByKeyWordByCategoryBySizePageable2(@PathVariable String keyWord, @PathVariable Integer idCategory, @PathVariable Integer bolleanAdult,@PathVariable Integer page) {
         List<List<Model>> modelList = new ArrayList<>();
         // first verify if exists any model with feign
         try {
@@ -911,13 +884,13 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // else...
-        List<Optional<Catalog>> finalList = new ArrayList<>();
+        List<Catalog> finalList = new ArrayList<>();
         if (!modelList.isEmpty()) {
             if (modelList.get(0).size() > 0) {
                 for (int i = 0; i < modelList.get(0).size(); i++) {
                     for (Size size : sizeList) {
-                        Optional<Catalog> result = catalogService.findByModelAndSize(modelList.get(0).get(i).getIdModel(), size.getId());
-                        if (!result.isEmpty()) finalList.add(result);
+                        Optional<List<Catalog>> result = catalogService.findByModelAndSize(modelList.get(0).get(i).getIdModel(), size.getId());
+                        if (!result.get().isEmpty()) finalList.addAll(result.get());
                     }
                 }
 
@@ -931,8 +904,8 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // else...
-        List<Optional<Catalog>> pageResult = finalList .subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
-        Page<Optional<Catalog>> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
+        List<Catalog> pageResult = finalList .subList((int) pageable.getOffset(), Math.min((int) pageable.getOffset() + pageSize, totalItems));
+        Page<Catalog> catalogPage = new PageImpl<>(pageResult, pageable, totalItems);
         return ResponseEntity.ok().body(catalogPage);
     }
     // public - devuelve CatalogoResponse paginado
@@ -954,7 +927,7 @@ public class CatalogController {
         // else...
         List<CatalogResponse> catalogResponses = new ArrayList<>();
         for (Model model : modelList) {
-            List<Catalog> listCatalog = catalogService.getCatalogBySize(bolleanAdult, model.getIdModel());
+            List<Catalog> listCatalog = catalogService.getActiveCatalogBySize(bolleanAdult, model.getIdModel());
             if (!listCatalog.isEmpty()) {
                 catalogResponses.add(transformCatalog(listCatalog));
             }
@@ -977,7 +950,7 @@ public class CatalogController {
     
     /////////////////////////////////////////////////////////////////
 
-    // public
+    // public - Solo trae los activos
     @GetMapping("/news")
     public ResponseEntity<List<Catalog>> getNews(){
         return ResponseEntity.ok().body(catalogService.getNews());
@@ -1017,6 +990,7 @@ public class CatalogController {
         catalogCreated.setSize(sizeService.getByIdSEC(catalogDTO.getSize()));
         catalogCreated.setQuantity(catalogDTO.getQuantity());
         catalogCreated.setPrice(catalogDTO.getPrice());
+        catalogCreated.setStatus(new StatusComponent(1, "active"));
         return ResponseEntity.accepted().body(catalogService.save(catalogCreated));
     }
 
@@ -1029,19 +1003,18 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // verify quantity
-        Catalog catalog = catalogService.getCatalogByIdSEC(idCatalog);
-        if(catalog.getQuantity()-quantity<0){
+        if(searchCatalog.get().getQuantity()-quantity<0){
             return ResponseEntity.badRequest().build();
         }
         //else...
-        catalog.setQuantity(catalog.getQuantity()-quantity);
-        return ResponseEntity.accepted().body(catalogService.save(catalog));
+        searchCatalog.get().setQuantity(searchCatalog.get().getQuantity()-quantity);
+        return ResponseEntity.accepted().body(catalogService.save(searchCatalog.get()));
     }
 
     // adm
     @PutMapping("/modify/{idCatalog}")
     public ResponseEntity<Catalog> modifyCatalog(@PathVariable Integer idCatalog, @RequestBody CatalogDTO catalogDTO) {
-        // verify if catalog exists - 404
+        // verify if catalog exists (active or inactive) - 404
         Optional<Catalog> searchCatalog = catalogService.getCatalogById(idCatalog);
         if (searchCatalog.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -1066,18 +1039,73 @@ public class CatalogController {
         if(catalogDTO.getPrice()<0){
             return ResponseEntity.badRequest().build();
         }
-        // create - 202
+        // create Catalog
         Catalog catalogCreated = new Catalog();
         catalogCreated.setIdCatalog(idCatalog);
         catalogCreated.setModel(modelService.getByIdModelSEC(catalogDTO.getModel()));
         catalogCreated.setSize(sizeService.getByIdSEC(catalogDTO.getSize()));
         catalogCreated.setQuantity(catalogDTO.getQuantity());
         catalogCreated.setPrice(catalogDTO.getPrice());
+        if (catalogDTO.getStatus() == 1) {
+            catalogCreated.setStatus(new StatusComponent(1, "active"));
+        } else if (catalogDTO.getStatus() == 2) {
+            catalogCreated.setStatus(new StatusComponent(2, "inactive"));
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+        // verify if this Catalog exists - 422 Unprocessable Content
+        if (!Objects.equals(catalogDTO.getModel(), searchCatalog.get().getModel().getIdModel()) || !Objects.equals(catalogDTO.getSize(), searchCatalog.get().getSize().getId())) {
+            Optional<Catalog> searchNewCatalog = catalogService.validateCreate(catalogCreated.getModel().getIdModel(), catalogCreated.getSize().getAdult(), catalogCreated.getSize().getNoSize());
+            if(searchNewCatalog.isPresent()){
+                return ResponseEntity.unprocessableEntity().build();
+            }
+        }
+        // create - 202
         return ResponseEntity.accepted().body(catalogService.save(catalogCreated));
     }
 
+
+    ///////////////////--------- APIS to DELETE CATALOG------------///////////////////
+
+    // adm - deshabilita catalogo
+    @PutMapping("/delete/{idCatalog}")
+    public ResponseEntity<Catalog> makeInactiv (@PathVariable Integer idCatalog) {
+        // verify if catalog exists (active or inactive) - 404
+        Optional<Catalog> searchCatalog = catalogService.getCatalogById(idCatalog);
+        if (searchCatalog.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        // modify state
+        searchCatalog.get().setStatus(new StatusComponent(2, "inactive"));
+        return ResponseEntity.ok().body(catalogService.save(searchCatalog.get()));
+    }
+    // adm - deshabilita catalogo por modelo
+    @PutMapping("/deleteByM/{idModel}")
+    public ResponseEntity<String> makeInactivByModel (@PathVariable Integer idModel) {
+        Optional<List<Catalog>> searchCatalog = catalogService.getCatalogByModel(idModel);
+        if (searchCatalog.get().isEmpty()) {
+            return ResponseEntity.ok().body("there isn´t catalog with that model");
+        }
+        // modify state
+        catalogService.inactiveByModel(idModel);
+        return ResponseEntity.ok().body("all catalog with model " + idModel + " disabled");
+    }
+    // adm - deshabilita catalogo por categoria
+    @PutMapping("/deleteByC/{idCategory}")
+    public ResponseEntity<String> makeInactivByCat (@PathVariable Integer idCategory) {
+        try {
+            modelService.getCategorydById(idCategory);
+        }
+        catch (FeignException e){
+            return ResponseEntity.notFound().build();
+        }
+        // modify state
+        catalogService.inactiveByCategory(idCategory);
+        return ResponseEntity.ok().body("all catalog with category " + idCategory + " disabled");
+    }
+
     // adm - deprecated
-    @DeleteMapping("/{idCatalog}")
+    /*@DeleteMapping("/{idCatalog}")
     public ResponseEntity<String> delete(@PathVariable Integer idCatalog) {
         // first verify if the ID exist
         Optional<Catalog> catalogProof = catalogService.getCatalogById(idCatalog);
@@ -1088,11 +1116,9 @@ public class CatalogController {
         catalogService.delete(idCatalog);
         return ResponseEntity.ok().body("Catalog item with ID " + idCatalog + " deleted");
     }
-
     // adm - deprecated
     @DeleteMapping("/byModel/{idModel}")
     public ResponseEntity<String> deleteByModel (@PathVariable Integer idModel) {
-
         // verify if there are results
         Optional<List<Catalog>> catalogProof = catalogService.getCatalogByModel(idModel);
         if (catalogProof.get().isEmpty()){
@@ -1101,5 +1127,5 @@ public class CatalogController {
         // else
         catalogService.deleteByModel(idModel);
         return ResponseEntity.ok().body("Catalog items with ID model " + idModel + " deleted");
-    }
+    }*/
 }

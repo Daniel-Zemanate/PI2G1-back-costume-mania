@@ -20,27 +20,34 @@ public class ModelService {
     public List<Model> getAllModel(){
         return modelRepository.findAll();
     }
+    public List<Model> getAllComplete(){
+        return modelRepository.findAllComplete();
+    }
     public Optional<Model> getByIdModel(Integer id){
         return modelRepository.findById(id);
-    }
-    public Model getByIdModelSEC(Integer id){
-        return modelRepository.findByIdSEC(id);
     }
     public Optional<List<Model>> getByNameModel(String name){
         return modelRepository.findByName(name);
     }
-    public Optional<Model> validateCreate (String name) {
-        return modelRepository.validateCreate(name);
-    };
+    public Optional<Model> admGetByNameModel(String name){
+        return modelRepository.admFindByName(name);
+    }
     public List<Model> getByNameAndCategoryModel(String name,Integer category){
         return modelRepository.findByNameAndCategory(name,category);
+    }
+    public Optional<Model> admGetByNameAndCategoryModel(String name,Integer category){
+        return modelRepository.admFindByNameAndCategory(name,category);
     }
     public List<Model> getByIdCategoryModel(Integer idCategory) {
         return modelRepository.findByIdCategory(idCategory);
     }
+    public List<Model> admGetByIdCategoryModel(Integer idCategory) {
+        return modelRepository.admFindByIdCategory(idCategory);
+    }
     public List<Model> getByCategoryModel(String category){
         return modelRepository.findByCategory(category);
     }
-    public void deleteModel(Integer idModel) { modelRepository.deleteById(idModel); }
-    public void deleteModelByCat(Integer idCategory) { modelRepository.deleteByCategory(idCategory); }
+    public void inactiveByCategory (Integer idCategory) {
+        modelRepository.inactiveByCategory(idCategory);
+    };
 }

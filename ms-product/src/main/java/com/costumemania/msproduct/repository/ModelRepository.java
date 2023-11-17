@@ -12,21 +12,27 @@ import java.util.Optional;
 
 @Repository
 public interface ModelRepository extends JpaRepository<Model,Integer> {
-    @Query(value ="SELECT * FROM model m WHERE id_model=?1",nativeQuery = true)
-    Model findByIdSEC(Integer id);
-    @Query( value ="SELECT * FROM model m WHERE m.name_model LIKE %?1%",nativeQuery = true)
+    @Query(value= "SELECT * FROM model m  WHERE m.status_model=1",nativeQuery = true)
+    List<Model> findAll();
+    @Query(value= "SELECT * FROM model m",nativeQuery = true)
+    List<Model> findAllComplete();
+    @Query( value ="SELECT * FROM model m WHERE m.name_model LIKE %?1% AND m.status_model=1",nativeQuery = true)
     Optional<List<Model>> findByName(String nameModel);
-    @Query(value="select * from model m WHERE m.name_model = ?1", nativeQuery = true)
-    Optional<Model> validateCreate (String name);
+    @Query( value ="SELECT * FROM model m WHERE m.name_model =?1",nativeQuery = true)
+    Optional<Model> admFindByName(String nameModel);
     @Query( value ="SELECT * FROM model m INNER JOIN category c ON m.category=c.id_category WHERE c.name LIKE %?1%",nativeQuery = true)
     List<Model> findByCategory(String category);
-    @Query(value= "SELECT * FROM model m INNER JOIN category c ON m.category=c.id_category WHERE (m.name_model LIKE %?1%) AND (m.category =?2)",nativeQuery = true)
+    @Query(value= "SELECT * FROM model m INNER JOIN category c ON m.category=c.id_category WHERE (m.name_model LIKE %?1%) AND (m.category =?2) AND m.status_model=1",nativeQuery = true)
     List<Model> findByNameAndCategory(String name, Integer category);
-    @Query(value= "SELECT * FROM model m  WHERE m.category =?1",nativeQuery = true)
+    @Query(value= "SELECT * FROM model m INNER JOIN category c ON m.category=c.id_category WHERE (m.name_model =?1) AND (m.category =?2)",nativeQuery = true)
+    Optional<Model> admFindByNameAndCategory(String name, Integer category);
+    @Query(value= "SELECT * FROM model m  WHERE m.category =?1 AND m.status_model=1",nativeQuery = true)
     List<Model> findByIdCategory(Integer idCategory);
+    @Query(value= "SELECT * FROM model m  WHERE m.category =?1",nativeQuery = true)
+    List<Model> admFindByIdCategory(Integer idCategory);
     @Transactional
     @Modifying
-    @Query(value="DELETE FROM model m WHERE m.category =?1", nativeQuery = true)
-    void deleteByCategory (Integer idCategory);
+    @Query(value="UPDATE model m inner join category ca on m.category=ca.id_category SET m.status_model = 2 WHERE m.category=?1", nativeQuery = true)
+    void inactiveByCategory (Integer idCategory);
 }
 

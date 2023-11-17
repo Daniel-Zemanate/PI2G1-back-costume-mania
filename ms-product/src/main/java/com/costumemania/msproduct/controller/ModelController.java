@@ -3,6 +3,7 @@ package com.costumemania.msproduct.controller;
 import com.costumemania.msproduct.model.Category;
 import com.costumemania.msproduct.model.Model;
 import com.costumemania.msproduct.model.ModelDTO;
+import com.costumemania.msproduct.model.StatusComponent;
 import com.costumemania.msproduct.service.CategoryService;
 import com.costumemania.msproduct.service.ModelService;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -24,11 +26,133 @@ public class ModelController {
         this.categoryService = categoryService;
     }
 
+    // public - solo devuelve los modelos activos
+    @GetMapping
+    @ResponseStatus(code= HttpStatus.OK)
+    public ResponseEntity<List<Model>> getAllModel(){
+        return ResponseEntity.ok(modelService.getAllModel());
+    }
+    // adm - devuelve los modelos activos e inactivos
+    @GetMapping("/all")
+    public ResponseEntity<List<Model>> getAllComplete() {
+        return ResponseEntity.ok().body(modelService.getAllComplete());
+    };
+
+    // public - devuelve solo modelo activo
+    @GetMapping("/{id}")
+    public ResponseEntity<Model> getByIdModel(@PathVariable Integer id){
+        // verify model empty
+        Optional<Model>model= modelService.getByIdModel(id);
+        if(model.isEmpty() || model.get().getStatusModel().getId()==2){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(model.get());
+    }
+    // adm - devuelve modelo sin importar si está activo o no
+    @GetMapping("/adm/{id}")
+    public ResponseEntity<Model> admGetByIdModel(@PathVariable Integer id){
+        // verify model empty
+        Optional<Model>model= modelService.getByIdModel(id);
+        if(model.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(model.get());
+    }
+
+    // public - solo devuelve los activos
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Optional<List<Model>>> getByNameModel(@PathVariable String name){
+        // verify list by name empty
+        Optional<List<Model>> model = modelService.getByNameModel(name);
+        if(model.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(model);
+    }
+    // adm - devuelve modelo por NOMBRE EXACTO sin importar si está activo o no
+    @GetMapping("/adm/name/{name}")
+    public ResponseEntity<Model> admGetByNameModel(@PathVariable String name){
+        // verify list by name empty
+        Optional<Model> model = modelService.admGetByNameModel(name);
+        if(model.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(model.get());
+    }
+
+    // public - devuelve solo los modelos activos
+    @GetMapping("/category/id/{idCategory}")
+    public ResponseEntity<List<Model>> getByIdCategory(@PathVariable Integer idCategory){
+        // verify category empty and active
+        Optional<Category> searchedCategory = categoryService.categorydById(idCategory);
+        if(searchedCategory.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        // verify list by category empty
+        List<Model> listModel = modelService.getByIdCategoryModel(idCategory);
+        if (listModel.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(listModel);
+    }
+    // adm - devuelve modelos activos e inactivos
+    @GetMapping("/adm/category/id/{idCategory}")
+    public ResponseEntity<List<Model>> admGetByIdCategory(@PathVariable Integer idCategory){
+        // verify category empty
+        Optional<Category> searchedCategory = categoryService.getdById(idCategory);
+        if(searchedCategory.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        // verify list by category empty
+        List<Model> listModel = modelService.admGetByIdCategoryModel(idCategory);
+        if (listModel.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(listModel);
+    }
+
+    // public - deprecated - gets every model by exact category name
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<Model>> getByCategory(@PathVariable String category){
+        // verify category empty
+        Optional<Category> searchedCategory = categoryService.getByName(category);
+        if(searchedCategory.isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+        // verify list by category empty
+        List<Model> listModel = modelService.getByCategoryModel(category);
+        if (listModel.isEmpty()){
+            ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(listModel);
+    }
+
+    // public - devuelve solo los modelos activos
+    @GetMapping("/name/{name}/category/id/{category}")
+    public ResponseEntity<List<Model>> getByNameAndCategoryModel(@PathVariable String name,@PathVariable Integer category){
+        // verify list by name empty
+        Optional<List<Model>> seachrModel = modelService.getByNameModel(name);
+        if(seachrModel.get().isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        // verify category empty
+        Optional<Category> searchedCategory = categoryService.categorydById(category);
+        if(searchedCategory.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        // verify final list
+        List<Model> finalList = modelService.getByNameAndCategoryModel(name, category);
+        if (finalList.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(finalList);
+    }
+
     // adm
     @PostMapping("/create")
     public ResponseEntity<Model> createModel(@RequestBody ModelDTO modelDTO){
         // verify if model exists - 422
-        Optional<Model> searchModel = modelService.validateCreate(modelDTO.getNameModel());
+        Optional<Model> searchModel = modelService.admGetByNameAndCategoryModel(modelDTO.getNameModel(), modelDTO.getCategory());
         if (searchModel.isPresent()) {
             return ResponseEntity.unprocessableEntity().build();
         }
@@ -44,8 +168,9 @@ public class ModelController {
         // create
         Model modelCreated = new Model();
         modelCreated.setNameModel(modelDTO.getNameModel());
-        modelCreated.setCategory(categoryService.categorydById(modelDTO.getCategory()));
+        modelCreated.setCategory(searchCategory.get());
         modelCreated.setUrlImage(modelDTO.getUrlImage());
+        modelCreated.setStatusModel(new StatusComponent(1,"active"));
         return ResponseEntity.accepted().body(modelService.saveModel(modelCreated));
     }
 
@@ -66,105 +191,55 @@ public class ModelController {
         if(modelDTO.getNameModel().isEmpty()){
             return ResponseEntity.badRequest().build();
         }
+        // verify if this modified model exists - 422 Unprocessable Content
+        if (!Objects.equals(modelDTO.getNameModel(), searchModel.get().getNameModel()) || !Objects.equals(modelDTO.getCategory(), searchModel.get().getCategory().getIdCategory()))  {
+            Optional<Model> searchNewModel = modelService.admGetByNameAndCategoryModel(modelDTO.getNameModel(), modelDTO.getCategory());
+            if (searchNewModel.isPresent()) {
+                return ResponseEntity.unprocessableEntity().build();
+            }
+        }
         // create
         Model modelCreated = new Model();
         modelCreated.setIdModel(id);
         modelCreated.setNameModel(modelDTO.getNameModel());
-        modelCreated.setCategory(categoryService.categorydById(modelDTO.getCategory()));
+        modelCreated.setCategory(searchCategory.get());
         modelCreated.setUrlImage(modelDTO.getUrlImage());
+        if (modelDTO.getStatus() == 1) {
+            modelCreated.setStatusModel(new StatusComponent(1, "active"));
+        } else if (modelDTO.getStatus() == 2) {
+            modelCreated.setStatusModel(new StatusComponent(2, "inactive"));
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.accepted().body(modelService.saveModel(modelCreated));
     }
 
-    // public
-    @GetMapping
-    @ResponseStatus(code= HttpStatus.OK)
-    public ResponseEntity<List<Model>> getAllModel(){
-        return ResponseEntity.ok(modelService.getAllModel());
-    }
-
-    // public
-    @GetMapping("/{id}")
-    public ResponseEntity<Optional<Model>>getByIdModel(@PathVariable Integer id){
-        // verify model empty
-        Optional<Model>model= modelService.getByIdModel(id);
-        if(model.isEmpty()){
+    // adm - deshabilita modelo
+    @PutMapping("/delete/{idModel}")
+    public ResponseEntity<Model> makeInactive (@PathVariable Integer idModel) {
+        // first verify if the ID exist
+        Optional<Model> modelProof = modelService.getByIdModel(idModel);
+        if (modelProof.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().body(model);
+        // modify state
+        modelProof.get().setStatusModel(new StatusComponent(2, "inactive"));
+        return ResponseEntity.ok().body(modelService.saveModel(modelProof.get()));
     }
-
-    // public
-    @GetMapping("/SEC/{id}")
-    public ResponseEntity<Model> getByIdModelSEC (@PathVariable Integer id){
-        return ResponseEntity.ok().body(modelService.getByIdModelSEC(id));
-    }
-
-    // public
-    @GetMapping("/name/{name}")
-    public ResponseEntity<Optional<List<Model>>> getByNameModel(@PathVariable String name){
-        // verify list by name empty
-        Optional<List<Model>> model = modelService.getByNameModel(name);
-        if(model.isEmpty()){
+    // adm - deshabilita catalogo por categoria
+    @PutMapping("/deleteByC/{idCategory}")
+    public ResponseEntity<String> makeInactivByCat (@PathVariable Integer idCategory) {
+        Optional<Category> categoryProof = categoryService.getdById(idCategory);
+        if (categoryProof.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().body(model);
-    }
-
-    // public
-    @GetMapping("/category/id/{idCategory}")
-    public ResponseEntity<List<Model>> getByIdCategory(@PathVariable Integer idCategory){
-        // verify category empty
-        Optional<Category> searchedCategory = categoryService.getdById(idCategory);
-        if(searchedCategory.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        // verify list by category empty
-        List<Model> listModel = modelService.getByIdCategoryModel(idCategory);
-        if (listModel.isEmpty()){
-            ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok().body(listModel);
-    }
-
-    // public
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<Model>> getByCategory(@PathVariable String category){
-        // verify category empty
-        Optional<Category> searchedCategory = categoryService.getByName(category);
-        if(searchedCategory.isEmpty()){
-            return ResponseEntity.badRequest().build();
-        }
-        // verify list by category empty
-        List<Model> listModel = modelService.getByCategoryModel(category);
-        if (listModel.isEmpty()){
-            ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok().body(listModel);
-    }
-
-    // public
-    @GetMapping("/name/{name}/category/id/{category}")
-    public ResponseEntity<List<Model>> getByNameAndCategoryModel(@PathVariable String name,@PathVariable Integer category){
-        // verify list by name empty
-        Optional<List<Model>> seachrModel = modelService.getByNameModel(name);
-        if(seachrModel.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        // verify category empty
-        Optional<Category> searchedCategory = categoryService.getdById(category);
-        if(searchedCategory.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        // verify final list
-        List<Model> finalList = modelService.getByNameAndCategoryModel(name, category);
-        if (finalList.isEmpty()){
-            ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(finalList);
+        // modify state
+        modelService.inactiveByCategory(idCategory);
+        return ResponseEntity.ok().body("Every models within category " + idCategory + " disabled");
     }
 
     // adm - deprecated
-    @DeleteMapping("/delete/{idModel}")
+/*    @DeleteMapping("/delete/{idModel}")
     public ResponseEntity<String> deleteModel(@PathVariable Integer idModel){
         // verify model empty
         Optional<Model> model =modelService.getByIdModel(idModel);
@@ -175,7 +250,6 @@ public class ModelController {
         modelService.deleteModel(idModel);
         return ResponseEntity.ok().body("Model item with ID " + idModel + " deleted.");
     }
-
     // adm - deprecated
     @DeleteMapping("/deleteByCategory/{idCategory}")
     public ResponseEntity<String> deleteModelByCategory(@PathVariable Integer idCategory){
@@ -187,5 +261,5 @@ public class ModelController {
         // deleting model
         modelService.deleteModelByCat(idCategory);
         return ResponseEntity.ok().body("Model items from Category ID " + idCategory + " deleted.");
-    }
+    }*/
 }

@@ -11,7 +11,10 @@ public class CatalogService {
     @Autowired
     CatalogRepositoryFeign catalogRepositoryFeign;
 
-    public ResponseEntity<String> deleteByModel (@PathVariable Integer idModel) {
-        return catalogRepositoryFeign.deleteByModel(idModel);
+    public ResponseEntity<String> makeInactivByModel (@PathVariable Integer idModel) {
+        return catalogRepositoryFeign.makeInactivByModel(idModel);
+    }
+    public ResponseEntity<String> makeInactivByCat (@PathVariable Integer idCategory) {
+        return catalogRepositoryFeign.makeInactivByCat(idCategory);
     }
 }
