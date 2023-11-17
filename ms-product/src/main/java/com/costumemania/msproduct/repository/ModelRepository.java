@@ -28,10 +28,8 @@ public interface ModelRepository extends JpaRepository<Model,Integer> {
     Optional<Model> admFindByNameAndCategory(String name, Integer category);
     @Query(value= "SELECT * FROM model m  WHERE m.category =?1 AND m.status_model=1",nativeQuery = true)
     List<Model> findByIdCategory(Integer idCategory);
-    @Transactional
-    @Modifying
-    @Query(value="DELETE FROM model m WHERE m.category =?1", nativeQuery = true)
-    void deleteByCategory (Integer idCategory);
+    @Query(value= "SELECT * FROM model m  WHERE m.category =?1",nativeQuery = true)
+    List<Model> admFindByIdCategory(Integer idCategory);
     @Transactional
     @Modifying
     @Query(value="UPDATE model m inner join category ca on m.category=ca.id_category SET m.status_model = 2 WHERE m.category=?1", nativeQuery = true)

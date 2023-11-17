@@ -41,11 +41,12 @@ public class ModelService {
     public List<Model> getByIdCategoryModel(Integer idCategory) {
         return modelRepository.findByIdCategory(idCategory);
     }
+    public List<Model> admGetByIdCategoryModel(Integer idCategory) {
+        return modelRepository.admFindByIdCategory(idCategory);
+    }
     public List<Model> getByCategoryModel(String category){
         return modelRepository.findByCategory(category);
     }
-    public void deleteModel(Integer idModel) { modelRepository.deleteById(idModel); }
-    public void deleteModelByCat(Integer idCategory) { modelRepository.deleteByCategory(idCategory); }
     public void inactiveByCategory (Integer idCategory) {
         modelRepository.inactiveByCategory(idCategory);
     };

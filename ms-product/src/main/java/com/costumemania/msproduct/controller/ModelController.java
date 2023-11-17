@@ -6,7 +6,6 @@ import com.costumemania.msproduct.model.ModelDTO;
 import com.costumemania.msproduct.model.StatusComponent;
 import com.costumemania.msproduct.service.CategoryService;
 import com.costumemania.msproduct.service.ModelService;
-import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,7 +32,6 @@ public class ModelController {
     public ResponseEntity<List<Model>> getAllModel(){
         return ResponseEntity.ok(modelService.getAllModel());
     }
-
     // adm - devuelve los modelos activos e inactivos
     @GetMapping("/all")
     public ResponseEntity<List<Model>> getAllComplete() {
@@ -71,7 +69,7 @@ public class ModelController {
         }
         return ResponseEntity.ok().body(model);
     }
-    // adm - devuelve modelo por nombre exacto sin importar si está activo o no
+    // adm - devuelve modelo por NOMBRE EXACTO sin importar si está activo o no
     @GetMapping("/adm/name/{name}")
     public ResponseEntity<Model> admGetByNameModel(@PathVariable String name){
         // verify list by name empty
@@ -97,8 +95,23 @@ public class ModelController {
         }
         return ResponseEntity.ok().body(listModel);
     }
+    // adm - devuelve modelos activos e inactivos
+    @GetMapping("/adm/category/id/{idCategory}")
+    public ResponseEntity<List<Model>> admGetByIdCategory(@PathVariable Integer idCategory){
+        // verify category empty
+        Optional<Category> searchedCategory = categoryService.getdById(idCategory);
+        if(searchedCategory.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        // verify list by category empty
+        List<Model> listModel = modelService.admGetByIdCategoryModel(idCategory);
+        if (listModel.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(listModel);
+    }
 
-    // public - deprecated
+    // public - deprecated - gets every model by exact category name
     @GetMapping("/category/{category}")
     public ResponseEntity<List<Model>> getByCategory(@PathVariable String category){
         // verify category empty
@@ -226,7 +239,7 @@ public class ModelController {
     }
 
     // adm - deprecated
-    @DeleteMapping("/delete/{idModel}")
+/*    @DeleteMapping("/delete/{idModel}")
     public ResponseEntity<String> deleteModel(@PathVariable Integer idModel){
         // verify model empty
         Optional<Model> model =modelService.getByIdModel(idModel);
@@ -237,7 +250,6 @@ public class ModelController {
         modelService.deleteModel(idModel);
         return ResponseEntity.ok().body("Model item with ID " + idModel + " deleted.");
     }
-
     // adm - deprecated
     @DeleteMapping("/deleteByCategory/{idCategory}")
     public ResponseEntity<String> deleteModelByCategory(@PathVariable Integer idCategory){
@@ -249,5 +261,5 @@ public class ModelController {
         // deleting model
         modelService.deleteModelByCat(idCategory);
         return ResponseEntity.ok().body("Model items from Category ID " + idCategory + " deleted.");
-    }
+    }*/
 }

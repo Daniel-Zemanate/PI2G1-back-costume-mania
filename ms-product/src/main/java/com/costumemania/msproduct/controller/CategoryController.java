@@ -15,7 +15,6 @@ import java.util.Optional;
 @RequestMapping(path = "/api/v1/category")
 public class CategoryController {
     private final CategoryService categoryService;
-
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
@@ -25,7 +24,6 @@ public class CategoryController {
     public ResponseEntity<List<Category>> getAll() {
         return ResponseEntity.ok().body(categoryService.getAll());
     };
-
     // adm - devuelve categorias activas e inactivas
     @GetMapping("/all")
     public ResponseEntity<List<Category>> getAllComplete() {
@@ -125,7 +123,7 @@ public class CategoryController {
     }
 
     // adm - deprecated
-    @DeleteMapping("/delete/{idCategory}")
+    /*@DeleteMapping("/delete/{idCategory}")
     public ResponseEntity<String> delete (@PathVariable Integer idCategory) {
         // first verify if the ID exist
         Optional<Category> categoryProof = categoryService.getdById(idCategory);
@@ -135,5 +133,5 @@ public class CategoryController {
         // else...
         categoryService.delete(idCategory);
         return ResponseEntity.ok().body("Category item with ID " + idCategory + " deleted.");
-    }
+    }*/
 }
