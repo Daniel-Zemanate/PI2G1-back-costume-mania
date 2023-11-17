@@ -23,8 +23,4 @@ public class Model {
     private Category category;
     @Column(name = "url_image")
     private String urlImage;
-
-    public Integer getIdModel() {
-        return idModel;
-    }
 }

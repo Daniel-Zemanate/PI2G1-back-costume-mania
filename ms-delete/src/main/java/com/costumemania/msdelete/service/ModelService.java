@@ -16,22 +16,6 @@ public class ModelService {
     @Autowired
     ModelRepositoryFeign modelRepositoryFeign;
 
-    public ResponseEntity<List<Model>> getByIdCategory(Integer idCategory) {
-        return modelRepositoryFeign.getByIdCategory(idCategory);
-    };
-
-    public ResponseEntity<String> deleteModel(Integer idModel) {
-        return modelRepositoryFeign.deleteModel(idModel);
-    };
-
-    public ResponseEntity<String> deleteModelbyCat(Integer idCategory) {
-        return modelRepositoryFeign.deleteModelByCategory(idCategory);
-    };
-
-    public ResponseEntity<String> delete(@PathVariable Integer idCategory) {
-        return modelRepositoryFeign.delete(idCategory);
-    };
-
     public ResponseEntity<Model> makeInactive(@PathVariable Integer idModel) {
         return modelRepositoryFeign.makeInactive(idModel);
     }
