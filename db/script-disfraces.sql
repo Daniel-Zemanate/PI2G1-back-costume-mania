@@ -148,15 +148,15 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `costumemania`.`user`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `costumemania`.`user` ;
+DROP TABLE IF EXISTS `costumemania`.`users` ;
 
-CREATE TABLE IF NOT EXISTS `costumemania`.`user` (
+CREATE TABLE IF NOT EXISTS `costumemania`.`users` (
   `id_user` INT NOT NULL AUTO_INCREMENT,
   `role` INT NOT NULL,
-  `name` VARCHAR(45) NOT NULL,
-  `last_name` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(45) NOT NULL,
-  `pass` VARCHAR(45) NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `last_name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `pass` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id_user`),
   INDEX `id_role_idx` (`role` ASC) VISIBLE,
   CONSTRAINT `id_role`
