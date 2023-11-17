@@ -33,22 +33,12 @@ public class CatalogService {
     public Optional<Catalog> getCatalogById(Integer id){
         return catalogRepository.findById(id);
     }
-    public Catalog getCatalogByIdSEC(Integer id){
-        return catalogRepository.findByIdSEC(id);
-    }
 
     public List<Catalog> getCatalogBySize (Size size) {
         return catalogRepository.findBySize(size);
     };
-    public List<Catalog> getCatalogBySize (Integer bollean, Integer idModel) {
-        return catalogRepository.findBySize(bollean, idModel);
-    };
     public List<Catalog> getActiveCatalogBySize (Integer bollean, Integer idModel) {
         return catalogRepository.findActiveBySize(bollean, idModel);
-    };
-
-    public List<Catalog> findByCategory (Integer category, Integer idModel) {
-        return catalogRepository.findByCategory(category, idModel);
     };
     public List<Catalog> findActiveByCategory (Integer category, Integer idModel) {
         return catalogRepository.findActiveByCategory(category, idModel);
@@ -58,12 +48,7 @@ public class CatalogService {
         return catalogRepository.validateCreate(idModel, booleanAdult, size);
     };
 
-    // EN PRINCIPIO NO NECESITAMOS EL PAGINADO PORQUE EL MODELO VA A DEVOLVER UN SOLO ITEM
-    public Optional<Page<Catalog>> getCatalogByModel (Integer idModel,Pageable pageable) {
-        Optional<Page<Catalog>> catalogPage =  catalogRepository.findByModelPageable(idModel,pageable);
-        return catalogPage;
-    };
-    public Optional<Catalog> findByModelAndSize (Integer idModel, Integer size) {
+    public Optional<List<Catalog>> findByModelAndSize (Integer idModel, Integer size) {
         return catalogRepository.findByModelAndSize(idModel, size);
     };
     public List<Catalog> getNews () {
@@ -71,12 +56,6 @@ public class CatalogService {
     };
     public Catalog save (Catalog c) {
         return catalogRepository.save(c);
-    }
-    public void delete (Integer id) {
-        catalogRepository.deleteById(id);
-    }
-    public void deleteByModel (Integer idModel) {
-        catalogRepository.deleteByModel(idModel);
     }
     public void inactiveByModel (Integer idModel) {
         catalogRepository.inactiveByModel(idModel);
