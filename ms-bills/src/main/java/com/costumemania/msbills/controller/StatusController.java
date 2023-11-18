@@ -23,11 +23,14 @@ public class StatusController {
     public StatusController(StatusService statusService) {
         this.statusService = statusService;
     }
+
+    // user + adm
     @GetMapping
     public ResponseEntity<List<Status>>getAllStatus(){
         return ResponseEntity.ok(statusService.getAllStatus());
     }
 
+    // adm
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Status>> getByIdSale(@PathVariable Integer id){
         Optional<Status> status = statusService.getById(id);

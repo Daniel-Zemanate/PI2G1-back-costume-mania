@@ -19,11 +19,13 @@ public class ShippingController {
         this.shippingService = shippingService;
     }
 
+    // public
     @GetMapping
     public ResponseEntity<List<Shipping>> getAllShipping(){
         return ResponseEntity.ok(shippingService.getAllShipping());
     }
 
+    // public
     @GetMapping("/{id}")
     public ResponseEntity<Shipping> getByShipping(@PathVariable Integer id){
         //verify Shipping empty
@@ -34,6 +36,7 @@ public class ShippingController {
         return ResponseEntity.ok().body(shipping.get());
     }
 
+    // public
     @GetMapping("/destination/{destination}")
     public ResponseEntity<List<Shipping>> getByDestinationShipping(@PathVariable String destination){
         //verify list by destination
@@ -44,6 +47,7 @@ public class ShippingController {
         return ResponseEntity.ok().body(shipping.get());
     }
 
+    // adm
     @PostMapping("/create")
     public ResponseEntity<Shipping> createShipping(@RequestBody Shipping shipping){
         // verify if already exist
@@ -59,6 +63,7 @@ public class ShippingController {
        return ResponseEntity.accepted().body(shippingService.saveShipping(shipping));
     }
 
+    // adm
     @PutMapping("/{id}")
     public ResponseEntity<Shipping> updateShipping (@PathVariable Integer id, @RequestBody Shipping s) {
         // first verify if the ID exist
