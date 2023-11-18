@@ -8,7 +8,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name="status")
@@ -21,4 +20,8 @@ public class Status {
     @Column(name = "status", nullable = false)
     private String status;
 
+    public Status(Integer idStatus, String status) {
+        this.idStatus = idStatus;
+        this.status = status;
+    }
 }

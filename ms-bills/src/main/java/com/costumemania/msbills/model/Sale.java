@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,9 +24,10 @@ public class Sale {
     private Integer idSale;
     @Column(name = "no_invoice")
     private Integer invoice;
-    @ManyToOne
-    @JoinColumn(name = "user")
-    private User user;
+    //@ManyToOne
+    //@JoinColumn(name = "user")
+    @Column(name = "user")
+    private Integer user;
     @ManyToOne
     @JoinColumn(name = "catalog")
     private Catalog catalog;
@@ -41,7 +42,18 @@ public class Sale {
     @JoinColumn(name = "status")
     private Status status;
     @Column(name = "sale_date")
-    private Date saleDate; //ver si no es date de sql
+    private LocalDateTime saleDate; //ver si no es date de sql
     @Column(name = "shipping_date")
-    private Date shippingDate;
+    private LocalDateTime shippingDate;
+
+    public Sale(Integer invoice, Integer user, Catalog catalog, Integer quantity, String address, Shipping city, LocalDateTime saleDate, Status status) {
+        this.invoice = invoice;
+        this.user = user;
+        this.catalog = catalog;
+        this.quantity = quantity;
+        this.address = address;
+        this.city = city;
+        this.saleDate = saleDate;
+        this.status = status;
+    }
 }

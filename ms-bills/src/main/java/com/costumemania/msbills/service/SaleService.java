@@ -50,4 +50,8 @@ public class SaleService {
     public Optional<List<Sale>> getBySize (Integer idSize) {
         return saleRepository.getBySize(idSize);
     }
+
+    public Sale create (Sale s) {
+        return saleRepository.save(s);
+    }
 }

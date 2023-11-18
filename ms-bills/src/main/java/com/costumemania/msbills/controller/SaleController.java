@@ -4,6 +4,7 @@ import com.costumemania.msbills.model.Sale;
 import com.costumemania.msbills.model.Shipping;
 import com.costumemania.msbills.model.Status;
 import com.costumemania.msbills.model.requiredEntity.Catalog;
+import com.costumemania.msbills.model.requiredEntity.User;
 import com.costumemania.msbills.service.CatalogService;
 import com.costumemania.msbills.service.SaleService;
 import com.costumemania.msbills.service.ShippingService;
@@ -12,10 +13,13 @@ import feign.FeignException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -286,5 +290,36 @@ public class SaleController {
         float total = semiTotal + resp.getQuantity();
         return ResponseEntity.ok(messageFinal + "Total: $" + total);
     }
+
+    // user - To create bill
+    @PostMapping("/create")
+    public ResponseEntity<List<Sale>> createBill (@RequestBody SaleRequired body){
+        ResponseEntity<String> billValidate = startSale(body);
+        if (billValidate.getStatusCode()== HttpStatus.OK) {
+            List<Sale> results = new ArrayList<>();
+            for (ItemSold itemSold : body.getItemSoldList()) {
+                Catalog catalogProof;
+                try {
+                    catalogProof = catalogService.getById(itemSold.getCatalog()).getBody().get();
+                } catch (FeignException e) {
+                    return ResponseEntity.internalServerError().build();
+                }
+                Sale s = new Sale(0005, // todo: recordar buscar el ultimo invoice
+                        1, // todo: esto solo funciona porque le saque el "not null" de la bbdd y la foreign key. El user es un integer nada mas
+                        catalogProof,
+                        itemSold.getQuantitySold(),
+                        "domicilio de prueba",
+                        shippingService.getByIdShipping(body.getCity()).get(),
+                        LocalDateTime.now(),
+                        new Status(1,"En proceso"));
+                results.add(saleService.create(s));
+                // todo: hay que descontar la cantidad!!
+            }
+            return ResponseEntity.ok(results);
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    //////////////////////////////////////////////////////////////////////
 
 }
