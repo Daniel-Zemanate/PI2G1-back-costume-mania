@@ -17,13 +17,9 @@ public class StatusService {
     public List<Status> getAllStatus(){
         return statusRepository.findAll();
     }
-    public Optional<List<Status>> getAllStatusBySale(){
-        return statusRepository.findAllBySale();
-    }
 
-    public Optional<Status>getByIdSale(Integer id){
-        return statusRepository.findByIdSale(id);
+    public Optional<Status>getById(Integer id){
+        return statusRepository.findById(id);
     }
-
 
 }

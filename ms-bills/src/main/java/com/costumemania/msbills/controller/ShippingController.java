@@ -15,69 +15,68 @@ import java.util.Optional;
 public class ShippingController {
 
     private final ShippingService shippingService;
-
-
     public ShippingController(ShippingService shippingService) {
         this.shippingService = shippingService;
     }
+
     @GetMapping
     public ResponseEntity<List<Shipping>> getAllShipping(){
         return ResponseEntity.ok(shippingService.getAllShipping());
     }
 
-    @PostMapping("/create/")
+    @GetMapping("/{id}")
+    public ResponseEntity<Shipping> getByShipping(@PathVariable Integer id){
+        //verify Shipping empty
+        Optional<Shipping> shipping=shippingService.getByIdShipping(id);
+        if(shipping.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(shipping.get());
+    }
+
+    @GetMapping("/destination/{destination}")
+    public ResponseEntity<List<Shipping>> getByDestinationShipping(@PathVariable String destination){
+        //verify list by destination
+        Optional<List<Shipping>> shipping = shippingService.getByDestinationShipping(destination);
+        if(shipping.get().isEmpty()){
+            return  ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(shipping.get());
+    }
+
+    @PostMapping("/create")
     public ResponseEntity<Shipping> createShipping(@RequestBody Shipping shipping){
-        //verify if already exist
-        Optional<Shipping> searchShipping = shippingService.getByDestinationByCostShipping(shipping.getDestination(), shipping.getCost());
-        if (searchShipping.isPresent()) {
+        // verify if already exist
+        Optional<List<Shipping>> searchShipping = shippingService.getByDestinationShipping(shipping.getDestination());
+        if (!searchShipping.get().isEmpty()) {
             return ResponseEntity.unprocessableEntity().build();
         }
-        //verify category
+        // verify cost isn´t empty
+        if (shipping.getCost()==null) {
+            shipping.setCost(0.0f);
+        }
+        // else 202
        return ResponseEntity.accepted().body(shippingService.saveShipping(shipping));
     }
-    @PutMapping("/idModify/{id}")
+
+    @PutMapping("/{id}")
     public ResponseEntity<Shipping> updateShipping (@PathVariable Integer id, @RequestBody Shipping s) {
         // first verify if the ID exist
         Optional<Shipping> shippingProof = shippingService.getByIdShipping(id);
         if (shippingProof.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        // else...
-        s.setShippingId(shippingProof.get().getShippingId());
+        // verify if the new destination already exists
+        Optional<List<Shipping>> newShipping = shippingService.getByDestinationShipping(s.getDestination());
+        if (!newShipping.get().isEmpty()) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+        // cost
+        if (s.getCost()==null) {
+            s.setCost(0.0f);
+        }
+        // else
+        s.setIdShippping(id);
         return ResponseEntity.ok().body(shippingService.saveShipping(s));
     }
-   @GetMapping("/{id}")
-    public ResponseEntity<Optional<Shipping>> getByShipping(@PathVariable Integer id){
-
-        //verify Shipping empty
-
-       Optional<Shipping> shipping=shippingService.getByIdShipping(id);
-       if(shipping.isEmpty()){
-           return ResponseEntity.notFound().build();
-       }
-       return ResponseEntity.ok().body(shipping);
-   }
-
-   @GetMapping("/destination/{destination}")
-    public ResponseEntity<Optional<List<Shipping>>> getByDestinationShipping(@PathVariable String destination){
-
-        //verify list by destination
-       Optional<List<Shipping>> shipping = shippingService.getByDestinationShipping(destination);
-       if(shipping.isEmpty()){
-           return  ResponseEntity.notFound().build();
-       }
-       return ResponseEntity.ok().body(shipping);
-   }
-
-   @DeleteMapping("/delete/{id}")
-        public ResponseEntity<String> deleteShipping(@PathVariable Integer id){
-
-            //verify shipping empty
-           Optional<Shipping> shipping= shippingService.getByIdShipping(id);
-           if(shipping.isEmpty()) {
-               return ResponseEntity.noContent().build();
-           }
-           shippingService.deleteShipping(id);
-           return ResponseEntity.ok().body("Shipping item with ID " + id + " deleted.");
-   }
 }

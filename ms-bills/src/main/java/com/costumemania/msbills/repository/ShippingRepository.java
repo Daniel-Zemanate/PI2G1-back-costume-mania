@@ -11,7 +11,5 @@ import java.util.Optional;
 @Repository
 public interface ShippingRepository extends JpaRepository<Shipping,Integer> {
     @Query(value ="SELECT * FROM shipping s WHERE s.destination LIKE %?1%",nativeQuery = true)
-    Optional<List<Shipping>> findByDestination(String destiny);
-    @Query(value ="SELECT * FROM shipping s WHERE s.destination = ?1 AND s.cost=?2" ,nativeQuery = true)
-    Optional<Shipping> findByDestinationByCost(String destiny, Float cost);
+    Optional<List<Shipping>> findByDestination(String destination);
 }
