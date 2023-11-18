@@ -1,9 +1,9 @@
 package com.costumemania.msusers.controller;
 
 import com.costumemania.msusers.model.dto.CreateUserRequest;
+import com.costumemania.msusers.model.dto.UpdateUserRequest;
 import com.costumemania.msusers.model.dto.UserAccountResponse;
 import com.costumemania.msusers.service.IUserService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class UserController {
 
 
     @PostMapping(path = "/create")
-    public ResponseEntity<?> create(@RequestBody @Valid CreateUserRequest userRequest) {
+    public ResponseEntity<?> create(@RequestBody CreateUserRequest userRequest) {
 
         UserAccountResponse userResponse;
         try {
@@ -71,14 +71,49 @@ public class UserController {
 
     @GetMapping(path = "/all")
     public ResponseEntity<?> allUsers() {
+
         Set<UserAccountResponse> setUsers = new HashSet<>();
+        ResponseEntity response;
+
         try {
             setUsers = userService.getAllUsers();
+            response = ResponseEntity.ok(setUsers);
         } catch (Exception e) {
-            return new ResponseEntity<>("Unexpected system error during your request", HttpStatusCode.valueOf(500));
+            response = ResponseEntity.badRequest().body("Something went wrong with your request. Try again, if error persists contact Admin for support: " + e.getMessage());
         }
 
-        return ResponseEntity.ok(setUsers);
+        return response;
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable(name = "id") int id) {
+
+        ResponseEntity response;
+
+        try {
+            userService.deleteUserById(id);
+            response = ResponseEntity.accepted().body(id);
+        } catch (Exception e) {
+            response = ResponseEntity.badRequest().body("Something went wrong with your request. Try again, if error persists contact Admin for support: " + e.getMessage());
+        }
+
+        return response;
+    }
+
+    @PutMapping(path = "/update")
+    public ResponseEntity<?> updateUserFromUser(@RequestBody UpdateUserRequest userRequest) {
+
+        UserAccountResponse userResponse;
+        ResponseEntity response;
+
+        try {
+            userResponse = userService.updateUserFromUser(userRequest);
+            response = ResponseEntity.ok().body(userResponse);
+        } catch (Exception e) {
+            response = ResponseEntity.badRequest().body("Something went wrong with your request. Try again, if error persists contact Admin for support: " + e.getMessage());
+        }
+
+        return response;
     }
 
 

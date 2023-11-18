@@ -1,18 +1,15 @@
 package com.costumemania.msusers.service.implementation;
 
 import com.costumemania.msusers.model.dto.CreateUserRequest;
+import com.costumemania.msusers.model.dto.UpdateUserRequest;
 import com.costumemania.msusers.model.dto.UserAccountResponse;
-import com.costumemania.msusers.model.entity.Role;
 import com.costumemania.msusers.model.entity.UserEntity;
 import com.costumemania.msusers.repository.IUserRepository;
 import com.costumemania.msusers.service.IUserService;
-import com.mysql.cj.jdbc.exceptions.SQLError;
 import jakarta.ws.rs.NotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,7 +32,7 @@ public class UserServiceImplementation implements IUserService {
 
         UserEntity userEntity = CreateUserRequest.toUserEntity(user);
 
-        userEntity = userRepository.save(userEntity);
+        userEntity = save(userEntity);
 
         UserAccountResponse userResponse = UserAccountResponse.fromUserEntity(userEntity);
 
@@ -47,18 +44,7 @@ public class UserServiceImplementation implements IUserService {
         Optional<UserEntity> userExists = userRepository.findByUsername(username);
         if (userExists.isEmpty()) throw new NotFoundException(String.format("Username: %s Not found", username));
 
-        UserAccountResponse userResponse = UserAccountResponse.builder()
-                .id(userExists.get().getId())
-                .dni(userExists.get().getDni())
-                .username(userExists.get().getUsername())
-                .email(userExists.get().getEmail())
-                .firstName(userExists.get().getFirstName())
-                .lastName(userExists.get().getLastName())
-                .status(userExists.get().getStatus())
-                .createdAt(userExists.get().getCreatedAt())
-                .updatedAt(userExists.get().getUpdatedAt())
-                .role(userExists.get().getRole())
-                .build();
+        UserAccountResponse userResponse = UserAccountResponse.fromUserEntity(userExists.get());
         return userResponse;
     }
 
@@ -67,36 +53,50 @@ public class UserServiceImplementation implements IUserService {
         Optional<UserEntity> userExists = userRepository.findById(id);
         if (userExists.isEmpty()) throw new NotFoundException(String.format("User id: %s Not found", id));
 
-        UserAccountResponse userResponse = UserAccountResponse.builder()
-                .id(userExists.get().getId())
-                .dni(userExists.get().getDni())
-                .username(userExists.get().getUsername())
-                .email(userExists.get().getEmail())
-                .firstName(userExists.get().getFirstName())
-                .lastName(userExists.get().getLastName())
-                .status(userExists.get().getStatus())
-                .createdAt(userExists.get().getCreatedAt())
-                .updatedAt(userExists.get().getUpdatedAt())
-                .role(userExists.get().getRole())
-                .build();
+        UserAccountResponse userResponse = UserAccountResponse.fromUserEntity(userExists.get());
+        return userResponse;
+    }
+
+    @Override
+    public UserAccountResponse getByDni(String dni) {
+
+        Optional<UserEntity> userExists = userRepository.findByDni(dni);
+        if (userExists.isEmpty()) throw new NotFoundException(String.format("User dni: %s Not found", dni));
+
+        UserAccountResponse userResponse = UserAccountResponse.fromUserEntity(userExists.get());
         return userResponse;
     }
 
     @Override
     public Set<UserAccountResponse> getAllUsers() {
         Set<UserAccountResponse> setUsers = userRepository.findAll().stream()
-                .map(user -> UserAccountResponse.builder()
-                        .id(user.getId())
-                        .dni(user.getDni())
-                        .username(user.getUsername())
-                        .email(user.getEmail())
-                        .firstName(user.getFirstName())
-                        .lastName(user.getLastName())
-                        .status(user.getStatus())
-                        .createdAt(user.getCreatedAt())
-                        .updatedAt(user.getUpdatedAt())
-                        .role(user.getRole())
-                        .build()).collect(Collectors.toSet());
+                .map(user -> UserAccountResponse.fromUserEntity(user)).collect(Collectors.toSet());
         return setUsers;
+    }
+
+    @Override
+    public void deleteUserById(int id) {
+
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserAccountResponse updateUserFromUser(UpdateUserRequest user) {
+
+        UserAccountResponse foundUser = getById(user.getId());
+
+        UserEntity updateUser = UpdateUserRequest.toUserEntity(user);
+        updateUser.setCreatedAt(foundUser.getCreatedAt());
+
+        updateUser = save(updateUser);
+
+        UserAccountResponse response = UserAccountResponse.fromUserEntity(updateUser);
+
+        return response;
+    }
+
+    //Common method to be used for create and update
+    private UserEntity save(UserEntity user) {
+        return userRepository.save(user);
     }
 }
