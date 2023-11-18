@@ -130,22 +130,6 @@ AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-
--- -----------------------------------------------------
--- Table `costumemania`.`role`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `costumemania`.`role` ;
-
-CREATE TABLE IF NOT EXISTS `costumemania`.`role` (
-  `id_role` INT NOT NULL AUTO_INCREMENT,
-  `role` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id_role`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 3
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
 -- -----------------------------------------------------
 -- Table `costumemania`.`user`
 -- -----------------------------------------------------
@@ -153,16 +137,18 @@ DROP TABLE IF EXISTS `costumemania`.`users` ;
 
 CREATE TABLE IF NOT EXISTS `costumemania`.`users` (
   `id_user` INT NOT NULL AUTO_INCREMENT,
-  `role` INT NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
-  `last_name` VARCHAR(255) NOT NULL,
+  `dni` VARCHAR(30) NOT NULL,
+  `username` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
-  `pass` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id_user`),
-  INDEX `id_role_idx` (`role` ASC) VISIBLE,
-  CONSTRAINT `id_role`
-    FOREIGN KEY (`role`)
-    REFERENCES `costumemania`.`role` (`id_role`))
+  `password` VARCHAR(255) NOT NULL,
+  `first_name` VARCHAR(255) DEFAULT NULL,
+  `last_name` VARCHAR(255) DEFAULT NULL,
+  `status` bit(1) DEFAULT NULL,
+  `soft_delete` bit(1) DEFAULT NULL,
+  `created_at` DATE DEFAULT NULL,
+  `updated_at` DATE DEFAULT NULL,
+  `role` enum('ADMIN','USER') DEFAULT NULL,
+  PRIMARY KEY (`id_user`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb4
@@ -351,14 +337,15 @@ INSERT INTO `costumemania`.`catalog` (`id_catalog`, `model`, `size`, `quantity`,
 INSERT INTO `costumemania`.`catalog` (`id_catalog`, `model`, `size`, `quantity`, `price`) VALUES ('58', '29', '4', '2', '35.00');
 
 
-INSERT INTO `costumemania`.`role` (`id_role`, `role`) VALUES ('1', 'Administrador');
-INSERT INTO `costumemania`.`role` (`id_role`, `role`) VALUES ('2', 'Usuario');
 
-
-INSERT INTO `costumemania`.`users` (`id_user`, `role`, `name`, `last_name`, `email`, `pass`) VALUES ('1', '1', 'Juan', 'Perez', 'j.perez@email.com', '1234');
-INSERT INTO `costumemania`.`users` (`id_user`, `role`, `name`, `last_name`, `email`, `pass`) VALUES ('2', '2', 'Daniel', 'Gonzalez', 'd.gonzalez@email.com', '1234');
-INSERT INTO `costumemania`.`users` (`id_user`, `role`, `name`, `last_name`, `email`, `pass`) VALUES ('3', '2', 'Eduardo', 'Calviño', 'eduardo@email.com', '1234');
-INSERT INTO `costumemania`.`users` (`id_user`, `role`, `name`, `last_name`, `email`, `pass`) VALUES ('4', '2', 'Laura', 'Nuñez', 'laura@email.com', '1234');
+INSERT INTO `costumemania`.`users` (`id_user`,`dni`,`username`,`email`,`password`,`first_name`,`last_name`,`status`,`soft_delete`,`created_at`,`updated_at`,`role`)
+VALUES ('1', '1', 'user-test-1', 'user-test-1@mail.com', 'user-test-1', 'user', 'test-1', TRUE, FALSE, CURRENT_DATE, CURRENT_DATE, 'ADMIN');
+INSERT INTO `costumemania`.`users` (`id_user`,`dni`,`username`,`email`,`password`,`first_name`,`last_name`,`status`,`soft_delete`,`created_at`,`updated_at`,`role`)
+VALUES ('2', '2', 'user-test-2', 'user-test-2@mail.com', 'user-test-2', 'user', 'test-2', TRUE, FALSE, CURRENT_DATE, CURRENT_DATE, 'USER');
+INSERT INTO `costumemania`.`users` (`id_user`,`dni`,`username`,`email`,`password`,`first_name`,`last_name`,`status`,`soft_delete`,`created_at`,`updated_at`,`role`)
+VALUES ('3', '3', 'user-test-3', 'user-test-3@mail.com', 'user-test-3', 'user', 'test-3', TRUE, FALSE, CURRENT_DATE, CURRENT_DATE, 'USER');
+INSERT INTO `costumemania`.`users` (`id_user`,`dni`,`username`,`email`,`password`,`first_name`,`last_name`,`status`,`soft_delete`,`created_at`,`updated_at`,`role`)
+VALUES ('4', '4', 'user-test-4', 'user-test-4@mail.com', 'user-test-4', 'user', 'test-4', TRUE, FALSE, CURRENT_DATE, CURRENT_DATE, 'USER');
 
 
 INSERT INTO `costumemania`.`shipping` (`id_shipping`, `destination`, `cost`) VALUES ('1', 'CABA, Arg', '0.00');

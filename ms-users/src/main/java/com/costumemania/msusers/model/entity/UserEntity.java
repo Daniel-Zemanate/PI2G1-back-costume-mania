@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Entity
 @SQLDelete(sql = "UPDATE users SET soft_delete = true WHERE id=?")
 @Where(clause = "soft_delete=false")
-@Table(name = "users", indexes = @Index(name = "unique_email", columnList = "email", unique = true))
+@Table(name = "users")
 public class UserEntity {
 
     @Id
