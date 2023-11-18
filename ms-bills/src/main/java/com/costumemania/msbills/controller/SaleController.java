@@ -124,4 +124,22 @@ public class SaleController {
         }
         return ResponseEntity.ok().body(saleList.get());
     }
+
+    // adm
+    @GetMapping("/size/{idSize}")
+    public ResponseEntity<List<Sale>> getBySize (@PathVariable Integer idSize){
+        // first verify if the boolean exist
+        List<Catalog> catalogProof;
+        try {
+            catalogProof = catalogService.getBySize(idSize).getBody();
+        } catch (FeignException e) {
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        Optional<List<Sale>> saleList = saleService.getBySize(idSize);
+        if (saleList.get().isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(saleList.get());
+    }
 }

@@ -46,4 +46,8 @@ public class SaleService {
     public Optional<List<Sale>> getByCatalog (Catalog catalog) {
         return saleRepository.getByCatalog(catalog);
     };
+
+    public Optional<List<Sale>> getBySize (Integer idSize) {
+        return saleRepository.getBySize(idSize);
+    }
 }

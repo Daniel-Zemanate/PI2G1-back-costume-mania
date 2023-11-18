@@ -20,6 +20,6 @@ public interface SaleRepository extends JpaRepository<Sale, Integer> {
 
     Optional<List<Sale>> getByCatalog (Catalog catalog);
 
-    @Query(value = "SELECT * FROM costumemania.sale s inner join model m on s.model=m.id_model inner join catalog c on s.model= c.model inner join size si on c.size=si.id_size where si.adult=?1", nativeQuery = true)
+    @Query(value = "SELECT s.id_sale, s.no_invoice, s.user, s.catalog, s.quantity, s.shipping_address, s.shipping_city, s.status, s.sale_date, s.shipping_date , c.id_catalog, c.model, c.size, c.price FROM sale s inner join catalog c on s.catalog=c.id_catalog inner join size si on c.size=si.id_size where si.adult=?1", nativeQuery = true)
     Optional<List<Sale>> getBySize (Integer idSize);
 }

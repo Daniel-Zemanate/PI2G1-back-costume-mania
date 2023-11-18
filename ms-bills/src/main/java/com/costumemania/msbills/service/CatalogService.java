@@ -21,4 +21,7 @@ public class CatalogService {
     public ResponseEntity<Optional<List<Catalog>>> getByModel2(@PathVariable Integer idModel) {
         return catalogRepositoryFeign.getByModel2(idModel);
     }
+    public ResponseEntity<List<Catalog>> getBySize(@PathVariable Integer bolleanAdult) {
+        return catalogRepositoryFeign.getBySize(bolleanAdult);
+    }
 }

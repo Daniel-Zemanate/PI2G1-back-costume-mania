@@ -15,4 +15,6 @@ public interface CatalogRepositoryFeign {
     ResponseEntity<Optional<Catalog>> getById(@PathVariable Integer idCatalog);
     @GetMapping("/api/v1/catalog/byModel2/{idModel}")
     ResponseEntity<Optional<List<Catalog>>> getByModel2(@PathVariable Integer idModel);
+    @GetMapping("/api/v1/catalog/bySize/{bolleanAdult}")
+    ResponseEntity<List<Catalog>> getBySize(@PathVariable Integer bolleanAdult);
 }
