@@ -2,6 +2,7 @@ package com.costumemania.msbills.service;
 
 import com.costumemania.msbills.model.Sale;
 import com.costumemania.msbills.model.Status;
+import com.costumemania.msbills.model.requiredEntity.Catalog;
 import com.costumemania.msbills.model.requiredEntity.User;
 import com.costumemania.msbills.repository.SaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,9 @@ public class SaleService {
 
     public Optional<List<Sale>> getByModel (Integer idModel) {
         return saleRepository.getByModel(idModel);
+    };
+
+    public Optional<List<Sale>> getByCatalog (Catalog catalog) {
+        return saleRepository.getByCatalog(catalog);
     };
 }
