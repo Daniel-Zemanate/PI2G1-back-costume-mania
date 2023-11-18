@@ -23,10 +23,9 @@ public class Status {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_status")
     private Integer statusId;
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     private String status;
-
     @OneToMany
-    @JoinColumn(name = "id_status")
+    @JoinColumn(name = "status")
     private Set<Sale> sales;
 }

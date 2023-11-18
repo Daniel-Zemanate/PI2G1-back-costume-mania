@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+
 import java.util.Date;
 
 
@@ -24,18 +26,36 @@ public class Sale {
     @Column(name = "id_sale",unique = true, nullable = false)
     private Long saleId;
 
-    @Column(nullable = false)
+    @Column(name="no_invoice")
     private Integer no_invoice;
 
-    @Column(nullable = false)
+    @Column(name="quantity")
     private Integer quantity;
 
-    @Column(nullable = false)
-    private String shipping_address;
+    @Column(name="shipping_address")
+    private String shippingAddress;
 
-    @Column(nullable = false)
-    private Date sale_date;
+    @ManyToOne
+    @JoinColumn(name = "model")
+    private Model model;
 
-    @Column
-    private Date shipping_date;
+
+    @Column(name="sale_date")
+    private Date saleDate;
+
+    @Column(name="shipping_date")
+    private Date shippingDate;
+
+    @ManyToOne
+    @JoinColumn(name = "shipping_city")
+    private Shipping shippingCity;
+
+    @ManyToOne
+    @JoinColumn(name = "status")
+    private Status status;
+
+    @ManyToOne
+    @JoinColumn(name = "user", referencedColumnName = "id_user")
+    private User user;
+
 }

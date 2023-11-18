@@ -22,9 +22,9 @@ public class Shipping {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_shipping")
     private Integer shippingId;
-    @Column(nullable = false)
+    @Column(name = "destination")
     private String destination;
-    @Column(nullable = false)
+    @Column(name = "cost")
     private Float cost;
 
     @OneToMany
