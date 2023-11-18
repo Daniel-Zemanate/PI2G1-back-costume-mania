@@ -13,7 +13,7 @@ spring:
     password: ${DB_PASS:123456}
   jpa:
     open-in-view: false
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
     properties:

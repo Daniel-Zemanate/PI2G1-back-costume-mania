@@ -16,10 +16,13 @@ public class CategoryService {
     public List<Category> getAll() {
         return categoryRepository.findAll();
     };
+    public List<Category> getAllComplete() {
+        return categoryRepository.findAllComplete();
+    };
     public Optional<Category> getdById (Integer id) {
         return categoryRepository.findById(id);
     };
-    public Category categorydById (Integer id) {
+    public Optional<Category> categorydById (Integer id) {
         return categoryRepository.categoryById(id);
     };
     public Optional<Category> getByName (String name) {
@@ -27,8 +30,5 @@ public class CategoryService {
     };
     public Category create (Category c) {
         return categoryRepository.save(c);
-    }
-    public void delete (Integer id) {
-        categoryRepository.deleteById(id);
     }
 }
