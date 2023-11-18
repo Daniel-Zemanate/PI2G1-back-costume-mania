@@ -1,33 +1,43 @@
 package com.costumemania.msusers.model.dto;
 
+import com.costumemania.msusers.model.entity.Role;
+import com.costumemania.msusers.model.entity.UserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
-import org.hibernate.validator.constraints.Length;
+import lombok.Builder;
+import lombok.Data;
+
+import java.time.LocalDate;
 
 @Builder
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CreateUserRequest {
-    @NotNull(message = "Dni can not be null")
-    @NotBlank(message = "Dni can not be blank")
+
     String dni;
-    @NotNull(message = "Username can not be null")
-    @NotBlank(message = "Username can not be blank")
     String username;
-    @NotNull(message = "Email can not be null")
-    @Email(message = "Wrong email format",regexp = "^[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,}$")
     String email;
-    @NotNull(message = "Password can not be null")
-    @NotBlank(message = "Password can not be blank")
-    @Length(min = 6, message = "Password should have at least 6 characters")
     String password;
     String firstName;
     String lastName;
+
+
+    public static UserEntity toUserEntity(CreateUserRequest user){
+        return UserEntity.builder()
+                .dni(user.getDni())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .status(true)
+                .softDelete(false)
+                .createdAt(LocalDate.now())
+                .updatedAt(LocalDate.now())
+                .role(Role.USER)
+                .build();
+    }
 
 }

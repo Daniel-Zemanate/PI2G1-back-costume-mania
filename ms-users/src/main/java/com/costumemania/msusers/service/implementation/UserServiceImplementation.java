@@ -33,33 +33,11 @@ public class UserServiceImplementation implements IUserService {
     @Override
     public UserAccountResponse createUser(CreateUserRequest user) {
 
-        UserEntity userEntity = UserEntity.builder()
-                .dni(user.getDni())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .password(passwordEncoder.encode(user.getPassword()))//TODO: ENCRYPT PASS
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .status(true)
-                .softDelete(false)
-                .createdAt(LocalDate.now())
-                .updatedAt(LocalDate.now())
-                .role(Role.USER)
-                .build();
+        UserEntity userEntity = CreateUserRequest.toUserEntity(user);
+
         userEntity = userRepository.save(userEntity);
 
-        UserAccountResponse userResponse = UserAccountResponse.builder()
-                .id(userEntity.getId())
-                .dni(userEntity.getDni())
-                .username(userEntity.getUsername())
-                .email(userEntity.getEmail())
-                .firstName(userEntity.getFirstName())
-                .lastName(userEntity.getLastName())
-                .status(userEntity.getStatus())
-                .createdAt(userEntity.getCreatedAt())
-                .updatedAt(userEntity.getUpdatedAt())
-                .role(userEntity.getRole())
-                .build();
+        UserAccountResponse userResponse = UserAccountResponse.fromUserEntity(userEntity);
 
         return userResponse;
     }

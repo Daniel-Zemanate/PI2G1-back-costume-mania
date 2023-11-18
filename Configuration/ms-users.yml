@@ -38,3 +38,8 @@ eureka:
     fetch-registry: true
     serviceUrl:
       defaultZone: http://${EUREKA_SERVER_HOST:localhost}:${EUREKA_SERVER_PORT:8761}/eureka/
+
+
+jwt:
+  secret: $2a$12$dQNO.bNyF/E4.NC8ZM/kt.oVU31KSpZNMhTNHDEjvh/2z7zrfkoN6
+  expiration: 86480
