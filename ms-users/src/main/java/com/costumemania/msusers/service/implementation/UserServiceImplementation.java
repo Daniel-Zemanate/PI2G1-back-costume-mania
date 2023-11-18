@@ -19,13 +19,17 @@ public class UserServiceImplementation implements IUserService {
 
     private IUserRepository userRepository;
 
-    private PasswordEncoder passwordEncoder;
+//    private PasswordEncoder passwordEncoder;
+//
+//    public UserServiceImplementation(IUserRepository userRepository, PasswordEncoder passwordEncoder) {
+//        this.userRepository = userRepository;
+//        this.passwordEncoder = passwordEncoder;
+//    }
 
-    public UserServiceImplementation(IUserRepository userRepository, PasswordEncoder passwordEncoder) {
+
+    public UserServiceImplementation(IUserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
-
 
     @Override
     public UserAccountResponse createUser(CreateUserRequest user) {
