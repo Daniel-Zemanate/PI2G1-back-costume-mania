@@ -25,6 +25,7 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -254,6 +255,7 @@ public class SaleController {
     public static class SaleRequired {
         List<ItemSold> itemSoldList;
         Integer city;
+        String address;
 
         public List<ItemSold> getItemSoldList() {
             return itemSoldList;
@@ -263,6 +265,9 @@ public class SaleController {
         }
         public Integer getCity() {
             return city;
+        }
+        public String getAddress() {
+            return address;
         }
     }
 
@@ -299,7 +304,7 @@ public class SaleController {
     @PostMapping("/create")
     public ResponseEntity<List<Sale>> createBill (@RequestBody SaleRequired body){
         ResponseEntity<String> billValidate = startSale(body);
-        if (billValidate.getStatusCode()== HttpStatus.OK) {
+        if (billValidate.getStatusCode()== HttpStatus.OK && !Objects.equals(body.getAddress(), "") && body.getAddress()!=null) {
             List<Sale> results = new ArrayList<>();
             for (ItemSold itemSold : body.getItemSoldList()) {
                 Catalog catalogProof;
@@ -317,7 +322,7 @@ public class SaleController {
                         1, // todo: esto solo funciona porque le saque el "not null" de la bbdd y la foreign key. El user es un integer nada mas
                         catalogProof,
                         itemSold.getQuantitySold(),
-                        "domicilio de prueba",
+                        body.getAddress(),
                         shippingService.getByIdShipping(body.getCity()).get(),
                         LocalDateTime.now(),
                         new Status(1,"En proceso"));
