@@ -175,17 +175,17 @@ DROP TABLE IF EXISTS `costumemania`.`fav` ;
 
 CREATE TABLE IF NOT EXISTS `costumemania`.`fav` (
   `id_fav` INT NOT NULL AUTO_INCREMENT,
-  `user` INT NOT NULL,
+  `users` INT NOT NULL,
   `model` INT NOT NULL,
   PRIMARY KEY (`id_fav`),
-  INDEX `id_user_idx` (`user` ASC) VISIBLE,
+  INDEX `id_user_idx` (`users` ASC) VISIBLE,
   INDEX `id_model_idx` (`model` ASC) VISIBLE,
   CONSTRAINT `model`
     FOREIGN KEY (`model`)
     REFERENCES `costumemania`.`model` (`id_model`),
-  CONSTRAINT `user`
-    FOREIGN KEY (`user`)
-    REFERENCES `costumemania`.`user` (`id_user`))
+  CONSTRAINT `id_user`
+    FOREIGN KEY (`users`)
+    REFERENCES `costumemania`.`users` (`id_user`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 14
 DEFAULT CHARACTER SET = utf8mb4
@@ -231,7 +231,7 @@ DROP TABLE IF EXISTS `costumemania`.`sale` ;
 CREATE TABLE IF NOT EXISTS `costumemania`.`sale` (
   `id_sale` INT NOT NULL,
   `no_invoice` INT NULL DEFAULT NULL,
-  `user` INT NOT NULL,
+  `users` INT NOT NULL,
   `model` INT NOT NULL,
   `quantity` INT NOT NULL,
   `shipping_address` VARCHAR(45) NOT NULL,
@@ -240,7 +240,7 @@ CREATE TABLE IF NOT EXISTS `costumemania`.`sale` (
   `sale_date` DATE NULL DEFAULT NULL,
   `shipping_date` DATE NULL DEFAULT NULL,
   PRIMARY KEY (`id_sale`),
-  INDEX `id_user_idx` (`user` ASC) VISIBLE,
+  INDEX `id_user_idx` (`users` ASC) VISIBLE,
   INDEX `id_envio_idx` (`shipping_city` ASC) VISIBLE,
   INDEX `id_status_idx` (`status` ASC) VISIBLE,
   INDEX `id_catalog_idx` (`model` ASC) VISIBLE,
@@ -253,9 +253,9 @@ CREATE TABLE IF NOT EXISTS `costumemania`.`sale` (
   CONSTRAINT `id_status`
     FOREIGN KEY (`status`)
     REFERENCES `costumemania`.`status` (`id_status`),
-  CONSTRAINT `id_user`
-    FOREIGN KEY (`user`)
-    REFERENCES `costumemania`.`user` (`id_user`))
+  CONSTRAINT `users`
+    FOREIGN KEY (`users`)
+    REFERENCES `costumemania`.`users` (`id_user`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
