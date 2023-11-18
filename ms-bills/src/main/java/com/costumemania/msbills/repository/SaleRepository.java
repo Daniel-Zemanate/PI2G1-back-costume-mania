@@ -22,4 +22,7 @@ public interface SaleRepository extends JpaRepository<Sale, Integer> {
 
     @Query(value = "SELECT s.id_sale, s.no_invoice, s.user, s.catalog, s.quantity, s.shipping_address, s.shipping_city, s.status, s.sale_date, s.shipping_date , c.id_catalog, c.model, c.size, c.price FROM sale s inner join catalog c on s.catalog=c.id_catalog inner join size si on c.size=si.id_size where si.adult=?1", nativeQuery = true)
     Optional<List<Sale>> getBySize (Integer idSize);
+
+    @Query(value = "SELECT no_invoice FROM sale order by no_invoice desc limit 1", nativeQuery = true)
+    Integer getLastInvoice ();
 }

@@ -54,4 +54,8 @@ public class SaleService {
     public Sale create (Sale s) {
         return saleRepository.save(s);
     }
+
+    public Integer getLastInvoice () {
+        return saleRepository.getLastInvoice();
+    };
 }

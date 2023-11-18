@@ -313,7 +313,7 @@ public class SaleController {
                 } catch (FeignException e) {
                     return ResponseEntity.unprocessableEntity().build();
                 }
-                Sale s = new Sale(0005, // todo: recordar buscar el ultimo invoice
+                Sale s = new Sale(saleService.getLastInvoice()+1,
                         1, // todo: esto solo funciona porque le saque el "not null" de la bbdd y la foreign key. El user es un integer nada mas
                         catalogProof,
                         itemSold.getQuantitySold(),
@@ -321,7 +321,6 @@ public class SaleController {
                         shippingService.getByIdShipping(body.getCity()).get(),
                         LocalDateTime.now(),
                         new Status(1,"En proceso"));
-
                 results.add(saleService.create(s));
             }
             return ResponseEntity.ok(results);
