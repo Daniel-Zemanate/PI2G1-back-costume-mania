@@ -26,8 +26,8 @@ public class Catalog {
     @JoinColumn(name = "size")
     private Size size;
 
-    @Column(name = "quantity")
-    private Integer quantity;
+    @Column(name = "stock")
+    private Integer stock;
 
     @Column(name = "price")
     private Float price;
@@ -36,11 +36,11 @@ public class Catalog {
     @JoinColumn(name = "status_catalog")
     private StatusComponent statusCatalog;
 
-    public Integer getQuantity() {
-        return quantity;
+    public Integer getStock() {
+        return stock;
     }
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
     public void setModel(Model model) {
         this.model = model;

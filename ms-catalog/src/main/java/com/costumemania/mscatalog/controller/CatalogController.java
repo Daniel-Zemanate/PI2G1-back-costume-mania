@@ -35,12 +35,9 @@ public class CatalogController {
     private CatalogResponse transformCatalog (List<Catalog> c) {
         List<CatalogResponse.SizeByModel> listSize = new ArrayList<>();
         for (Catalog catalog : c) {
-            // quantity validation (now disabled)
-            // if (c.get(i).getQuantity()>0) {
             listSize.add(new CatalogResponse.SizeByModel(catalog.getIdCatalog(),
                     catalog.getSize().getNoSize(),
-                    catalog.getQuantity()));
-            // }
+                    catalog.getStock()));
         }
         return new CatalogResponse(
                 c.get(0).getModel().getNameModel(),
@@ -988,7 +985,7 @@ public class CatalogController {
         Catalog catalogCreated = new Catalog();
         catalogCreated.setModel(modelService.getByIdModelSEC(catalogDTO.getModel()));
         catalogCreated.setSize(sizeService.getByIdSEC(catalogDTO.getSize()));
-        catalogCreated.setQuantity(catalogDTO.getQuantity());
+        catalogCreated.setStock(catalogDTO.getQuantity());
         catalogCreated.setPrice(catalogDTO.getPrice());
         catalogCreated.setStatus(new StatusComponent(1, "active"));
         return ResponseEntity.accepted().body(catalogService.save(catalogCreated));
@@ -1003,11 +1000,11 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // verify quantity
-        if(searchCatalog.get().getQuantity()-quantity<0){
+        if(searchCatalog.get().getStock()-quantity<0){
             return ResponseEntity.badRequest().build();
         }
         //else...
-        searchCatalog.get().setQuantity(searchCatalog.get().getQuantity()-quantity);
+        searchCatalog.get().setStock(searchCatalog.get().getStock()-quantity);
         return ResponseEntity.accepted().body(catalogService.save(searchCatalog.get()));
     }
 
@@ -1044,7 +1041,7 @@ public class CatalogController {
         catalogCreated.setIdCatalog(idCatalog);
         catalogCreated.setModel(modelService.getByIdModelSEC(catalogDTO.getModel()));
         catalogCreated.setSize(sizeService.getByIdSEC(catalogDTO.getSize()));
-        catalogCreated.setQuantity(catalogDTO.getQuantity());
+        catalogCreated.setStock(catalogDTO.getQuantity());
         catalogCreated.setPrice(catalogDTO.getPrice());
         if (catalogDTO.getStatus() == 1) {
             catalogCreated.setStatus(new StatusComponent(1, "active"));

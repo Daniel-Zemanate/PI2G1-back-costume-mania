@@ -232,18 +232,18 @@ public class SaleController {
         return response;
     }
 
-    private class ItemSold {
-        private Catalog catalog;
+    public static class ItemSold {
+        private Integer catalog;
         private Integer quantitySold;
 
-        public Catalog getCatalog() {
+        public Integer getCatalog() {
             return catalog;
         }
         public Integer getQuantitySold() {
             return quantitySold;
         }
     }
-    public class SaleRequired {
+    public static class SaleRequired {
         List<ItemSold> itemSoldList;
         Integer city;
 
@@ -258,25 +258,25 @@ public class SaleController {
         }
     }
 
-    // user
+    // user - To verify if purchase is possible
     @PostMapping("/startSale")
     public ResponseEntity<String> startSale (@RequestBody SaleRequired body){
         float semiTotal=0.0f;
         String messageFinal = "";
         for (ItemSold itemSold : body.getItemSoldList()) {
-            Response resp = quantityEnough(itemSold.getCatalog().getIdCatalog(), itemSold.getQuantitySold());
+            Response resp = quantityEnough(itemSold.getCatalog(), itemSold.getQuantitySold());
             if (resp.getStatus()==400) {
                 return ResponseEntity.unprocessableEntity().body(resp.getMessage());
             }
             if (resp.getStatus()!=200) {
                 return ResponseEntity.unprocessableEntity().body("We can´t process your purchase");
             }
-            Response resp2 = PxQ(itemSold.getCatalog().getIdCatalog(), itemSold.getQuantitySold());
+            Response resp2 = PxQ(itemSold.getCatalog(), itemSold.getQuantitySold());
             if (resp2.getStatus()!=200) {
                 return ResponseEntity.unprocessableEntity().body("We can´t process your purchase");
             }
             semiTotal += resp2.getQuantity();
-            messageFinal += "Catalog ID " + itemSold.getCatalog().getIdCatalog() + " x " + itemSold.getQuantitySold() + " = $" + resp2.getQuantity() + "\n";
+            messageFinal += "Catalog ID " + itemSold.getCatalog() + " x " + itemSold.getQuantitySold() + " = $" + resp2.getQuantity() + "\n";
         }
         Response resp =shippingCost(body.getCity());
         if (resp.getStatus()!=200) {
