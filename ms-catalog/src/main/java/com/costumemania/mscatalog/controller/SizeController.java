@@ -15,7 +15,6 @@ import java.util.Optional;
 public class SizeController {
 
     private final SizeService sizeService;
-
     public SizeController(SizeService sizeService) {
         this.sizeService = sizeService;
     }

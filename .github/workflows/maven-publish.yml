@@ -24,18 +24,33 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
 
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+    - name: Down Docker All Containers
+      continue-on-error: true
+      run: sudo docker stop $(docker ps -a -q)
+
+    - name: Clean Docker - Remove Containers
+      continue-on-error: true
+      run: sudo docker rm -f $(docker ps -a -q)
+
+    - name: Clean Docker - Remove Containers
+      continue-on-error: true
+      run: sudo docker volume rm $(docker volume ls -q)
+
+    - name: Clean Docker
+      continue-on-error: true
+      run: sudo docker system prune -a -f
 
     - name: Copy .env
       run: |
         cp .env-aws .env
 
-    - name: Down Docker Compose
-      run: sudo docker compose down
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
 
     - name: Build Docker Compose
-      run: sudo docker compose build
+#      run: sudo docker compose build
+      run: sudo docker-compose build
 
     - name: Run Docker Compose
-      run: sudo docker compose -f "docker-compose.yml" up -d
+#      run: sudo docker compose -f "docker-compose.yml" up -d
+      run: sudo docker-compose -f "docker-compose.yml" up -d
