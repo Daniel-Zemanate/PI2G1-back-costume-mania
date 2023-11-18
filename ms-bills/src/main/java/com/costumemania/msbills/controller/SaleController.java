@@ -13,10 +13,14 @@ import feign.FeignException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriBuilder;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -304,6 +308,11 @@ public class SaleController {
                 } catch (FeignException e) {
                     return ResponseEntity.internalServerError().build();
                 }
+                try {
+                    catalogService.catalogSold(itemSold.getCatalog(), itemSold.getQuantitySold());
+                } catch (FeignException e) {
+                    return ResponseEntity.unprocessableEntity().build();
+                }
                 Sale s = new Sale(0005, // todo: recordar buscar el ultimo invoice
                         1, // todo: esto solo funciona porque le saque el "not null" de la bbdd y la foreign key. El user es un integer nada mas
                         catalogProof,
@@ -312,8 +321,8 @@ public class SaleController {
                         shippingService.getByIdShipping(body.getCity()).get(),
                         LocalDateTime.now(),
                         new Status(1,"En proceso"));
+
                 results.add(saleService.create(s));
-                // todo: hay que descontar la cantidad!!
             }
             return ResponseEntity.ok(results);
         }

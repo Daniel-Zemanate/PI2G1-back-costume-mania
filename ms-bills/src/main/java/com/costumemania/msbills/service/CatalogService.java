@@ -3,9 +3,11 @@ package com.costumemania.msbills.service;
 import com.costumemania.msbills.model.requiredEntity.Catalog;
 import com.costumemania.msbills.repository.CatalogRepositoryFeign;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,4 +26,7 @@ public class CatalogService {
     public ResponseEntity<List<Catalog>> getBySize(@PathVariable Integer bolleanAdult) {
         return catalogRepositoryFeign.getBySize(bolleanAdult);
     }
+    public ResponseEntity<Catalog> catalogSold(@PathVariable Integer idCatalog, @PathVariable Integer quantity) {
+        return catalogRepositoryFeign.catalogSold(idCatalog, quantity);
+    };
 }
