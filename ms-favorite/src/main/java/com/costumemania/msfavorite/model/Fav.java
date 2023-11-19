@@ -18,8 +18,8 @@ public class Fav {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_fav")
     private Integer favId;
-    @Column(name = "users", nullable = false)
-    private Integer user;
+    @Column(nullable = false)
+    private Integer users;
     @Column(nullable = false)
     private Integer model;
 
@@ -27,7 +27,7 @@ public class Fav {
     public String toString() {
         return "Fav{" +
                 "favId=" + favId +
-                ", user=" + user +
+                ", user=" + users +
                 ", model=" + model +
                 '}';
     }

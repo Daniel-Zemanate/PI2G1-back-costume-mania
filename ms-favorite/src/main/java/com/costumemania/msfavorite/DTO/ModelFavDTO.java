@@ -9,10 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class ModelDTO {
+public class ModelFavDTO {
 
 
     private Integer idFav;
+    private Integer users;
     private Integer idModel;
     private String nameModel;
     private Category category;
@@ -21,8 +22,9 @@ public class ModelDTO {
 
     @Override
     public String toString() {
-        return "ModelDTO{" +
+        return "ModelFavDTO{" +
                 "idFav=" + idFav +
+                ", users=" + users +
                 ", idModel=" + idModel +
                 ", nameModel='" + nameModel + '\'' +
                 ", category=" + category +
