@@ -24,10 +24,9 @@ public class Sale {
     private Integer idSale;
     @Column(name = "no_invoice")
     private Integer invoice;
-    //@ManyToOne
-    //@JoinColumn(name = "user")
-    @Column(name = "user")
-    private Integer user;
+    @ManyToOne
+    @JoinColumn(name = "users")
+    private User user;
     @ManyToOne
     @JoinColumn(name = "catalog")
     private Catalog catalog;
@@ -46,7 +45,7 @@ public class Sale {
     @Column(name = "shipping_date")
     private LocalDateTime shippingDate;
 
-    public Sale(Integer invoice, Integer user, Catalog catalog, Integer quantity, String address, Shipping city, LocalDateTime saleDate, Status status) {
+    public Sale(Integer invoice, User user, Catalog catalog, Integer quantity, String address, Shipping city, LocalDateTime saleDate, Status status) {
         this.invoice = invoice;
         this.user = user;
         this.catalog = catalog;
