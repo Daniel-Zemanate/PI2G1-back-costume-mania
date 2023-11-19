@@ -456,7 +456,7 @@ public class SaleController {
                     return ResponseEntity.unprocessableEntity().build();
                 }
                 Sale s = new Sale(saleService.getLastInvoice()+1,
-                        1, // todo: esto solo funciona porque le saque el "not null" de la bbdd y la foreign key. El user es un integer nada mas
+                        null, // todo: esto solo funciona porque le saque el "not null" de la bbdd y la foreign key. El user es un integer nada mas
                         catalogProof,
                         itemSold.getQuantitySold(),
                         body.getAddress(),
