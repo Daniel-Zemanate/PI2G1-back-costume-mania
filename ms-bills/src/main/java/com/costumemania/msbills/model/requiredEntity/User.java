@@ -23,4 +23,13 @@ public class User {
     public Boolean getStatus() {
         return status;
     }
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 }

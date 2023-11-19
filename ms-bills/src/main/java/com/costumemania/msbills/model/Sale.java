@@ -80,4 +80,16 @@ public class Sale {
     public void setShippingDate(LocalDateTime shippingDate) {
         this.shippingDate = shippingDate;
     }
+    public Integer getIdSale() {
+        return idSale;
+    }
+    public Integer getInvoice() {
+        return invoice;
+    }
+    public User getUser() {
+        return user;
+    }
+    public String getAddress() {
+        return address;
+    }
 }

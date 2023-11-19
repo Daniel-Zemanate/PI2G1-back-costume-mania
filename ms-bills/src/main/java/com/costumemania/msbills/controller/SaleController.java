@@ -4,10 +4,8 @@ import com.costumemania.msbills.model.Sale;
 import com.costumemania.msbills.model.Shipping;
 import com.costumemania.msbills.model.Status;
 import com.costumemania.msbills.model.requiredEntity.Catalog;
-import com.costumemania.msbills.service.CatalogService;
-import com.costumemania.msbills.service.SaleService;
-import com.costumemania.msbills.service.ShippingService;
-import com.costumemania.msbills.service.StatusService;
+import com.costumemania.msbills.model.requiredEntity.User;
+import com.costumemania.msbills.service.*;
 import feign.FeignException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -83,21 +81,14 @@ public class SaleController {
     }
 
     // user + adm
-    // - AGREGAR EL FEIGN CUANDO ANDE USER!!!!
-    /*@GetMapping("/user/{idUser}")
-    public ResponseEntity<List<Sale>> getByStatus (@PathVariable Integer idUser){
-        // first verify if the ID exist - AGREGAR EL FEIGN CUANDO ANDE USER!!!!
-        /* TRY { Optional<User> userProof = userService.getById(idUser);
-        } CATCH FEIGN EXCEPTION {
-            return ResponseEntity.notFound().build();
-        }
-        // else...
-        Optional<List<Sale>> saleList = saleService.getByUser(userProof);
+    @GetMapping("/user/{idUser}")
+    public ResponseEntity<List<Sale>> getByUser (@PathVariable Integer idUser){
+        Optional<List<Sale>> saleList = saleService.getByUser(idUser);
         if (saleList.get().isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok().body(saleList.get());
-    }*/
+    }
 
     // adm
     @GetMapping("/model/{idModel}")
@@ -393,6 +384,7 @@ public class SaleController {
         List<ItemSold> itemSoldList;
         Integer city;
         String address;
+        Integer user;
 
         public List<ItemSold> getItemSoldList() {
             return itemSoldList;
@@ -405,6 +397,9 @@ public class SaleController {
         }
         public String getAddress() {
             return address;
+        }
+        public Integer getUser() {
+            return user;
         }
     }
 
@@ -443,6 +438,7 @@ public class SaleController {
         ResponseEntity<String> billValidate = startSale(body);
         if (billValidate.getStatusCode()== HttpStatus.OK && !Objects.equals(body.getAddress(), "") && body.getAddress()!=null) {
             List<Sale> results = new ArrayList<>();
+            Integer newInvoice = saleService.getLastInvoice()+1;
             for (ItemSold itemSold : body.getItemSoldList()) {
                 Catalog catalogProof;
                 try {
@@ -455,14 +451,14 @@ public class SaleController {
                 } catch (FeignException e) {
                     return ResponseEntity.unprocessableEntity().build();
                 }
-                Sale s = new Sale(saleService.getLastInvoice()+1,
-                        null, // todo: esto solo funciona porque le saque el "not null" de la bbdd y la foreign key. El user es un integer nada mas
+                Sale s = new Sale(newInvoice,
+                        null, // TODO CONTECTAR A USERS
                         catalogProof,
                         itemSold.getQuantitySold(),
                         body.getAddress(),
                         shippingService.getByIdShipping(body.getCity()).get(),
                         LocalDateTime.now(),
-                        new Status(1,"En proceso"));
+                        new Status(1,"In progress"));
                 results.add(saleService.create(s));
             }
             return ResponseEntity.ok(results);
