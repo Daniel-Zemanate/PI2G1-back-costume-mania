@@ -26,15 +26,15 @@ jobs:
 
     - name: Down Docker All Containers
       continue-on-error: true
-      run: sudo docker stop $(docker ps -a -q)
+      run: sudo docker stop $(sudo docker ps -a -q)
 
     - name: Clean Docker - Remove Containers
       continue-on-error: true
-      run: sudo docker rm -f $(docker ps -a -q)
+      run: sudo docker rm -f $(sudo docker ps -a -q)
 
     - name: Clean Docker - Remove Containers
       continue-on-error: true
-      run: sudo docker volume rm $(docker volume ls -q)
+      run: sudo docker volume rm $(sudo docker volume ls -q)
 
     - name: Clean Docker
       continue-on-error: true
@@ -45,7 +45,7 @@ jobs:
         cp .env-aws .env
 
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: sudo mvn -B package --file pom.xml
 
     - name: Build Docker Compose
 #      run: sudo docker compose build

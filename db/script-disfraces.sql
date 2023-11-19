@@ -312,6 +312,7 @@ INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_i
 INSERT INTO `costumemania`.`model` (`id_model`, `name_model`, `category`, `url_image`, `status_model`) VALUES ('29', 'Granadero child', '6', 'https://costumemania.s3.amazonaws.com/tinSoldier_small.jpg', '1');
 
 
+
 INSERT INTO `costumemania`.`catalog` (`id_catalog`, `model`, `size`, `stock`, `price`, `status_catalog`) VALUES ('1', '1', '9', '2', '50.50', '1');
 INSERT INTO `costumemania`.`catalog` (`id_catalog`, `model`, `size`, `stock`, `price`, `status_catalog`) VALUES ('2', '1', '10', '1', '50.50', '1');
 INSERT INTO `costumemania`.`catalog` (`id_catalog`, `model`, `size`, `stock`, `price`, `status_catalog`) VALUES ('3', '17', '3', '3', '46.00', '1');
@@ -370,6 +371,7 @@ INSERT INTO `costumemania`.`catalog` (`id_catalog`, `model`, `size`, `stock`, `p
 INSERT INTO `costumemania`.`catalog` (`id_catalog`, `model`, `size`, `stock`, `price`, `status_catalog`) VALUES ('56', '28', '2', '1', '35.00', '1');
 INSERT INTO `costumemania`.`catalog` (`id_catalog`, `model`, `size`, `stock`, `price`, `status_catalog`) VALUES ('57', '29', '3', '3', '35.00', '1');
 INSERT INTO `costumemania`.`catalog` (`id_catalog`, `model`, `size`, `stock`, `price`, `status_catalog`) VALUES ('58', '29', '4', '2', '35.00', '1');
+
 
 
 INSERT INTO `costumemania`.`users` (`id_user`,`dni`,`username`,`email`,`password`,`first_name`,`last_name`,`status`,`soft_delete`,`created_at`,`updated_at`,`role`)

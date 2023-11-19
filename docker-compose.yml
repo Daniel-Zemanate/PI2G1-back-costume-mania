@@ -7,6 +7,7 @@ networks:
   net-costume-mania:
 
 services:
+
   mysqldb:
     image: mysql:8.1
     container_name: mysqldb
@@ -31,30 +32,6 @@ services:
     volumes:
       - ./db/script-disfraces.sql:/docker-entrypoint-initdb.d/script.sql
       - vol-costume-mania:/var/lib/mysql
-    networks:
-      - net-costume-mania
-
-  ms-keycloak:
-    image: quay.io/keycloak/keycloak:21.0.1
-    command:
-      - start-dev
-    container_name: ms-keycloak
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: "1.0"
-          memory: 768M
-    #   Create your personal .env file from .envTemplate
-    env_file:
-      - ./.env
-    environment:
-      - KEYCLOAK_ADMIN=$MS_KEYCLOAK_ADMIN_USERNAME
-      - KEYCLOAK_ADMIN_PASSWORD=$MS_KEYCLOAK_ADMIN_PASSWORD
-    ports:
-      - ${MS_KEYCLOAK_LOCAL_PORT}:${MS_KEYCLOAK_DOCKER_PORT}
-    volumes:
-      - vol-keycloak-data:/opt/jboss/keycloak/standalone/data
     networks:
       - net-costume-mania
 
@@ -296,6 +273,7 @@ services:
     depends_on:
       - ms-gateway
 
+
   ms-bills:
     build:
       context: ./ms-bills/
@@ -327,3 +305,29 @@ services:
       - net-costume-mania
     depends_on:
       - ms-gateway
+
+
+#  ms-keycloak:
+#    image: quay.io/keycloak/keycloak:21.0.1
+#    command:
+#      - start-dev
+#    container_name: ms-keycloak
+#    restart: unless-stopped
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: "1.0"
+#          memory: 768M
+#    #   Create your personal .env file from .envTemplate
+#    env_file:
+#      - ./.env
+#    environment:
+#      - KEYCLOAK_ADMIN=$MS_KEYCLOAK_ADMIN_USERNAME
+#      - KEYCLOAK_ADMIN_PASSWORD=$MS_KEYCLOAK_ADMIN_PASSWORD
+#    ports:
+#      - ${MS_KEYCLOAK_LOCAL_PORT}:${MS_KEYCLOAK_DOCKER_PORT}
+#    volumes:
+#      - vol-keycloak-data:/opt/jboss/keycloak/standalone/data
+#    networks:
+#      - net-costume-mania
+
