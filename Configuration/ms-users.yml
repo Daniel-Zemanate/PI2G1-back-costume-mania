@@ -15,7 +15,7 @@ spring:
     password: ${DB_PASS:123456}
   jpa:
     open-in-view: false
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
     properties:
@@ -38,3 +38,8 @@ eureka:
     fetch-registry: true
     serviceUrl:
       defaultZone: http://${EUREKA_SERVER_HOST:localhost}:${EUREKA_SERVER_PORT:8761}/eureka/
+
+
+jwt:
+  secret: $2a$12$dQNO.bNyF/E4.NC8ZM/kt.oVU31KSpZNMhTNHDEjvh/2z7zrfkoN6
+  expiration: 86480

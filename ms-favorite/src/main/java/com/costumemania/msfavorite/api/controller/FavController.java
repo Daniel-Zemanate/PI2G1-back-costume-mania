@@ -2,12 +2,11 @@ package com.costumemania.msfavorite.api.controller;
 
 import com.costumemania.msfavorite.client.IProductClient;
 import com.costumemania.msfavorite.model.Fav;
-import com.costumemania.msfavorite.api.service.FavService;
-import com.costumemania.msfavorite.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.costumemania.msfavorite.api.service.FavService;
 
 import java.util.List;
 import java.util.Optional;

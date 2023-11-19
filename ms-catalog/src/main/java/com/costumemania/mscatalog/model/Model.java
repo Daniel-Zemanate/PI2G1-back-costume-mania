@@ -23,8 +23,23 @@ public class Model {
     private Category category;
     @Column(name = "url_image")
     private String urlImage;
+    @ManyToOne
+    @JoinColumn(name = "status_model")
+    private StatusComponent statusModel;
 
     public Integer getIdModel() {
         return idModel;
+    }
+    public String getNameModel() {
+        return nameModel;
+    }
+    public Category getCategory() {
+        return category;
+    }
+    public String getUrlImage() {
+        return urlImage;
+    }
+    public StatusComponent getStatus() {
+        return statusModel;
     }
 }
