@@ -39,6 +39,18 @@ spring:
           uri: lb://ms-users
           predicates:
             - Path=/api/v1/users/**
+        - id: ms-bills
+          uri: lb://ms-bills
+          predicates:
+            - Path=/api/v1/sale/**
+        - id: ms-bills-shipping
+          uri: lb://ms-bills
+          predicates:
+            - Path=/api/v1/shipping/**
+        - id: ms-bills-status
+          uri: lb://ms-bills
+          predicates:
+            - Path=/api/v1/status/**
 
 management:
   endpoints:

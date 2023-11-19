@@ -26,8 +26,7 @@ public class Catalog {
     private Size size;
     @Column(name = "price")
     private Float price;
-    @Column(name = "quantity")
-    //@JsonIgnore
+    @Column(name = "stock")
     private Integer stock;
     @ManyToOne
     @JoinColumn(name = "status_catalog")
