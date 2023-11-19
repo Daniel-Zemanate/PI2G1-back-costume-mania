@@ -45,6 +45,9 @@ public class SaleService {
     public Optional<List<Sale>> getBySize (Integer idSize) {
         return saleRepository.getBySize(idSize);
     }
+    public Optional<List<Sale>> getInvoiceInDates (String inDate, String finDate) {
+        return saleRepository.getInvoiceInDates(inDate, finDate);
+    };
 
     public Sale create (Sale s) {
         return saleRepository.save(s);

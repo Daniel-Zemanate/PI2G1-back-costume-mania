@@ -151,6 +151,15 @@ public class SaleController {
         return ResponseEntity.ok().body(saleList.get());
     }
 
+    // adm
+    @GetMapping("/dates/{date1}/{date2}")
+    public ResponseEntity<List<Sale>> getByDates (@PathVariable String date1, @PathVariable String date2) {
+        Optional<List<Sale>> list = saleService.getInvoiceInDates(date1, date2);
+        if (list.get().isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(list.get());
+    }
 
     ////////////////////////// GET INVOICES /////////////////////////
 
