@@ -70,14 +70,6 @@ public class FavController {
         return ResponseEntity.ok().body(favService.getByUser(idUser));
     }
 
-    @GetMapping("/userFav/{idUser}")
-    public ResponseEntity<List<Object>> getByUserLimit(@PathVariable Integer idUser,
-                 @RequestParam(value = "limit", defaultValue = "8") Integer limit){
-
-        System.out.println("Limit: " + limit);
-        return ResponseEntity.ok().body(favService.getByUserLimit(idUser, limit));
-
-    }
 
     //ADMIN
     @GetMapping("/FavModel")

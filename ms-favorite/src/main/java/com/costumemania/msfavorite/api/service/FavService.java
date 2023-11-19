@@ -104,7 +104,8 @@ public class FavService {
     }
 
 
-    public List<Object> getByUserLimit(Integer user, Integer limit) {
+    /*
+    public List<Object> getByUser(Integer user, Integer limit) {
 
         List<Object> modelByUserLimit = new ArrayList<>();
         modelByUserLimit =  getByUser(user);
@@ -115,6 +116,8 @@ public class FavService {
            return modelByUserLimit.subList(0,modelByUserLimit.size());
 
     }
+    */
+
 
     public List<FavModelDTO> FavOrderModel() {
 
@@ -124,6 +127,7 @@ public class FavService {
         var query = this.entityManager.createNativeQuery(query1, Integer.class);
         List<Integer> Favs = query.getResultList();
         List<FavModelDTO> FinalDto = new ArrayList<>();
+        int limit = 8;
 
         for (int x = 0; x<Favs.size(); x++){
 
@@ -158,7 +162,12 @@ public class FavService {
         }
 
         FinalDto.sort(Comparator.comparing(FavModelDTO::getCount).reversed());
+
+        if(FinalDto.size()>limit){
+            return FinalDto.subList(0,limit);
+        }
         return FinalDto;
+
 
         }
 
