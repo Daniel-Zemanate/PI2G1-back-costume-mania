@@ -4,7 +4,6 @@ import com.costumemania.msbills.model.Sale;
 import com.costumemania.msbills.model.Shipping;
 import com.costumemania.msbills.model.Status;
 import com.costumemania.msbills.model.requiredEntity.Catalog;
-import com.costumemania.msbills.model.requiredEntity.User;
 import com.costumemania.msbills.service.CatalogService;
 import com.costumemania.msbills.service.SaleService;
 import com.costumemania.msbills.service.ShippingService;
@@ -13,14 +12,10 @@ import feign.FeignException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriBuilder;
-import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/sale")
 public class SaleController {
 
@@ -470,6 +465,27 @@ public class SaleController {
 
     ///////////////////------- BILLS UPDATE -------///////////////////
 
+    // user
+    @PutMapping("/{noInvoice}")
+    public ResponseEntity<List<Sale>> canceledByUser (@PathVariable Integer noInvoice) {
+        Optional<List<Sale>> invoiceProof = saleService.getByInvoice(noInvoice);
+        if (invoiceProof.get().isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } //
+        if (!Objects.equals(invoiceProof.get().get(0).getStatus().getStatus(), "In progress")) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+        for (Sale sale : invoiceProof.get()) {
+            try {
+                catalogService.catalogSold(sale.getCatalog().getIdCatalog(),-(sale.getQuantity()));
+            } catch (FeignException e) {
+                return ResponseEntity.internalServerError().build();
+            }
+            sale.setStatus(new Status(4, "Cancelled by the customer"));
+            saleService.create(sale);
+        }
+        return ResponseEntity.accepted().body(invoiceProof.get());
+    }
 
 
 

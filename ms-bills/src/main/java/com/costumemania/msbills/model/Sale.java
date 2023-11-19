@@ -75,4 +75,10 @@ public class Sale {
     public LocalDateTime getShippingDate() {
         return shippingDate;
     }
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+    public void setShippingDate(LocalDateTime shippingDate) {
+        this.shippingDate = shippingDate;
+    }
 }
