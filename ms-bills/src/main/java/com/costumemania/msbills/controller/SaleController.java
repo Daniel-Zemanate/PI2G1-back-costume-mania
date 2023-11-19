@@ -472,7 +472,7 @@ public class SaleController {
         if (invoiceProof.get().isEmpty()) {
             return ResponseEntity.notFound().build();
         } //
-        if (!Objects.equals(invoiceProof.get().get(0).getStatus().getStatus(), "In progress")) {
+        if (!Objects.equals(invoiceProof.get().get(0).getStatus().getIdStatus(), 1)) {
             return ResponseEntity.unprocessableEntity().build();
         }
         for (Sale sale : invoiceProof.get()) {
@@ -487,7 +487,132 @@ public class SaleController {
         return ResponseEntity.accepted().body(invoiceProof.get());
     }
 
+    // adm
+    @PutMapping("/modify/{noInvoice}")
+    public ResponseEntity<List<Sale>> modifyByAdm (@PathVariable Integer noInvoice, @RequestBody ModifyBill body) {
+        Optional<List<Sale>> invoiceProof = saleService.getByInvoice(noInvoice);
+        if (invoiceProof.get().isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
 
+        if (Objects.equals(invoiceProof.get().get(0).getStatus().getIdStatus(), 1) || Objects.equals(invoiceProof.get().get(0).getStatus().getIdStatus(), 2) || Objects.equals(invoiceProof.get().get(0).getStatus().getIdStatus(), 3)) {
+
+            if (body.getNewStatus() == 5 || body.getNewStatus() == 6) {
+                for (Sale sale : invoiceProof.get()) {
+                    try {
+                        catalogService.catalogSold(sale.getCatalog().getIdCatalog(), -(sale.getQuantity()));
+                    } catch (FeignException e) {
+                        return ResponseEntity.internalServerError().build();
+                    }
+                    String statusString;
+                    if (body.getNewStatus() == 5) {
+                        statusString = "Cancelled - Wrong addess";
+                    } else {
+                        statusString = "Cancelled by admin";
+                    }
+                    sale.setStatus(new Status(body.getNewStatus(), statusString));
+                    saleService.create(sale);
+                }
+            } else if (body.getNewStatus() == 1 || body.getNewStatus() == 2 || body.getNewStatus() == 3) {
+                if (body.getShippingDate() == null) {
+                    for (Sale sale : invoiceProof.get()) {
+                        String statusString;
+                        if (body.getNewStatus() == 1) {
+                            statusString = "In progress";
+                        } else if (body.getNewStatus() == 2) {
+                            statusString = "On the way";
+                        } else {
+                            return ResponseEntity.badRequest().build();
+                        }
+                        sale.setStatus(new Status(body.getNewStatus(), statusString));
+                        saleService.create(sale);
+                    }
+                } else {
+                    for (Sale sale : invoiceProof.get()) {
+                        String statusString;
+                        if (body.getNewStatus() == 1) {
+                            statusString = "In progress";
+                        } else if (body.getNewStatus() == 2) {
+                            statusString = "On the way";
+                        } else {
+                            statusString = "Delivered";
+                        }
+                        sale.setStatus(new Status(body.getNewStatus(), statusString));
+                        sale.setShippingDate(body.getShippingDate());
+                        saleService.create(sale);
+                    }
+                }
+            } else {
+                return ResponseEntity.badRequest().build();
+            }
+        }
+
+        if (Objects.equals(invoiceProof.get().get(0).getStatus().getIdStatus(), 4) || Objects.equals(invoiceProof.get().get(0).getStatus().getIdStatus(), 5) || Objects.equals(invoiceProof.get().get(0).getStatus().getIdStatus(), 6)) {
+
+            if (body.getNewStatus() == 5 || body.getNewStatus() == 6) {
+                for (Sale sale : invoiceProof.get()) {
+                    String statusString;
+                    if (body.getNewStatus() == 5) {
+                        statusString = "Cancelled - Wrong addess";
+                    } else {
+                        statusString = "Cancelled by admin";
+                    }
+                    sale.setStatus(new Status(body.getNewStatus(), statusString));
+                    saleService.create(sale);
+                }
+            } else if (body.getNewStatus() == 1 || body.getNewStatus() == 2 || body.getNewStatus() == 3) {
+
+                String statusString;
+                if (body.getNewStatus() == 1) {
+                    statusString = "In progress";
+                } else if (body.getNewStatus() == 2) {
+                    statusString = "On the way";
+                } else {
+                    statusString = "Delivered";
+                }
+
+                if (body.getShippingDate() == null) {
+                    for (Sale sale : invoiceProof.get()) {
+                        try {
+                            catalogService.catalogSold(sale.getCatalog().getIdCatalog(), sale.getQuantity());
+                        } catch (FeignException e) {
+                            return ResponseEntity.internalServerError().build();
+                        }
+                        sale.setStatus(new Status(body.getNewStatus(), statusString));
+                        saleService.create(sale);
+                    }
+                } else {
+                    for (Sale sale : invoiceProof.get()) {
+                        try {
+                            catalogService.catalogSold(sale.getCatalog().getIdCatalog(), sale.getQuantity());
+                        } catch (FeignException e) {
+                            return ResponseEntity.internalServerError().build();
+                        }
+                        sale.setStatus(new Status(body.getNewStatus(), statusString));
+                        sale.setShippingDate(body.getShippingDate());
+                        saleService.create(sale);
+                    }
+                }
+            } else {
+                return ResponseEntity.badRequest().build();
+            }
+        }
+
+        return ResponseEntity.accepted().body(invoiceProof.get());
+    }
+
+    // class (JSON) to modify bills
+    private static class ModifyBill {
+        private Integer newStatus;
+        private LocalDateTime shippingDate;
+
+        public Integer getNewStatus() {
+            return newStatus;
+        }
+        public LocalDateTime getShippingDate() {
+            return shippingDate;
+        }
+    }
 
     //////////////////////////////////////////////////////////////////////
 

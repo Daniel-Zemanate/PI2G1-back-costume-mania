@@ -409,7 +409,7 @@ INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('1', 'In pro
 INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('2', 'On the way');
 INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('3', 'Delivered');
 INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('4', 'Cancelled by the customer');
-INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('5', 'Canceled - Wrong addess');
+INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('5', 'Cancelled - Wrong addess');
 INSERT INTO `costumemania`.`status` (`id_status`, `status`) VALUES ('6', 'Cancelled by admin');
 
 

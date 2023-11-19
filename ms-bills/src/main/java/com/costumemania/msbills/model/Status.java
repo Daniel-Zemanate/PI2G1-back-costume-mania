@@ -28,4 +28,7 @@ public class Status {
     public String getStatus() {
         return status;
     }
+    public Integer getIdStatus() {
+        return idStatus;
+    }
 }
