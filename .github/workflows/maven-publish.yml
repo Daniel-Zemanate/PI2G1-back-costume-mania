@@ -32,7 +32,7 @@ jobs:
       continue-on-error: true
       run: sudo docker rm -f $(sudo docker ps -a -q)
 
-    - name: Clean Docker - Remove Containers
+    - name: Clean Docker - Remove Volumes
       continue-on-error: true
       run: sudo docker volume rm $(sudo docker volume ls -q)
 
@@ -54,3 +54,6 @@ jobs:
     - name: Run Docker Compose
 #      run: sudo docker compose -f "docker-compose.yml" up -d
       run: sudo docker-compose -f "docker-compose.yml" up -d
+
+    - name: Change permisions to working folder
+      run: sudo chmod -R 777 '/home/ubuntu/actions-runner/_work/'
