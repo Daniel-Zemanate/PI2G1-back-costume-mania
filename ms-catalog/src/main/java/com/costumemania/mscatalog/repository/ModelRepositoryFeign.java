@@ -16,6 +16,9 @@ public interface ModelRepositoryFeign {
     @GetMapping("/api/v1/model")
     ResponseEntity<List<Model>> getAllModel();
 
+    @GetMapping("/api/v1/model/news/{limit}")
+    ResponseEntity<List<Model>> getNewsLimit(@PathVariable Integer limit);
+
     @GetMapping("/api/v1/model/SEC/{id}")
     Model getByIdModelSEC (@PathVariable Integer id);
 

@@ -951,9 +951,19 @@ public class CatalogController {
     /////////////////////////////////////////////////////////////////
 
     // public - Solo trae los activos
-    @GetMapping("/news")
-    public ResponseEntity<List<Catalog>> getNews(){
-        return ResponseEntity.ok().body(catalogService.getNews());
+    @GetMapping("/news/{limit}")
+    public ResponseEntity<List<CatalogResponse>> getNews(@PathVariable Integer limit){
+        List<Model> modelIterator = modelService.getNewsLimit(limit).getBody();
+        // get active catalog
+        List <CatalogResponse> catalogResponses = new ArrayList<>();
+        for (Model model : modelIterator) {
+            Optional<List<Catalog>> listCatalog = catalogService.getActiveCatalogByModel(model.getIdModel());
+            if (!listCatalog.get().isEmpty()) {
+                catalogResponses.add(transformCatalog(listCatalog.get()));
+            }
+        }
+
+        return ResponseEntity.ok().body(catalogResponses);
     }
 
     // adm

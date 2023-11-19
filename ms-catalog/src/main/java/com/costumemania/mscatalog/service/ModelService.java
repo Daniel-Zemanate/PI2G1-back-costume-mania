@@ -19,6 +19,9 @@ public class ModelService {
     public ResponseEntity<List<Model>> getAllModel() {
         return modelRepositoryFeign.getAllModel();
     };
+    public ResponseEntity<List<Model>> getNewsLimit(Integer limit) {
+        return modelRepositoryFeign.getNewsLimit(limit);
+    };
     public ResponseEntity<Optional<Model>> getByIdModel(Integer id){
         return modelRepositoryFeign.getByIdModel(id);
     }

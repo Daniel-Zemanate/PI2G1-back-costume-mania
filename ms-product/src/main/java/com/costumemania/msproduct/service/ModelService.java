@@ -20,6 +20,9 @@ public class ModelService {
     public List<Model> getAllModel(){
         return modelRepository.findAll();
     }
+    public List<Model> getNewsLimit(Integer limit){
+        return modelRepository.getNewsLimit(limit);
+    }
     public List<Model> getAllComplete(){
         return modelRepository.findAllComplete();
     }
