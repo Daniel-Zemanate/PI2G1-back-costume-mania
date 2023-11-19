@@ -79,7 +79,7 @@ public class FavController {
 
     }
 
-    //ADMIN.
+    //ADMIN
     @GetMapping("/FavModel")
     public ResponseEntity<List<FavModelDTO>> FavOrderModel(){
 
