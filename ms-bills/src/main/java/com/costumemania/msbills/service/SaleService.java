@@ -30,23 +30,18 @@ public class SaleService {
     public Optional<Sale>getById(Integer id){
         return saleRepository.findById(id);
     }
-
     public Optional<List<Sale>> getByStatus (Status status) {
         return saleRepository.getByStatus(status);
     }
-
     public Optional<List<Sale>> getByUser (User user) {
         return saleRepository.getByUser(user);
     };
-
     public Optional<List<Sale>> getByModel (Integer idModel) {
         return saleRepository.getByModel(idModel);
     };
-
     public Optional<List<Sale>> getByCatalog (Catalog catalog) {
         return saleRepository.getByCatalog(catalog);
     };
-
     public Optional<List<Sale>> getBySize (Integer idSize) {
         return saleRepository.getBySize(idSize);
     }
@@ -57,5 +52,15 @@ public class SaleService {
 
     public Integer getLastInvoice () {
         return saleRepository.getLastInvoice();
+    };
+    public Integer getFirstInvoice () {
+        return saleRepository.getFirstInvoice();
+    };
+
+    public List<Sale> getAllByInvoice () {
+        return saleRepository.getAllByInvoice();
+    };
+    public Optional<List<Sale>> getByInvoice (Integer invoice) {
+        return saleRepository.getByInvoice(invoice);
     };
 }

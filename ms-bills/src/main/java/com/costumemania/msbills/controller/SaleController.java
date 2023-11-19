@@ -156,6 +156,139 @@ public class SaleController {
         return ResponseEntity.ok().body(saleList.get());
     }
 
+
+    ////////////////////////// GET INVOICES /////////////////////////
+
+    // class to read an invoice
+    private class Invoice {
+        private Integer no_invoice;
+        private String status;
+        private List<ItemInvoice> items;
+        private String shippingCity;
+        private float shippingcost;
+        private float total;
+
+        private static class ItemInvoice {
+            private Integer catalog;
+            private String model;
+            private Integer quantity;
+            private float price;
+            private float PxQ;
+
+            public Integer getCatalog() {
+                return catalog;
+            }
+            public void setCatalog(Integer catalog) {
+                this.catalog = catalog;
+            }
+            public String getModel() {
+                return model;
+            }
+            public void setModel(String model) {
+                this.model = model;
+            }
+            public Integer getQuantity() {
+                return quantity;
+            }
+            public void setQuantity(Integer quantity) {
+                this.quantity = quantity;
+            }
+            public float getPrice() {
+                return price;
+            }
+            public void setPrice(float price) {
+                this.price = price;
+            }
+            public float getPxQ() {
+                return PxQ;
+            }
+            public void setPxQ(float pxQ) {
+                PxQ = pxQ;
+            }
+        }
+
+        public void setNo_invoice(Integer no_invoice) {
+            this.no_invoice = no_invoice;
+        }
+        public void setItems(List<ItemInvoice> items) {
+            this.items = items;
+        }
+        public void setStatus(String status) {
+            this.status = status;
+        }
+        public void setShippingCity(String shippingCity) {
+            this.shippingCity = shippingCity;
+        }
+        public void setShippingcost(float shippingcost) {
+            this.shippingcost = shippingcost;
+        }
+        public void setTotal(float total) {
+            this.total = total;
+        }
+        public Integer getNo_invoice() {
+            return no_invoice;
+        }
+        public String getStatus() {
+            return status;
+        }
+        public List<ItemInvoice> getItems() {
+            return items;
+        }
+        public String getShippingCity() {
+            return shippingCity;
+        }
+        public float getShippingcost() {
+            return shippingcost;
+        }
+        public float getTotal() {
+            return total;
+        }
+    }
+
+    // user + adm
+    @GetMapping ("/invoice/{noInvoice}")
+    public ResponseEntity<Invoice> getInvoiceByNo (@PathVariable Integer noInvoice) {
+        Optional<List<Sale>> saleList = saleService.getByInvoice(noInvoice);
+        if (saleList.get().isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Invoice invoice = new Invoice();
+        invoice.setNo_invoice(noInvoice);
+        invoice.setStatus(saleList.get().get(0).getStatus().getStatus());
+        invoice.setShippingCity(saleList.get().get(0).getCity().getDestination());
+        invoice.setShippingcost(saleList.get().get(0).getCity().getCost());
+        List<Invoice.ItemInvoice> items = new ArrayList<>();
+        float finalCost = 0.0f;
+        for (Sale sale : saleList.get()) {
+            Invoice.ItemInvoice item = new Invoice.ItemInvoice();
+            item.setCatalog(sale.getCatalog().getIdCatalog());
+            item.setModel(sale.getCatalog().getModel().getNameModel());
+            item.setQuantity(sale.getQuantity());
+            item.setPrice(sale.getCatalog().getPrice());
+            item.setPxQ(item.getQuantity()*item.getPrice());
+            items.add(item);
+            finalCost += item.getQuantity()*item.getPrice();
+        }
+        invoice.setItems(items);
+        invoice.setTotal(finalCost += saleList.get().get(0).getCity().getCost());
+        return ResponseEntity.ok(invoice);
+    }
+
+    // adm  -- todo: agregar a la base de datos de factura, el valor estático por unidad y por costo de envío para que no se actualice todo el tiempo.
+    @GetMapping("/invoice")
+    public ResponseEntity<List<Invoice>> getAllInvoices () {
+        Integer lastInvoice = saleService.getLastInvoice();
+        Integer firstInvoice = saleService.getFirstInvoice();
+        List<Invoice> result = new ArrayList<>();
+        for (int i=lastInvoice; i>firstInvoice; i--) {
+            // ejecuta la busqueda por invoice
+            if (getInvoiceByNo(i).getStatusCode()==HttpStatus.OK) {
+                result.add(getInvoiceByNo(i).getBody());
+            }
+        }
+        return ResponseEntity.ok(result);
+    }
+
     //////////////////////////////////////////////////////////////////////
 
     ///////////////////------- BILLS GENERATORS -------///////////////////
@@ -332,6 +465,13 @@ public class SaleController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    //////////////////////////////////////////////////////////////////
+
+    ///////////////////------- BILLS UPDATE -------///////////////////
+
+
+
 
     //////////////////////////////////////////////////////////////////////
 

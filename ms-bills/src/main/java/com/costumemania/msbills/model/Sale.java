@@ -56,4 +56,23 @@ public class Sale {
         this.saleDate = saleDate;
         this.status = status;
     }
+
+    public Catalog getCatalog() {
+        return catalog;
+    }
+    public Integer getQuantity() {
+        return quantity;
+    }
+    public Shipping getCity() {
+        return city;
+    }
+    public Status getStatus() {
+        return status;
+    }
+    public LocalDateTime getSaleDate() {
+        return saleDate;
+    }
+    public LocalDateTime getShippingDate() {
+        return shippingDate;
+    }
 }

@@ -24,4 +24,8 @@ public class Status {
         this.idStatus = idStatus;
         this.status = status;
     }
+
+    public String getStatus() {
+        return status;
+    }
 }

@@ -45,4 +45,7 @@ public class Catalog {
     public Integer getIdCatalog() {
         return idCatalog;
     }
+    public Model getModel() {
+        return model;
+    }
 }
