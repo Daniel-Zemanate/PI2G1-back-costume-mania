@@ -219,7 +219,7 @@ CREATE TABLE IF NOT EXISTS `costumemania`.`sale` (
   `id_sale` INT NOT NULL,
   `no_invoice` INT NULL DEFAULT NULL,
   `users` INT NOT NULL,
-  `model` INT NOT NULL,
+  `catalog` INT NOT NULL,
   `quantity` INT NOT NULL,
   `shipping_address` VARCHAR(255) NOT NULL,
   `shipping_city` INT NOT NULL,
@@ -230,9 +230,9 @@ CREATE TABLE IF NOT EXISTS `costumemania`.`sale` (
   INDEX `id_user_idx` (`users` ASC) VISIBLE,
   INDEX `id_envio_idx` (`shipping_city` ASC) VISIBLE,
   INDEX `id_status_idx` (`status` ASC) VISIBLE,
-  INDEX `id_catalog_idx` (`model` ASC) VISIBLE,
+  INDEX `id_catalog_idx` (`catalog` ASC) VISIBLE,
   CONSTRAINT `id_catalog`
-    FOREIGN KEY (`model`)
+    FOREIGN KEY (`catalog`)
     REFERENCES `costumemania`.`catalog` (`id_catalog`),
   CONSTRAINT `id_shipping`
     FOREIGN KEY (`shipping_city`)
