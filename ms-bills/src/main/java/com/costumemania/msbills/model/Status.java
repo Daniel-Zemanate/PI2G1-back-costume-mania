@@ -1,20 +1,14 @@
 package com.costumemania.msbills.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
-
-@AllArgsConstructor
 @NoArgsConstructor
-
 @Entity
 @Table(name="status")
 public class Status {
@@ -22,11 +16,19 @@ public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_status")
-    private Integer statusId;
-    @Column(nullable = false)
+    private Integer idStatus;
+    @Column(name = "status", nullable = false)
     private String status;
 
-    @OneToMany
-    @JoinColumn(name = "id_status")
-    private Set<Sale> sales;
+    public Status(Integer idStatus, String status) {
+        this.idStatus = idStatus;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+    public Integer getIdStatus() {
+        return idStatus;
+    }
 }

@@ -1,8 +1,6 @@
-package com.costumemania.mscatalog.model;
+package com.costumemania.msbills.model.requiredEntity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "statuscomponent")
@@ -22,5 +20,8 @@ public class StatusComponent {
 
     public Integer getId() {
         return id;
+    }
+    public String getDescription() {
+        return description;
     }
 }
