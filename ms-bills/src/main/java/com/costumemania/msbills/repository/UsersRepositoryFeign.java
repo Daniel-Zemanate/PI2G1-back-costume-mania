@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(name="ms-users")
 public interface UsersRepositoryFeign {
-    @GetMapping(path = "/users/{id}")
+    @GetMapping(path = "/api/v1/users/{id}")
     ResponseEntity<?> userById(@PathVariable(name = "id") int id);
 }
