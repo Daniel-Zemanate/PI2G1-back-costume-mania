@@ -4,10 +4,8 @@ import com.costumemania.msbills.model.Sale;
 import com.costumemania.msbills.model.Shipping;
 import com.costumemania.msbills.model.Status;
 import com.costumemania.msbills.model.requiredEntity.Catalog;
-import com.costumemania.msbills.service.CatalogService;
-import com.costumemania.msbills.service.SaleService;
-import com.costumemania.msbills.service.ShippingService;
-import com.costumemania.msbills.service.StatusService;
+import com.costumemania.msbills.model.requiredEntity.User;
+import com.costumemania.msbills.service.*;
 import feign.FeignException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,11 +29,13 @@ public class SaleController {
     private final StatusService statusService;
     private final CatalogService catalogService;
     private final ShippingService shippingService;
-    public SaleController(SaleService saleService, StatusService statusService, CatalogService catalogService, ShippingService shippingService) {
+    private final UserService userService;
+    public SaleController(SaleService saleService, StatusService statusService, CatalogService catalogService, ShippingService shippingService, UserService userService) {
         this.saleService = saleService;
         this.statusService = statusService;
         this.catalogService = catalogService;
         this.shippingService = shippingService;
+        this.userService = userService;
     }
 
 
@@ -86,6 +86,14 @@ public class SaleController {
     // user + adm
     @GetMapping("/user/{idUser}")
     public ResponseEntity<List<Sale>> getByUser (@PathVariable Integer idUser){
+        try {
+            ResponseEntity<?> userProof = userService.userById(idUser);
+            if (userProof.getStatusCode()==HttpStatus.NOT_FOUND) {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (FeignException e) {
+            return ResponseEntity.internalServerError().build();
+        }
         Optional<List<Sale>> saleList = saleService.getByUser(idUser);
         if (saleList.get().isEmpty()) {
             return ResponseEntity.noContent().build();
