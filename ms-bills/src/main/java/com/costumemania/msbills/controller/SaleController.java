@@ -83,21 +83,14 @@ public class SaleController {
     }
 
     // user + adm
-    // - AGREGAR EL FEIGN CUANDO ANDE USER!!!!
-    /*@GetMapping("/user/{idUser}")
-    public ResponseEntity<List<Sale>> getByStatus (@PathVariable Integer idUser){
-        // first verify if the ID exist - AGREGAR EL FEIGN CUANDO ANDE USER!!!!
-        /* TRY { Optional<User> userProof = userService.getById(idUser);
-        } CATCH FEIGN EXCEPTION {
-            return ResponseEntity.notFound().build();
-        }
-        // else...
-        Optional<List<Sale>> saleList = saleService.getByUser(userProof);
+    @GetMapping("/user/{idUser}")
+    public ResponseEntity<List<Sale>> getByUser (@PathVariable Integer idUser){
+        Optional<List<Sale>> saleList = saleService.getByUser(idUser);
         if (saleList.get().isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok().body(saleList.get());
-    }*/
+    }
 
     // adm
     @GetMapping("/model/{idModel}")
