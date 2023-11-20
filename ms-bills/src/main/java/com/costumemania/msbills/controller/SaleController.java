@@ -81,6 +81,7 @@ public class SaleController {
         }
         return ResponseEntity.ok().body(saleList.get());
     }
+//
 
     // user + adm
     @GetMapping("/user/{idUser}")
