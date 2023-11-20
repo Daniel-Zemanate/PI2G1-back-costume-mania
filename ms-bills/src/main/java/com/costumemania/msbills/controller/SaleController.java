@@ -12,14 +12,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/sale")
@@ -395,6 +391,7 @@ public class SaleController {
         List<ItemSold> itemSoldList;
         Integer city;
         String address;
+        Integer user;
 
         public List<ItemSold> getItemSoldList() {
             return itemSoldList;
@@ -407,6 +404,9 @@ public class SaleController {
         }
         public String getAddress() {
             return address;
+        }
+        public Integer getUser() {
+            return user;
         }
     }
 
@@ -442,29 +442,43 @@ public class SaleController {
     // user - To create bill
     @PostMapping("/create")
     public ResponseEntity<List<Sale>> createBill (@RequestBody SaleRequired body){
+        // validate user
+        try {
+            ResponseEntity<?> userProof = userService.userById(body.getUser());
+            if (userProof.getStatusCode()==HttpStatus.NOT_FOUND) {
+                return ResponseEntity.badRequest().build();
+            }
+        } catch (FeignException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+        // validate every data in body
         ResponseEntity<String> billValidate = startSale(body);
         if (billValidate.getStatusCode()== HttpStatus.OK && !Objects.equals(body.getAddress(), "") && body.getAddress()!=null) {
             List<Sale> results = new ArrayList<>();
+            Integer newInvoice = saleService.getLastInvoice()+1;
             for (ItemSold itemSold : body.getItemSoldList()) {
                 Catalog catalogProof;
+                // validate catalog
                 try {
                     catalogProof = catalogService.getById(itemSold.getCatalog()).getBody().get();
                 } catch (FeignException e) {
                     return ResponseEntity.internalServerError().build();
                 }
+                // register sold stock
                 try {
                     catalogService.catalogSold(itemSold.getCatalog(), itemSold.getQuantitySold());
                 } catch (FeignException e) {
                     return ResponseEntity.unprocessableEntity().build();
                 }
-                Sale s = new Sale(saleService.getLastInvoice()+1,
-                        null, // todo: esto solo funciona porque le saque el "not null" de la bbdd y la foreign key. El user es un integer nada mas
+                // create bill
+                Sale s = new Sale(newInvoice,
+                        new User(body.getUser()),
                         catalogProof,
                         itemSold.getQuantitySold(),
                         body.getAddress(),
                         shippingService.getByIdShipping(body.getCity()).get(),
                         LocalDateTime.now(),
-                        new Status(1,"En proceso"));
+                        new Status(1,"In progress"));
                 results.add(saleService.create(s));
             }
             return ResponseEntity.ok(results);
