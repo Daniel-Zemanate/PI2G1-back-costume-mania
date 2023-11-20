@@ -33,8 +33,8 @@ public class SaleService {
     public Optional<List<Sale>> getByStatus (Status status) {
         return saleRepository.getByStatus(status);
     }
-    public Optional<List<Sale>> getByUser (User user) {
-        return saleRepository.getByUser(user);
+    public Optional<List<Sale>> getByUser (Integer idUser) {
+        return saleRepository.getByUser(idUser);
     };
     public Optional<List<Sale>> getByModel (Integer idModel) {
         return saleRepository.getByModel(idModel);

@@ -4,24 +4,18 @@ import com.costumemania.msbills.model.Sale;
 import com.costumemania.msbills.model.Shipping;
 import com.costumemania.msbills.model.Status;
 import com.costumemania.msbills.model.requiredEntity.Catalog;
-import com.costumemania.msbills.service.CatalogService;
-import com.costumemania.msbills.service.SaleService;
-import com.costumemania.msbills.service.ShippingService;
-import com.costumemania.msbills.service.StatusService;
+import com.costumemania.msbills.model.requiredEntity.User;
+import com.costumemania.msbills.service.*;
 import feign.FeignException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/sale")
@@ -31,11 +25,13 @@ public class SaleController {
     private final StatusService statusService;
     private final CatalogService catalogService;
     private final ShippingService shippingService;
-    public SaleController(SaleService saleService, StatusService statusService, CatalogService catalogService, ShippingService shippingService) {
+    private final UserService userService;
+    public SaleController(SaleService saleService, StatusService statusService, CatalogService catalogService, ShippingService shippingService, UserService userService) {
         this.saleService = saleService;
         this.statusService = statusService;
         this.catalogService = catalogService;
         this.shippingService = shippingService;
+        this.userService = userService;
     }
 
 
@@ -81,23 +77,25 @@ public class SaleController {
         }
         return ResponseEntity.ok().body(saleList.get());
     }
+//
 
     // user + adm
-    // - AGREGAR EL FEIGN CUANDO ANDE USER!!!!
-    /*@GetMapping("/user/{idUser}")
-    public ResponseEntity<List<Sale>> getByStatus (@PathVariable Integer idUser){
-        // first verify if the ID exist - AGREGAR EL FEIGN CUANDO ANDE USER!!!!
-        /* TRY { Optional<User> userProof = userService.getById(idUser);
-        } CATCH FEIGN EXCEPTION {
-            return ResponseEntity.notFound().build();
+    @GetMapping("/user/{idUser}")
+    public ResponseEntity<List<Sale>> getByUser (@PathVariable Integer idUser){
+        try {
+            ResponseEntity<?> userProof = userService.userById(idUser);
+            if (userProof.getStatusCode()==HttpStatus.NOT_FOUND) {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (FeignException e) {
+            return ResponseEntity.internalServerError().build();
         }
-        // else...
-        Optional<List<Sale>> saleList = saleService.getByUser(userProof);
+        Optional<List<Sale>> saleList = saleService.getByUser(idUser);
         if (saleList.get().isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok().body(saleList.get());
-    }*/
+    }
 
     // adm
     @GetMapping("/model/{idModel}")
@@ -393,6 +391,7 @@ public class SaleController {
         List<ItemSold> itemSoldList;
         Integer city;
         String address;
+        Integer user;
 
         public List<ItemSold> getItemSoldList() {
             return itemSoldList;
@@ -405,6 +404,9 @@ public class SaleController {
         }
         public String getAddress() {
             return address;
+        }
+        public Integer getUser() {
+            return user;
         }
     }
 
@@ -440,29 +442,43 @@ public class SaleController {
     // user - To create bill
     @PostMapping("/create")
     public ResponseEntity<List<Sale>> createBill (@RequestBody SaleRequired body){
+        // validate user
+        try {
+            ResponseEntity<?> userProof = userService.userById(body.getUser());
+            if (userProof.getStatusCode()==HttpStatus.NOT_FOUND) {
+                return ResponseEntity.badRequest().build();
+            }
+        } catch (FeignException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+        // validate every data in body
         ResponseEntity<String> billValidate = startSale(body);
         if (billValidate.getStatusCode()== HttpStatus.OK && !Objects.equals(body.getAddress(), "") && body.getAddress()!=null) {
             List<Sale> results = new ArrayList<>();
+            Integer newInvoice = saleService.getLastInvoice()+1;
             for (ItemSold itemSold : body.getItemSoldList()) {
                 Catalog catalogProof;
+                // validate catalog
                 try {
                     catalogProof = catalogService.getById(itemSold.getCatalog()).getBody().get();
                 } catch (FeignException e) {
                     return ResponseEntity.internalServerError().build();
                 }
+                // register sold stock
                 try {
                     catalogService.catalogSold(itemSold.getCatalog(), itemSold.getQuantitySold());
                 } catch (FeignException e) {
                     return ResponseEntity.unprocessableEntity().build();
                 }
-                Sale s = new Sale(saleService.getLastInvoice()+1,
-                        null, // todo: esto solo funciona porque le saque el "not null" de la bbdd y la foreign key. El user es un integer nada mas
+                // create bill
+                Sale s = new Sale(newInvoice,
+                        new User(body.getUser()),
                         catalogProof,
                         itemSold.getQuantitySold(),
                         body.getAddress(),
                         shippingService.getByIdShipping(body.getCity()).get(),
                         LocalDateTime.now(),
-                        new Status(1,"En proceso"));
+                        new Status(1,"In progress"));
                 results.add(saleService.create(s));
             }
             return ResponseEntity.ok(results);

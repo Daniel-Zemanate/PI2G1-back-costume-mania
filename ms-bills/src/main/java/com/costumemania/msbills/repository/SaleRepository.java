@@ -15,11 +15,13 @@ public interface SaleRepository extends JpaRepository<Sale, Integer> {
 
     Optional<List<Sale>> getByUser (User user);
 
-    @Query(value = "SELECT s.id_sale, s.no_invoice, s.user, s.catalog, s.quantity, s.shipping_address, s.shipping_city, s.status, s.sale_date, s.shipping_date , c.id_catalog, c.model, c.size, c.price FROM sale s inner join catalog c on s.catalog=c.id_catalog where c.model=?1", nativeQuery = true)
+    @Query(value = "SELECT s.id_sale, s.no_invoice, s.users, s.catalog, s.quantity, s.shipping_address, s.shipping_city, s.status, s.sale_date, s.shipping_date , c.id_catalog, c.model, c.size, c.price FROM sale s inner join catalog c on s.catalog=c.id_catalog where c.model=?1", nativeQuery = true)
     Optional<List<Sale>> getByModel (Integer idModel);
     Optional<List<Sale>> getByCatalog (Catalog catalog);
-    @Query(value = "SELECT s.id_sale, s.no_invoice, s.user, s.catalog, s.quantity, s.shipping_address, s.shipping_city, s.status, s.sale_date, s.shipping_date , c.id_catalog, c.model, c.size, c.price FROM sale s inner join catalog c on s.catalog=c.id_catalog inner join size si on c.size=si.id_size where si.adult=?1", nativeQuery = true)
+    @Query(value = "SELECT s.id_sale, s.no_invoice, s.users, s.catalog, s.quantity, s.shipping_address, s.shipping_city, s.status, s.sale_date, s.shipping_date , c.id_catalog, c.model, c.size, c.price FROM sale s inner join catalog c on s.catalog=c.id_catalog inner join size si on c.size=si.id_size where si.adult=?1", nativeQuery = true)
     Optional<List<Sale>> getBySize (Integer idSize);
+    @Query(value = "SELECT s.id_sale, s.no_invoice, s.users, s.catalog, s.quantity, s.shipping_address, s.shipping_city, s.status, s.sale_date, s.shipping_date , c.id_catalog, c.model, c.size, c.price FROM sale s inner join catalog c on s.catalog=c.id_catalog inner join size si on c.size=si.id_size where s.users=?1", nativeQuery = true)
+    Optional<List<Sale>> getByUser (Integer idUser);
     @Query(value = "SELECT * FROM sale where (sale_date between ?1 and ?2) order by no_invoice desc", nativeQuery = true)
     Optional<List<Sale>> getInvoiceInDates (String inDate, String finDate);
 
