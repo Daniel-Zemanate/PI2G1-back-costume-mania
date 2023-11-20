@@ -7,6 +7,8 @@ import com.costumemania.msbills.model.requiredEntity.Catalog;
 import com.costumemania.msbills.model.requiredEntity.User;
 import com.costumemania.msbills.service.*;
 import feign.FeignException;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -376,6 +378,7 @@ public class SaleController {
         return response;
     }
 
+    // body to use to validate sale
     public static class ItemSold {
         private Integer catalog;
         private Integer quantitySold;
@@ -410,33 +413,67 @@ public class SaleController {
         }
     }
 
+    // response to validate sale
+    @Getter
+    @Setter
+    public static class SaleResponse {
+        List<ItemSoldWithCost> itemSoldList;
+        float shippingCost;
+        float total;
+        String errorMessage;
+
+        @Getter
+        @Setter
+        public static class ItemSoldWithCost {
+            private Integer catalog;
+            private Integer quantitySold;
+            private float partialTotal;
+
+            public ItemSoldWithCost(Integer catalog, Integer quantitySold, float partialTotal) {
+                this.catalog = catalog;
+                this.quantitySold = quantitySold;
+                this.partialTotal = partialTotal;
+            }
+        }
+    }
+
     // user - To verify if purchase is possible
     @PostMapping("/startSale")
-    public ResponseEntity<String> startSale (@RequestBody SaleRequired body){
+    public ResponseEntity<SaleResponse> startSale (@RequestBody SaleRequired body){
         float semiTotal=0.0f;
-        String messageFinal = "";
-        for (ItemSold itemSold : body.getItemSoldList()) {
-            Response resp = quantityEnough(itemSold.getCatalog(), itemSold.getQuantitySold());
-            if (resp.getStatus()==400) {
-                return ResponseEntity.unprocessableEntity().body(resp.getMessage());
-            }
-            if (resp.getStatus()!=200) {
-                return ResponseEntity.unprocessableEntity().body("We can´t process your purchase");
-            }
-            Response resp2 = PxQ(itemSold.getCatalog(), itemSold.getQuantitySold());
-            if (resp2.getStatus()!=200) {
-                return ResponseEntity.unprocessableEntity().body("We can´t process your purchase");
-            }
-            semiTotal += resp2.getQuantity();
-            messageFinal += "Catalog ID " + itemSold.getCatalog() + " x " + itemSold.getQuantitySold() + " = $" + resp2.getQuantity() + "\n";
-        }
-        Response resp =shippingCost(body.getCity());
+        SaleResponse saleResponse = new SaleResponse();
+        List<SaleResponse.ItemSoldWithCost> list = new ArrayList<>();
+
+        Response resp = shippingCost(body.getCity());
         if (resp.getStatus()!=200) {
-            return ResponseEntity.unprocessableEntity().body("We can´t process your purchase");
+            saleResponse.setErrorMessage("We can´t process your purchase because of error with cost shipping");
+            return ResponseEntity.unprocessableEntity().body(saleResponse);
         }
-        messageFinal += "Shipping Cost: $" + resp.getQuantity() + "\n";
-        float total = semiTotal + resp.getQuantity();
-        return ResponseEntity.ok(messageFinal + "Total: $" + total);
+        saleResponse.setShippingCost(resp.getQuantity());
+
+        for (ItemSold itemSold : body.getItemSoldList()) {
+            Response resp2 = quantityEnough(itemSold.getCatalog(), itemSold.getQuantitySold());
+            if (resp2.getStatus()==400) {
+                saleResponse.setErrorMessage(resp2.getMessage());
+                return ResponseEntity.unprocessableEntity().body(saleResponse);
+            }
+            if (resp2.getStatus()!=200) {
+                saleResponse.setErrorMessage("We can´t process your purchase");
+                return ResponseEntity.unprocessableEntity().body(saleResponse);
+            }
+            Response resp3 = PxQ(itemSold.getCatalog(), itemSold.getQuantitySold());
+            if (resp3.getStatus()!=200) {
+                saleResponse.setErrorMessage("We can´t process your purchase");
+                return ResponseEntity.unprocessableEntity().body(saleResponse);
+            }
+            SaleResponse.ItemSoldWithCost item = new SaleResponse.ItemSoldWithCost(itemSold.getCatalog(), itemSold.getQuantitySold(), resp3.getQuantity());
+            list.add(item);
+            semiTotal += resp3.getQuantity();
+        }
+
+        saleResponse.setItemSoldList(list);
+        saleResponse.setTotal(semiTotal+resp.getQuantity());
+        return ResponseEntity.ok(saleResponse);
     }
 
     // user - To create bill
@@ -452,7 +489,7 @@ public class SaleController {
             return ResponseEntity.internalServerError().build();
         }
         // validate every data in body
-        ResponseEntity<String> billValidate = startSale(body);
+        ResponseEntity<SaleResponse> billValidate = startSale(body);
         if (billValidate.getStatusCode()== HttpStatus.OK && !Objects.equals(body.getAddress(), "") && body.getAddress()!=null) {
             List<Sale> results = new ArrayList<>();
             Integer newInvoice = saleService.getLastInvoice()+1;
