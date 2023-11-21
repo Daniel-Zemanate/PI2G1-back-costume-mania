@@ -18,7 +18,7 @@ public class UpdateUserRequest {
 
     Integer id;
     String dni;
-    String username;
+//    String username;
     String email;
     String password;
     String firstName;
@@ -29,7 +29,8 @@ public class UpdateUserRequest {
         return UserEntity.builder()
                 .id(user.getId())
                 .dni(user.getDni())
-                .username(user.getUsername())
+//                .username(user.getUsername())
+                .username(user.getEmail())
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .firstName(user.getFirstName())

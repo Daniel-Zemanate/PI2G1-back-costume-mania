@@ -1,6 +1,7 @@
 package com.costumemania.msusers.service;
 
 import com.costumemania.msusers.model.dto.CreateUserRequest;
+import com.costumemania.msusers.model.dto.UpdateFromAdmin;
 import com.costumemania.msusers.model.dto.UpdateUserRequest;
 import com.costumemania.msusers.model.dto.UserAccountResponse;
 
@@ -21,5 +22,7 @@ public interface IUserService {
     void deleteUserById(int id);
 
     UserAccountResponse updateUserFromUser(UpdateUserRequest user);
+
+    UserAccountResponse updateUserFromAdmin(UpdateFromAdmin user);
 
 }

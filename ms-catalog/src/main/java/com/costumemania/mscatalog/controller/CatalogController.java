@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -965,6 +966,7 @@ public class CatalogController {
 
     // adm
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Catalog> createModel(@RequestBody CatalogDTO catalogDTO){
         // verify model with Feign - 404
         try {
@@ -1002,8 +1004,9 @@ public class CatalogController {
     }
 
     // users - to buy
-    @PutMapping("{idCatalog}/{quantity}")
-    public ResponseEntity<Catalog> catalogSold(@PathVariable Integer idCatalog, @PathVariable Integer quantity) {
+    @PutMapping("{idCatalog}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Catalog> catalogSold(@PathVariable Integer idCatalog, @Param("quantity") Integer quantity) {
         // verify if catalog exists - 404
         Optional<Catalog> searchCatalog = catalogService.getCatalogById(idCatalog);
         if (searchCatalog.isEmpty()) {
@@ -1020,6 +1023,7 @@ public class CatalogController {
 
     // adm
     @PutMapping("/modify/{idCatalog}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Catalog> modifyCatalog(@PathVariable Integer idCatalog, @RequestBody CatalogDTO catalogDTO) {
         // verify if catalog exists (active or inactive) - 404
         Optional<Catalog> searchCatalog = catalogService.getCatalogById(idCatalog);
@@ -1076,6 +1080,7 @@ public class CatalogController {
 
     // adm - deshabilita catalogo
     @PutMapping("/delete/{idCatalog}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Catalog> makeInactiv (@PathVariable Integer idCatalog) {
         // verify if catalog exists (active or inactive) - 404
         Optional<Catalog> searchCatalog = catalogService.getCatalogById(idCatalog);
@@ -1088,6 +1093,7 @@ public class CatalogController {
     }
     // adm - deshabilita catalogo por modelo
     @PutMapping("/deleteByM/{idModel}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> makeInactivByModel (@PathVariable Integer idModel) {
         Optional<List<Catalog>> searchCatalog = catalogService.getCatalogByModel(idModel);
         if (searchCatalog.get().isEmpty()) {
@@ -1099,6 +1105,7 @@ public class CatalogController {
     }
     // adm - deshabilita catalogo por categoria
     @PutMapping("/deleteByC/{idCategory}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> makeInactivByCat (@PathVariable Integer idCategory) {
         try {
             modelService.getCategorydById(idCategory);

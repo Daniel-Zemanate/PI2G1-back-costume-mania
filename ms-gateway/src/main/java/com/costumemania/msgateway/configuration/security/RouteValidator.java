@@ -10,7 +10,8 @@
 //public class RouteValidator {
 //
 //    public static final List<String> openEndpoints = List.of(
-//            "/api/v1/auth/**"
+//            "/api/v1/auth/**",
+//            "/api/v1/users/all"
 //    );
 //
 //    public Predicate<ServerHttpRequest> isSecure =

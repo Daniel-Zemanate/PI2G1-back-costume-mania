@@ -12,9 +12,13 @@ import java.time.LocalDate;
 @Builder
 @Data
 @Entity
-@SQLDelete(sql = "UPDATE users SET soft_delete = true WHERE id=?")
+@SQLDelete(sql = "UPDATE users SET soft_delete = true WHERE id_user=?")
 @Where(clause = "soft_delete=false")
-@Table(name = "users")
+@Table(name = "users",indexes = {
+        @Index(name = "unique_dni", columnList = "dni", unique = true),
+        @Index(name = "unique_username", columnList = "username", unique = true),
+        @Index(name = "unique_email", columnList = "email", unique = true)
+})
 public class UserEntity {
 
     @Id

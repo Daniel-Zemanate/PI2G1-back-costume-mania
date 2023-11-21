@@ -1,14 +1,19 @@
 package com.costumemania.msusers.controller;
 
 import com.costumemania.msusers.model.dto.CreateUserRequest;
+import com.costumemania.msusers.model.dto.UpdateFromAdmin;
 import com.costumemania.msusers.model.dto.UpdateUserRequest;
 import com.costumemania.msusers.model.dto.UserAccountResponse;
+import com.costumemania.msusers.model.entity.UserEntity;
+import com.costumemania.msusers.repository.IUserRepository;
 import com.costumemania.msusers.service.IUserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,12 +25,16 @@ public class UserController {
     //private String message;
     private IUserService userService;
 
-    public UserController(IUserService userService) {
+    private IUserRepository authUsersFeignRepository;
+
+    public UserController(IUserService userService, IUserRepository authUsersFeignRepository) {
         this.userService = userService;
+        this.authUsersFeignRepository = authUsersFeignRepository;
     }
 
 
     @PostMapping(path = "/create")
+    @PreAuthorize("hasRole('NO_ACCESS')")
     public ResponseEntity<?> create(@RequestBody CreateUserRequest userRequest) {
 
         UserAccountResponse userResponse;
@@ -38,22 +47,26 @@ public class UserController {
     }
 
     @GetMapping(path = "/me")
-    public ResponseEntity<?> userByUsername(@RequestParam(required = true) String username) {
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<?> userByUsername(Principal principal) {
+//    public ResponseEntity<?> userByUsername(@RequestParam(required = true) String username) {
         UserAccountResponse userResponse;
+        String username = principal.getName();
 
         if (username.isEmpty() || username.isBlank()) {
-            return ResponseEntity.badRequest().body("username parameter is required");
+            return ResponseEntity.badRequest().body("Something went wrong with Authentication info");
         }
         try {
             userResponse = userService.getByUsername(username);
         } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatusCode.valueOf(404));
+            return new ResponseEntity<>(e.getMessage(), HttpStatusCode.valueOf(404));
         }
 
         return ResponseEntity.ok(userResponse);
     }
 
     @GetMapping(path = "/{id}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<?> userById(@PathVariable(name = "id") int id) {
         UserAccountResponse userResponse;
 
@@ -67,6 +80,20 @@ public class UserController {
         }
 
         return ResponseEntity.ok(userResponse);
+    }
+
+    @GetMapping(path = "/feign/{username}")
+//    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<UserEntity> authUsersFeign(@PathVariable(name = "username") String username) {
+
+        UserEntity userEntity = new UserEntity();
+        try {
+            userEntity = authUsersFeignRepository.findOneByUsername(username).get();
+        } catch (Exception e) {
+            return (ResponseEntity<UserEntity>) ResponseEntity.badRequest();
+        }
+
+        return ResponseEntity.ok(userEntity);
     }
 
     @GetMapping(path = "/all")
@@ -86,6 +113,7 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable(name = "id") int id) {
 
         ResponseEntity response;
@@ -101,6 +129,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/update")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<?> updateUserFromUser(@RequestBody UpdateUserRequest userRequest) {
 
         UserAccountResponse userResponse;
@@ -108,6 +137,23 @@ public class UserController {
 
         try {
             userResponse = userService.updateUserFromUser(userRequest);
+            response = ResponseEntity.ok().body(userResponse);
+        } catch (Exception e) {
+            response = ResponseEntity.badRequest().body("Something went wrong with your request. Try again, if error persists contact Admin for support: " + e.getMessage());
+        }
+
+        return response;
+    }
+
+    @PutMapping(path = "/admin/update")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateUserFromAdmin(@RequestBody UpdateFromAdmin userRequest) {
+
+        UserAccountResponse userResponse;
+        ResponseEntity response;
+
+        try {
+            userResponse = userService.updateUserFromAdmin(userRequest);
             response = ResponseEntity.ok().body(userResponse);
         } catch (Exception e) {
             response = ResponseEntity.badRequest().body("Something went wrong with your request. Try again, if error persists contact Admin for support: " + e.getMessage());

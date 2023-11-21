@@ -1,9 +1,8 @@
-package com.costumemania.msusers.configuration.security;
+package com.costumemania.msproduct.configuration.security;
 
 
-import com.costumemania.msusers.configuration.security.jwt.JwtAuthenticationFilter;
-import com.costumemania.msusers.configuration.security.jwt.JwtAuthorizationFilter;
-import com.costumemania.msusers.configuration.security.jwt.JwtUtils;
+import com.costumemania.msproduct.configuration.security.jwt.JwtAuthorizationFilter;
+import com.costumemania.msproduct.configuration.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,27 +32,21 @@ public class SecurityConfig {
 
 
     @Bean
+//    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtils);
-        jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
-        jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
-
 
         return http
                 .cors(corsConfig -> corsConfig.disable())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-//                            auth.requestMatchers(HttpMethod.GET,"/api/v1/users/**").hasAnyRole("USER", "ANONYMOUS");
-//                            auth.requestMatchers(HttpMethod.PUT).hasRole("USER");
-//                            auth.requestMatchers("/api/v1/users/**").hasRole("ADMIN");
                             auth.anyRequest().authenticated();
                         }
                 )
                 .sessionManagement(session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
-                .addFilter(jwtAuthenticationFilter)
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+//                .addFilterAfter(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

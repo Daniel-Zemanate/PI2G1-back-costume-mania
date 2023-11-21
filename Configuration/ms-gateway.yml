@@ -38,13 +38,11 @@ spring:
         - id: ms-users
           uri: lb://ms-users
           predicates:
-            - Path=/api/v1/users/**        
-#        - id: ms-users-auth
-#          uri: lb://ms-users
-#          predicates:
-#            - Path=/api/v1/auth/**
-#          filters:
-#            - AuthenticationFilter
+            - Path=/api/v1/users/**
+        - id: ms-users-auth
+          uri: lb://ms-users
+          predicates:
+            - Path=/api/v1/auth/**
 
         - id: ms-bills
           uri: lb://ms-bills

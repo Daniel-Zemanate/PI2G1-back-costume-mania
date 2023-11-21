@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class CreateUserRequest {
 
     String dni;
-    String username;
+//    String username;
     String email;
     String password;
     String firstName;
@@ -27,7 +27,8 @@ public class CreateUserRequest {
     public static UserEntity toUserEntity(CreateUserRequest user){
         return UserEntity.builder()
                 .dni(user.getDni())
-                .username(user.getUsername())
+//                .username(user.getUsername())
+                .username(user.getEmail())
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .firstName(user.getFirstName())

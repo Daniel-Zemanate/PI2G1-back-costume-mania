@@ -141,14 +141,17 @@ CREATE TABLE IF NOT EXISTS `costumemania`.`users` (
   `username` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
-  `first_name` VARCHAR(255) NULL DEFAULT NULL,
-  `last_name` VARCHAR(255) NULL DEFAULT NULL,
-  `status` BIT(1) NULL DEFAULT NULL,
-  `soft_delete` BIT(1) NULL DEFAULT NULL,
-  `created_at` DATE NULL DEFAULT NULL,
-  `updated_at` DATE NULL DEFAULT NULL,
-  `role` ENUM('ADMIN', 'USER') NULL DEFAULT NULL,
-  PRIMARY KEY (`id_user`))
+  `first_name` VARCHAR(255) DEFAULT NULL,
+  `last_name` VARCHAR(255) DEFAULT NULL,
+  `status` bit(1) DEFAULT NULL,
+  `soft_delete` bit(1) DEFAULT NULL,
+  `created_at` DATE DEFAULT NULL,
+  `updated_at` DATE DEFAULT NULL,
+  `role` enum('ADMIN','USER') DEFAULT NULL,
+  PRIMARY KEY (`id_user`),
+  UNIQUE KEY `unique_dni` (`dni`),
+  UNIQUE KEY `unique_username` (`username`),
+  UNIQUE KEY `unique_email` (`email`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb4
@@ -376,13 +379,13 @@ INSERT INTO `costumemania`.`catalog` (`id_catalog`, `model`, `size`, `stock`, `p
 
 
 INSERT INTO `costumemania`.`users` (`id_user`,`dni`,`username`,`email`,`password`,`first_name`,`last_name`,`status`,`soft_delete`,`created_at`,`updated_at`,`role`)
-VALUES ('1', '1', 'user-test-1', 'user-test-1@mail.com', 'user-test-1', 'user', 'test-1', TRUE, FALSE, CURRENT_DATE, CURRENT_DATE, 'ADMIN');
+VALUES ('1', '1', 'user-test-1', 'user-test-1@mail.com', '$2a$10$geEpiRCkRIkhny4yj5TwyeM2PvupS9iDz9DCUJp7o05C4a/uCd3vq', 'user', 'test-1', TRUE, FALSE, CURRENT_DATE, CURRENT_DATE, 'ADMIN');
 INSERT INTO `costumemania`.`users` (`id_user`,`dni`,`username`,`email`,`password`,`first_name`,`last_name`,`status`,`soft_delete`,`created_at`,`updated_at`,`role`)
-VALUES ('2', '2', 'user-test-2', 'user-test-2@mail.com', 'user-test-2', 'user', 'test-2', TRUE, FALSE, CURRENT_DATE, CURRENT_DATE, 'USER');
+VALUES ('2', '2', 'user-test-2', 'user-test-2@mail.com', '$2a$10$geEpiRCkRIkhny4yj5TwyeM2PvupS9iDz9DCUJp7o05C4a/uCd3vq', 'user', 'test-2', TRUE, FALSE, CURRENT_DATE, CURRENT_DATE, 'USER');
 INSERT INTO `costumemania`.`users` (`id_user`,`dni`,`username`,`email`,`password`,`first_name`,`last_name`,`status`,`soft_delete`,`created_at`,`updated_at`,`role`)
-VALUES ('3', '3', 'user-test-3', 'user-test-3@mail.com', 'user-test-3', 'user', 'test-3', TRUE, FALSE, CURRENT_DATE, CURRENT_DATE, 'USER');
+VALUES ('3', '3', 'user-test-3', 'user-test-3@mail.com', '$2a$10$geEpiRCkRIkhny4yj5TwyeM2PvupS9iDz9DCUJp7o05C4a/uCd3vq', 'user', 'test-3', TRUE, FALSE, CURRENT_DATE, CURRENT_DATE, 'USER');
 INSERT INTO `costumemania`.`users` (`id_user`,`dni`,`username`,`email`,`password`,`first_name`,`last_name`,`status`,`soft_delete`,`created_at`,`updated_at`,`role`)
-VALUES ('4', '4', 'user-test-4', 'user-test-4@mail.com', 'user-test-4', 'user', 'test-4', TRUE, FALSE, CURRENT_DATE, CURRENT_DATE, 'USER');
+VALUES ('4', '4', 'user-test-4', 'user-test-4@mail.com', '$2a$10$geEpiRCkRIkhny4yj5TwyeM2PvupS9iDz9DCUJp7o05C4a/uCd3vq', 'user', 'test-4', TRUE, FALSE, CURRENT_DATE, CURRENT_DATE, 'USER');
 
 
 INSERT INTO `costumemania`.`shipping` (`id_shipping`, `destination`, `cost`) VALUES ('1', 'CABA, Arg', '0.00');

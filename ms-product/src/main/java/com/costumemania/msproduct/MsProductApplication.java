@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableDiscoveryClient
+@EnableFeignClients
 public class MsProductApplication {
 
 	public static void main(String[] args) {
