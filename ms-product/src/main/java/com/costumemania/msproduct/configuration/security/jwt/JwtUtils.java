@@ -1,19 +1,14 @@
-package com.costumemania.msusers.configuration.security.jwt;
+package com.costumemania.msproduct.configuration.security.jwt;
 
-import com.costumemania.msusers.model.entity.UserEntity;
-import com.costumemania.msusers.repository.IUserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 @Component
@@ -22,25 +17,12 @@ public class JwtUtils {
     private String secretKey = "2a12dQNObNyF/E4NC8ZM/ktoVU31KSpZNMhTNHDEjvh/2z7zrfkoN6";
     private String timeExpiration = "86480000";
 
-    @Autowired
-    private IUserRepository userRepository;
-
 
     public String generateAccessToken(String username) {
-
-        UserEntity foundUser = userRepository.findOneByUsername(username).get();
-
-        Map<String, Object> customClaims = new HashMap<>();
-        customClaims.put("role", foundUser.getRole().name());
-        customClaims.put("sub", username);
-        customClaims.put("iat", new Date(System.currentTimeMillis()));
-        customClaims.put("exp", new Date(System.currentTimeMillis() + Long.parseLong(timeExpiration)));
-
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(timeExpiration)))
-                .setClaims(customClaims)
                 .signWith(getSignatureKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -84,5 +66,9 @@ public class JwtUtils {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public String getRoleFromToken(String token) {
+        return (String) getClaim(token, claims -> claims.get("role"));
     }
 }

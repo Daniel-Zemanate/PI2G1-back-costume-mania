@@ -8,6 +8,7 @@ import com.costumemania.msproduct.service.CategoryService;
 import com.costumemania.msproduct.service.ModelService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +51,7 @@ public class ModelController {
     }
     // adm - devuelve modelo sin importar si está activo o no
     @GetMapping("/adm/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Model> admGetByIdModel(@PathVariable Integer id){
         // verify model empty
         Optional<Model>model= modelService.getByIdModel(id);
@@ -71,6 +73,7 @@ public class ModelController {
     }
     // adm - devuelve modelo por NOMBRE EXACTO sin importar si está activo o no
     @GetMapping("/adm/name/{name}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Model> admGetByNameModel(@PathVariable String name){
         // verify list by name empty
         Optional<Model> model = modelService.admGetByNameModel(name);
@@ -97,6 +100,7 @@ public class ModelController {
     }
     // adm - devuelve modelos activos e inactivos
     @GetMapping("/adm/category/id/{idCategory}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Model>> admGetByIdCategory(@PathVariable Integer idCategory){
         // verify category empty
         Optional<Category> searchedCategory = categoryService.getdById(idCategory);
@@ -150,6 +154,7 @@ public class ModelController {
 
     // adm
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Model> createModel(@RequestBody ModelDTO modelDTO){
         // verify if model exists - 422
         Optional<Model> searchModel = modelService.admGetByNameAndCategoryModel(modelDTO.getNameModel(), modelDTO.getCategory());
@@ -176,6 +181,7 @@ public class ModelController {
 
     // adm
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Model> updateModel(@PathVariable Integer id, @RequestBody ModelDTO modelDTO){
         // verify ID
         Optional<Model> searchModel = modelService.getByIdModel(id);
@@ -216,6 +222,7 @@ public class ModelController {
 
     // adm - deshabilita modelo
     @PutMapping("/delete/{idModel}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Model> makeInactive (@PathVariable Integer idModel) {
         // first verify if the ID exist
         Optional<Model> modelProof = modelService.getByIdModel(idModel);
@@ -228,6 +235,7 @@ public class ModelController {
     }
     // adm - deshabilita catalogo por categoria
     @PutMapping("/deleteByC/{idCategory}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> makeInactivByCat (@PathVariable Integer idCategory) {
         Optional<Category> categoryProof = categoryService.getdById(idCategory);
         if (categoryProof.isEmpty()){

@@ -4,6 +4,8 @@ import com.costumemania.msusers.model.dto.CreateUserRequest;
 import com.costumemania.msusers.model.dto.UpdateFromAdmin;
 import com.costumemania.msusers.model.dto.UpdateUserRequest;
 import com.costumemania.msusers.model.dto.UserAccountResponse;
+import com.costumemania.msusers.model.entity.UserEntity;
+import com.costumemania.msusers.repository.IUserRepository;
 import com.costumemania.msusers.service.IUserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
@@ -23,8 +25,11 @@ public class UserController {
     private String message;
     private IUserService userService;
 
-    public UserController(IUserService userService) {
+    private IUserRepository authUsersFeignRepository;
+
+    public UserController(IUserService userService, IUserRepository authUsersFeignRepository) {
         this.userService = userService;
+        this.authUsersFeignRepository = authUsersFeignRepository;
     }
 
 
@@ -75,6 +80,20 @@ public class UserController {
         }
 
         return ResponseEntity.ok(userResponse);
+    }
+
+    @GetMapping(path = "/feign/{username}")
+//    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<UserEntity> authUsersFeign(@PathVariable(name = "username") String username) {
+
+        UserEntity userEntity = new UserEntity();
+        try {
+            userEntity = authUsersFeignRepository.findOneByUsername(username).get();
+        } catch (Exception e) {
+            return (ResponseEntity<UserEntity>) ResponseEntity.badRequest();
+        }
+
+        return ResponseEntity.ok(userEntity);
     }
 
     @GetMapping(path = "/all")

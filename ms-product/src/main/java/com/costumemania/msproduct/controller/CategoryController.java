@@ -5,6 +5,7 @@ import com.costumemania.msproduct.model.CategoryDTO;
 import com.costumemania.msproduct.model.StatusComponent;
 import com.costumemania.msproduct.service.CategoryService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class CategoryController {
     };
     // adm - devuelve categorias activas e inactivas
     @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Category>> getAllComplete() {
         return ResponseEntity.ok().body(categoryService.getAllComplete());
     };
@@ -43,6 +45,7 @@ public class CategoryController {
     };
     // adm - devuelve la categoria sin importar si está activa o no
     @GetMapping("/adm/{idCategory}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> AdmGetdById (@PathVariable Integer idCategory) {
         // first verify if the ID exist
         Optional<Category> categoryProof = categoryService.getdById(idCategory);
@@ -55,6 +58,7 @@ public class CategoryController {
 
     // adm - devuelve la categoria sin importar si está activa o no
     @GetMapping("/name/{categoryName}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> getByName (@PathVariable String categoryName) {
         // first verify if the name exist
         Optional<Category> categoryProof = categoryService.getByName(categoryName);
@@ -67,6 +71,7 @@ public class CategoryController {
 
     // adm
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> create (@RequestBody CategoryDTO c) {
         // verify if this category exists - 422
         Optional<Category> searchCategory = categoryService.getByName(c.getName());
@@ -81,6 +86,7 @@ public class CategoryController {
 
     // adm
     @PutMapping("/{idCategory}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> update (@PathVariable Integer idCategory, @RequestBody CategoryDTO c) {
         // first verify if the ID exist
         Optional<Category> categoryProof = categoryService.getdById(idCategory);
@@ -111,6 +117,7 @@ public class CategoryController {
 
     // adm - deshabilita categoria
     @PutMapping("/delete/{idCategory}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> makeInactive (@PathVariable Integer idCategory) {
         // first verify if the ID exist
         Optional<Category> categoryProof = categoryService.getdById(idCategory);
