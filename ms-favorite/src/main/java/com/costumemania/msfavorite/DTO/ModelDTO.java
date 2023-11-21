@@ -19,4 +19,14 @@ public class ModelDTO {
     private String urlImage;
 
 
+    @Override
+    public String toString() {
+        return "ModelDTO{" +
+                "idFav=" + idFav +
+                ", idModel=" + idModel +
+                ", nameModel='" + nameModel + '\'' +
+                ", category=" + category +
+                ", urlImage='" + urlImage + '\'' +
+                '}';
+    }
 }

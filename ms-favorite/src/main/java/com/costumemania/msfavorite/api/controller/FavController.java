@@ -1,18 +1,24 @@
 package com.costumemania.msfavorite.api.controller;
 
+import com.costumemania.msfavorite.DTO.FavDTO;
+import com.costumemania.msfavorite.DTO.FavModelDTO;
 import com.costumemania.msfavorite.client.IProductClient;
 import com.costumemania.msfavorite.model.Fav;
+import com.costumemania.msfavorite.api.service.FavService;
+import com.costumemania.msfavorite.model.Model;
+import jakarta.ws.rs.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.costumemania.msfavorite.api.service.FavService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/api/v1/fav")
+@RequestMapping(path = "api/v1/fav")
 public class FavController {
 
      @Autowired
@@ -22,11 +28,14 @@ public class FavController {
      @Autowired
     IProductClient iProductClient;
 
+
+    // ADMIN
     @GetMapping
-    public ResponseEntity<List<Fav>> getAll(){
+    public ResponseEntity<List<Object>> getAll(){
         return ResponseEntity.ok().body(favService.getFav());
     }
 
+    //USER
     @DeleteMapping("/{idFav}")
     public ResponseEntity<String> delete(@PathVariable Integer idFav) {
 
@@ -39,6 +48,7 @@ public class FavController {
         return ResponseEntity.ok().body("Fav with ID " + idFav + " deleted");
     }
 
+    // USER
     @PostMapping()
     public ResponseEntity<Fav> addFav(@RequestBody Fav fav){
 
@@ -48,7 +58,8 @@ public class FavController {
     }
 
 
-    @GetMapping("/{idUser}")
+    // USER
+    @GetMapping("/user/{idUser}")
     public ResponseEntity<List<Object>> getByUser(@PathVariable Integer idUser) {
 
         List<Object> f = favService.getByUser(idUser);
@@ -57,6 +68,15 @@ public class FavController {
         }
 
         return ResponseEntity.ok().body(favService.getByUser(idUser));
+    }
+
+
+    //ADMIN
+    @GetMapping("/FavModel")
+    public ResponseEntity<List<FavModelDTO>> FavOrderModel(){
+
+        return ResponseEntity.ok().body(favService.FavOrderModel());
+
     }
 
 }

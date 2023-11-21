@@ -40,6 +40,12 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 			<version>4.0.3</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>jakarta.persistence</artifactId>
+			<version>2.2.3</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>mysql</groupId>

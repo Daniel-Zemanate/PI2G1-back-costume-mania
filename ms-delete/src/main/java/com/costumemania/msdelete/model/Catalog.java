@@ -26,8 +26,8 @@ public class Catalog {
     @JoinColumn(name = "size")
     private Size size;
 
-    @Column(name = "quantity")
-    private Integer quantity;
+    @Column(name = "stock")
+    private Integer stock;
 
     @Column(name = "price")
     private Float price;

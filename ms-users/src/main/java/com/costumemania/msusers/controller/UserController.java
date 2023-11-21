@@ -21,8 +21,8 @@ import java.util.Set;
 @RequestMapping(path = "/users")
 public class UserController {
 
-    @Value("${message}")
-    private String message;
+    //@Value("${message}")
+    //private String message;
     private IUserService userService;
 
     private IUserRepository authUsersFeignRepository;
@@ -164,8 +164,8 @@ public class UserController {
 
 
     //    This endpoind is only used to check ms-config-server
-    @GetMapping(path = "/config-message")
-    private String configMessage() {
-        return message;
-    }
+//    @GetMapping(path = "/config-message")
+//    private String configMessage() {
+//        return message;
+//    }
 }

@@ -39,6 +39,11 @@ public class ModelController {
         return ResponseEntity.ok().body(modelService.getAllComplete());
     };
 
+    @GetMapping("/news/{limit}")
+    public ResponseEntity<List<Model>> getNewsLimit(@PathVariable Integer limit) {
+        return ResponseEntity.ok().body(modelService.getNewsLimit(limit));
+    }
+
     // public - devuelve solo modelo activo
     @GetMapping("/{id}")
     public ResponseEntity<Model> getByIdModel(@PathVariable Integer id){

@@ -1,0 +1,2786 @@
+{
+	"info": {
+		"_postman_id": "89ac0372-32f1-4d64-8bdb-6b14fb185a4c",
+		"name": "PI2G1-Catalog",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24071944"
+	},
+	"item": [
+		{
+			"name": "CatalogoResponse paginado agrupado por modelo",
+			"item": [
+				{
+					"name": "todo el catalogo Activo por Page",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const responseJson = pm.response.json();\r",
+									"const firstItem = responseJson.content[0];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", function () {\r",
+									"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"The response contains an array of objects\", () => {\r",
+									"    pm.expect(responseJson.content).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The first object in the array is complete\", () => {\r",
+									"    pm.expect(responseJson.content[0].idCatalog).to.be.a(\"number\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response structure and data types are correct\", function () {\r",
+									"    pm.expect(responseJson).to.have.property(\"content\").that.is.an(\"array\");\r",
+									"\r",
+									"    pm.expect(firstItem).to.have.property(\"idCatalog\").that.is.a(\"number\");\r",
+									"    pm.expect(firstItem).to.have.property(\"model\").that.is.an(\"object\");\r",
+									"\r",
+									"    pm.expect(firstItem.model).to.have.property(\"idModel\").that.is.a(\"number\");\r",
+									"    pm.expect(firstItem.model).to.have.property(\"nameModel\").that.is.a(\"string\");\r",
+									"    pm.expect(firstItem.model).to.have.property(\"category\").that.is.an(\"object\");\r",
+									"\r",
+									"    pm.expect(firstItem.model.category).to.have.property(\"idCategory\").that.is.a(\"number\");\r",
+									"    pm.expect(firstItem.model.category).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"    \r",
+									"    pm.expect(firstItem.model).to.have.property(\"urlImage\").that.is.null;\r",
+									"\r",
+									"    pm.expect(firstItem).to.have.property(\"size\").that.is.an(\"object\");\r",
+									"\r",
+									"    pm.expect(firstItem.size).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"    pm.expect(firstItem.size).to.have.property(\"adult\").that.is.a(\"number\");\r",
+									"    pm.expect(firstItem.size).to.have.property(\"noSize\").that.is.a(\"string\");\r",
+									"    pm.expect(firstItem.size).to.have.property(\"sizeDescription\").that.is.a(\"string\");\r",
+									"    \r",
+									"    pm.expect(firstItem).to.have.property(\"quantity\").that.is.a(\"number\");\r",
+									"    pm.expect(firstItem).to.have.property(\"price\").that.is.a(\"number\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/all/page/0",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"all",
+								"page",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active catalog by model ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Get the ID from the URL\r",
+									"const url = pm.request.url.toString();\r",
+									"const urlParts = url.split(\"/\");\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", () => {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"Verify the structure of the response\", function () {\r",
+									"    // Check if the response is an array\r",
+									"    pm.expect(response).to.be.an('array');\r",
+									"\r",
+									"    // Check if the array contains at least one item\r",
+									"    pm.expect(response).to.have.length.above(0);\r",
+									"\r",
+									"    // Iterate over the array to check each object's structure\r",
+									"    response.forEach(function (item) {\r",
+									"\r",
+									"        // Check if each item is an object\r",
+									"        pm.expect(item).to.be.an('object');\r",
+									"\r",
+									"        // Check the properties of the object\r",
+									"        pm.expect(item).to.have.property('idCatalog');\r",
+									"\r",
+									"        pm.expect(item.idCatalog).to.be.a('number');\r",
+									"\r",
+									"        pm.expect(item).to.have.property('model');\r",
+									"\r",
+									"        pm.expect(item.model).to.be.an('object');\r",
+									"        pm.expect(item.model).to.have.property('idModel');\r",
+									"\r",
+									"        pm.expect(item.model.idModel).to.be.a('number');\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property('nameModel');\r",
+									"\r",
+									"        pm.expect(item.model.nameModel).to.be.a('string');\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property('category');\r",
+									"\r",
+									"        pm.expect(item.model.category).to.be.an('object');\r",
+									"        pm.expect(item.model.category).to.have.property('idCategory');\r",
+									"\r",
+									"        pm.expect(item.model.category.idCategory).to.be.a('number');\r",
+									"\r",
+									"        pm.expect(item.model.category).to.have.property('name');\r",
+									"\r",
+									"        pm.expect(item.model.category.name).to.be.a('string');\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property('urlImage');\r",
+									"        \r",
+									"        pm.expect(item.model.urlImage).to.be.null;\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check if the ID in the response matches the URL parameter\", function () {\r",
+									"    \r",
+									"    // Verify that the response is an array\r",
+									"    pm.expect(response).to.be.an('array');\r",
+									"\r",
+									"    // Iterate through each object in the array\r",
+									"    response.forEach(function (item) {\r",
+									"    \r",
+									"        // Verify that the field 'model' exists\r",
+									"        pm.expect(item).to.have.property('model');\r",
+									"        \r",
+									"        // Verify that 'model.idModel' is equal to id from URL\r",
+									"        pm.expect(item.model.idModel).to.equal(parseInt(idFromUrl, 10));\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byModel/3",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byModel",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active catalog by size PAGE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"const firstItem = responseJson[0];\r",
+									"\r",
+									"const url = pm.request.url.toString();\r",
+									"\r",
+									"const urlParts = url.split('/');\r",
+									"\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Status\r",
+									"pm.test('Status OK', () => {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([\r",
+									"        200,\r",
+									"        201\r",
+									"    ]);\r",
+									"})\r",
+									"\r",
+									"// Body\r",
+									"pm.test('Response is an array of objects', function () {\r",
+									"    pm.expect(responseJson).to.be.an('array');\r",
+									"    pm.expect(responseJson.length).to.be.above(0);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response structure and data types are correct', function () {\r",
+									"    pm.expect(firstItem).to.be.an('object');\r",
+									"    pm.expect(firstItem).to.have.property('idCatalog').that.is.a('number');\r",
+									"    pm.expect(firstItem).to.have.property('model').that.is.an('object');\r",
+									"    pm.expect(firstItem.model).to.have.property('idModel').that.is.a('number');\r",
+									"    pm.expect(firstItem.model).to.have.property('nameModel').that.is.a('string');\r",
+									"    pm.expect(firstItem.model).to.have.property('category').that.is.an('object');\r",
+									"    pm.expect(firstItem.model.category).to.have.property('idCategory').that.is.a('number');\r",
+									"    pm.expect(firstItem.model.category).to.have.property('name').that.is.a('string');\r",
+									"    pm.expect(firstItem).to.have.property('size').that.is.an('object');\r",
+									"    pm.expect(firstItem.size).to.have.property('id').that.is.a('number');\r",
+									"    pm.expect(firstItem.size).to.have.property('adult').that.is.a('number');\r",
+									"    pm.expect(firstItem.size).to.have.property('noSize').that.is.a('string');\r",
+									"    pm.expect(firstItem.size).to.have.property('sizeDescription').that.is.a('string');\r",
+									"    pm.expect(firstItem).to.have.property('quantity').that.is.a('number');\r",
+									"    pm.expect(firstItem).to.have.property('price').that.is.a('number');\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Adult size matches the URL parameter\", function () {\r",
+									"    // Iterate through each object in the response\r",
+									"    responseJson.forEach(function (item) {\r",
+									"        pm.expect(item.size.adult).to.eql(parseInt(idFromUrl, 10));\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/bySize/1/page/1",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"bySize",
+								"1",
+								"page",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active catalog by category PAGE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"const url = pm.request.url.toString();\r",
+									"\r",
+									"const urlParts = url.split('/');\r",
+									"\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"pm.test('Status is OK', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Verify response structure and data types', function () {\r",
+									"    pm.expect(response).to.be.an('array');\r",
+									"    response.forEach(function (item) {\r",
+									"            pm.expect(item).to.be.an('object');\r",
+									"            pm.expect(item).to.have.property('idCatalog').to.be.a('number');\r",
+									"            pm.expect(item).to.have.property('model').to.be.an('object');\r",
+									"            pm.expect(item.model).to.have.property('idModel').to.be.a('number');\r",
+									"            pm.expect(item.model).to.have.property('nameModel').to.be.a('string');\r",
+									"            pm.expect(item.model).to.have.property('category').to.be.an('object');\r",
+									"            pm.expect(item.model.category).to.have.property('idCategory').to.be.a('number');\r",
+									"            pm.expect(item.model.category).to.have.property('name').to.be.a('string');\r",
+									"            pm.expect(item.model).to.have.property('urlImage').to.be.null;\r",
+									"            pm.expect(item).to.have.property('size').to.be.an('object');\r",
+									"            pm.expect(item.size).to.have.property('id').to.be.a('number');\r",
+									"            pm.expect(item.size).to.have.property('adult').to.be.a('number');\r",
+									"            pm.expect(item.size).to.have.property('noSize').to.be.a('string');\r",
+									"            pm.expect(item.size).to.have.property('sizeDescription').to.be.a('string');\r",
+									"            pm.expect(item).to.have.property('quantity').to.be.a('number');\r",
+									"            pm.expect(item).to.have.property('price').to.be.a('number');\r",
+									"        });\r",
+									"    });\r",
+									"\r",
+									"pm.test(\"Check if the ID in the response matches the URL parameter\", function () {\r",
+									"    response.forEach(function (item) {\r",
+									"        pm.expect(item.model.category.idCategory).to.equal(parseInt(idFromUrl, 10));\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byCategory/6/page/0",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byCategory",
+								"6",
+								"page",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active catalog by model name PAGE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status is OK (200)\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response structure and data types\", function () {\r",
+									"    // Get the response JSON\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    // Verify that the response is an array\r",
+									"    pm.expect(responseData).to.be.an('array');\r",
+									"\r",
+									"  responseData.forEach(function (item) {\r",
+									"            pm.expect(item).to.have.property('idCatalog').to.be.a('number');\r",
+									"            \r",
+									"            pm.expect(item).to.have.property('model').to.be.an('object');\r",
+									"            pm.expect(item.model).to.have.property('idModel').to.be.a('number');\r",
+									"            pm.expect(item.model).to.have.property('nameModel').to.be.a('string');\r",
+									"\r",
+									"            pm.expect(item).to.have.property('size').to.be.an('object');\r",
+									"            pm.expect(item.size).to.have.property('id').to.be.a('number');\r",
+									"            pm.expect(item.size).to.have.property('adult').to.be.a('number');\r",
+									"            pm.expect(item.size).to.have.property('noSize').to.be.a('string');\r",
+									"            pm.expect(item.size).to.have.property('sizeDescription').to.be.a('string');\r",
+									"\r",
+									"            pm.expect(item).to.have.property('quantity').to.be.a('number');\r",
+									"            pm.expect(item).to.have.property('price').to.be.a('number');\r",
+									"        });\r",
+									"    });\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byKeyWord/jac/page/0",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byKeyWord",
+								"jac",
+								"page",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active catalog by model name + category PAGE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Get the ID from the URL\r",
+									"const url = pm.request.url.toString();\r",
+									"const urlParts = url.split(\"/\");\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", () => {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each element in the array has the required properties\", function () {    \r",
+									"    response.forEach(function(item) {\r",
+									"        pm.expect(item).to.have.property('idCatalog');\r",
+									"        pm.expect(item).to.have.property('model');\r",
+									"        pm.expect(item).to.have.property('size');\r",
+									"        pm.expect(item).to.have.property('quantity');\r",
+									"        pm.expect(item).to.have.property('price');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check if the ID in the response matches the URL parameter\", function () {\r",
+									"    \r",
+									"    // Verify that the response is an array\r",
+									"    pm.expect(response).to.be.an('array');\r",
+									"\r",
+									"    // Iterate through each object in the array\r",
+									"    response.forEach(function (item) {\r",
+									"    \r",
+									"        // Verify that the field 'model' exists\r",
+									"        pm.expect(item).to.have.property('model');\r",
+									"\r",
+									"        // Verify that the field 'category' exists\r",
+									"        pm.expect(item.model).to.have.property('category');\r",
+									"        \r",
+									"        // Verify that 'model.category.idCategory' is equal to id from URL\r",
+									"        pm.expect(item.model.category.idCategory).to.equal(parseInt(idFromUrl, 10));\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byKeyWord/spa/byCategory/2/page/0",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byKeyWord",
+								"spa",
+								"byCategory",
+								"2",
+								"page",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active catalog by category + size PAGE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Get the ID from the URL\r",
+									"const url = pm.request.url.toString();\r",
+									"const urlParts = url.split(\"/\");\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status is OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"// Validate fields for each item in the response\r",
+									"pm.test(\"Each element in the array has the required properties\", function () {\r",
+									"    pm.expect(response).to.be.an(\"array\").that.is.not.empty;\r",
+									"\r",
+									"    response.forEach(function (item) {\r",
+									"        pm.expect(item).to.have.property(\"idCatalog\").that.is.a(\"number\");\r",
+									"        pm.expect(item).to.have.property(\"model\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property(\"idModel\").that.is.a(\"number\");\r",
+									"        pm.expect(item.model).to.have.property(\"nameModel\").that.is.a(\"string\");\r",
+									"        pm.expect(item.model).to.have.property(\"category\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.model.category).to.have.property(\"idCategory\").that.is.a(\"number\");\r",
+									"        pm.expect(item.model.category).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property(\"urlImage\").that.is.null;\r",
+									"\r",
+									"        pm.expect(item).to.have.property(\"size\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.size).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"        pm.expect(item.size).to.have.property(\"adult\").that.is.a(\"number\");\r",
+									"        pm.expect(item.size).to.have.property(\"noSize\").that.is.a(\"string\");\r",
+									"        pm.expect(item.size).to.have.property(\"sizeDescription\").that.is.a(\"string\");\r",
+									"\r",
+									"        pm.expect(item).to.have.property(\"quantity\").that.is.a(\"number\");\r",
+									"        pm.expect(item).to.have.property(\"price\").that.is.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Adult size matches the URL parameter\", function () {\r",
+									"    // Iterate through each object in the response\r",
+									"    response.forEach(function (item) {\r",
+									"             pm.expect(item.size.adult).to.eql(parseInt(idFromUrl, 10));\r",
+									"       });\r",
+									"    })"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byCategory/1/bySize/1/page/0",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byCategory",
+								"1",
+								"bySize",
+								"1",
+								"page",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active catalog by model name + size PAGE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Get the ID from the URL\r",
+									"const url = pm.request.url.toString();\r",
+									"const urlParts = url.split(\"/\");\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", () => {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each element in the array has the required properties\", function () {    \r",
+									"    response.forEach(function(item) {\r",
+									"        pm.expect(item).to.have.property('idCatalog');\r",
+									"        pm.expect(item).to.have.property('model');\r",
+									"        pm.expect(item).to.have.property('size');\r",
+									"        pm.expect(item).to.have.property('quantity');\r",
+									"        pm.expect(item).to.have.property('price');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check if the ID in the response matches the URL parameter\", function () {\r",
+									"    \r",
+									"    // Verify that the response is an array\r",
+									"    pm.expect(response).to.be.an('array');\r",
+									"\r",
+									"    // Iterate through each object in the array\r",
+									"    response.forEach(function (item) {\r",
+									"    \r",
+									"        // Verify that the field 'size' exists\r",
+									"        pm.expect(item).to.have.property('size');\r",
+									"        \r",
+									"        // Verify that 'model.category.idCategory' is equal to id from URL\r",
+									"        pm.expect(item.size.adult).to.equal(parseInt(idFromUrl, 10));\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byKeyWord/ja/bySize/0/page/0",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byKeyWord",
+								"ja",
+								"bySize",
+								"0",
+								"page",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active catalog by model name + size + category PAGE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Get the ID from the URL\r",
+									"const url = pm.request.url.toString();\r",
+									"const urlParts = url.split(\"/\");\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status is OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"// Validate fields for each item in the response\r",
+									"pm.test(\"Each element in the array has the required properties\", function () {\r",
+									"    pm.expect(response).to.be.an(\"array\").that.is.not.empty;\r",
+									"\r",
+									"    response.forEach(function (item) {\r",
+									"        pm.expect(item).to.have.property(\"idCatalog\").that.is.a(\"number\");\r",
+									"        pm.expect(item).to.have.property(\"model\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property(\"idModel\").that.is.a(\"number\");\r",
+									"        pm.expect(item.model).to.have.property(\"nameModel\").that.is.a(\"string\");\r",
+									"        pm.expect(item.model).to.have.property(\"category\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.model.category).to.have.property(\"idCategory\").that.is.a(\"number\");\r",
+									"        pm.expect(item.model.category).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property(\"urlImage\").that.is.null;\r",
+									"\r",
+									"        pm.expect(item).to.have.property(\"size\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.size).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"        pm.expect(item.size).to.have.property(\"adult\").that.is.a(\"number\");\r",
+									"        pm.expect(item.size).to.have.property(\"noSize\").that.is.a(\"string\");\r",
+									"        pm.expect(item.size).to.have.property(\"sizeDescription\").that.is.a(\"string\");\r",
+									"\r",
+									"        pm.expect(item).to.have.property(\"quantity\").that.is.a(\"number\");\r",
+									"        pm.expect(item).to.have.property(\"price\").that.is.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Adult size matches the URL parameter\", function () {\r",
+									"    // Iterate through each object in the response\r",
+									"    response.forEach(function (item) {\r",
+									"             pm.expect(item.size.adult).to.eql(parseInt(idFromUrl, 10));\r",
+									"       });\r",
+									"    })"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byKeyWord/jac/byCategory/2/bySize/1/page/0",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byKeyWord",
+								"jac",
+								"byCategory",
+								"2",
+								"bySize",
+								"1",
+								"page",
+								"0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Catalogo paginado",
+			"item": [
+				{
+					"name": "todo el catalogo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const responseJson = pm.response.json();\r",
+									"const responseJsonFirst = pm.response.json()[0];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", () => {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"The response contains an array of objects\", () => {\r",
+									"    pm.expect(responseJson).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The first object in the array is complete\", () => {\r",
+									"    pm.expect(responseJsonFirst.idCatalog).to.be.a(\"number\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The queried data in the first object is of the expected type\", () => {\r",
+									"\r",
+									"    pm.expect(responseJsonFirst.idCatalog).to.be.a(\"number\");\r",
+									"\r",
+									"    pm.expect(responseJsonFirst.model).to.be.an(\"object\");\r",
+									"\r",
+									"    pm.expect(responseJsonFirst.size).to.be.an(\"object\");\r",
+									"\r",
+									"    pm.expect(responseJsonFirst.quantity).to.be.a(\"number\");\r",
+									"    \r",
+									"    pm.expect(responseJsonFirst.price).to.be.a(\"number\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/page/0",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"page",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active catalog by size PAGE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"const firstItem = responseJson[0];\r",
+									"\r",
+									"const url = pm.request.url.toString();\r",
+									"\r",
+									"const urlParts = url.split('/');\r",
+									"\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Status\r",
+									"pm.test('Status OK', () => {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([\r",
+									"        200,\r",
+									"        201\r",
+									"    ]);\r",
+									"})\r",
+									"\r",
+									"// Body\r",
+									"pm.test('Response is an array of objects', function () {\r",
+									"    pm.expect(responseJson).to.be.an('array');\r",
+									"    pm.expect(responseJson.length).to.be.above(0);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response structure and data types are correct', function () {\r",
+									"    pm.expect(firstItem).to.be.an('object');\r",
+									"    pm.expect(firstItem).to.have.property('idCatalog').that.is.a('number');\r",
+									"    pm.expect(firstItem).to.have.property('model').that.is.an('object');\r",
+									"    pm.expect(firstItem.model).to.have.property('idModel').that.is.a('number');\r",
+									"    pm.expect(firstItem.model).to.have.property('nameModel').that.is.a('string');\r",
+									"    pm.expect(firstItem.model).to.have.property('category').that.is.an('object');\r",
+									"    pm.expect(firstItem.model.category).to.have.property('idCategory').that.is.a('number');\r",
+									"    pm.expect(firstItem.model.category).to.have.property('name').that.is.a('string');\r",
+									"    pm.expect(firstItem).to.have.property('size').that.is.an('object');\r",
+									"    pm.expect(firstItem.size).to.have.property('id').that.is.a('number');\r",
+									"    pm.expect(firstItem.size).to.have.property('adult').that.is.a('number');\r",
+									"    pm.expect(firstItem.size).to.have.property('noSize').that.is.a('string');\r",
+									"    pm.expect(firstItem.size).to.have.property('sizeDescription').that.is.a('string');\r",
+									"    pm.expect(firstItem).to.have.property('quantity').that.is.a('number');\r",
+									"    pm.expect(firstItem).to.have.property('price').that.is.a('number');\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Adult size matches the URL parameter\", function () {\r",
+									"    // Iterate through each object in the response\r",
+									"    responseJson.forEach(function (item) {\r",
+									"        pm.expect(item.size.adult).to.eql(parseInt(idFromUrl, 10));\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/bySize2/1/page/1",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"bySize2",
+								"1",
+								"page",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Act/Inact catalog by category PAGE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"const url = pm.request.url.toString();\r",
+									"\r",
+									"const urlParts = url.split('/');\r",
+									"\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"pm.test('Status is OK', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Verify response structure and data types', function () {\r",
+									"    pm.expect(response).to.be.an('array');\r",
+									"    response.forEach(function (item) {\r",
+									"            pm.expect(item).to.be.an('object');\r",
+									"            pm.expect(item).to.have.property('idCatalog').to.be.a('number');\r",
+									"            pm.expect(item).to.have.property('model').to.be.an('object');\r",
+									"            pm.expect(item.model).to.have.property('idModel').to.be.a('number');\r",
+									"            pm.expect(item.model).to.have.property('nameModel').to.be.a('string');\r",
+									"            pm.expect(item.model).to.have.property('category').to.be.an('object');\r",
+									"            pm.expect(item.model.category).to.have.property('idCategory').to.be.a('number');\r",
+									"            pm.expect(item.model.category).to.have.property('name').to.be.a('string');\r",
+									"            pm.expect(item.model).to.have.property('urlImage').to.be.null;\r",
+									"            pm.expect(item).to.have.property('size').to.be.an('object');\r",
+									"            pm.expect(item.size).to.have.property('id').to.be.a('number');\r",
+									"            pm.expect(item.size).to.have.property('adult').to.be.a('number');\r",
+									"            pm.expect(item.size).to.have.property('noSize').to.be.a('string');\r",
+									"            pm.expect(item.size).to.have.property('sizeDescription').to.be.a('string');\r",
+									"            pm.expect(item).to.have.property('quantity').to.be.a('number');\r",
+									"            pm.expect(item).to.have.property('price').to.be.a('number');\r",
+									"        });\r",
+									"    });\r",
+									"\r",
+									"pm.test(\"Check if the ID in the response matches the URL parameter\", function () {\r",
+									"    response.forEach(function (item) {\r",
+									"        pm.expect(item.model.category.idCategory).to.equal(parseInt(idFromUrl, 10));\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byCategory2/6/page/0",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byCategory2",
+								"6",
+								"page",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Act/Inact catalog by model name PAGE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status is OK (200)\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response structure and data types\", function () {\r",
+									"    // Get the response JSON\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    // Verify that the response is an array\r",
+									"    pm.expect(responseData).to.be.an('array');\r",
+									"\r",
+									"  responseData.forEach(function (item) {\r",
+									"            pm.expect(item).to.have.property('idCatalog').to.be.a('number');\r",
+									"            \r",
+									"            pm.expect(item).to.have.property('model').to.be.an('object');\r",
+									"            pm.expect(item.model).to.have.property('idModel').to.be.a('number');\r",
+									"            pm.expect(item.model).to.have.property('nameModel').to.be.a('string');\r",
+									"\r",
+									"            pm.expect(item).to.have.property('size').to.be.an('object');\r",
+									"            pm.expect(item.size).to.have.property('id').to.be.a('number');\r",
+									"            pm.expect(item.size).to.have.property('adult').to.be.a('number');\r",
+									"            pm.expect(item.size).to.have.property('noSize').to.be.a('string');\r",
+									"            pm.expect(item.size).to.have.property('sizeDescription').to.be.a('string');\r",
+									"\r",
+									"            pm.expect(item).to.have.property('quantity').to.be.a('number');\r",
+									"            pm.expect(item).to.have.property('price').to.be.a('number');\r",
+									"        });\r",
+									"    });\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byKeyWord2/jac/page/0",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byKeyWord2",
+								"jac",
+								"page",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Act/Inact catalog by model name + category PAGE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Get the ID from the URL\r",
+									"const url = pm.request.url.toString();\r",
+									"const urlParts = url.split(\"/\");\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", () => {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each element in the array has the required properties\", function () {    \r",
+									"    response.forEach(function(item) {\r",
+									"        pm.expect(item).to.have.property('idCatalog');\r",
+									"        pm.expect(item).to.have.property('model');\r",
+									"        pm.expect(item).to.have.property('size');\r",
+									"        pm.expect(item).to.have.property('quantity');\r",
+									"        pm.expect(item).to.have.property('price');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check if the ID in the response matches the URL parameter\", function () {\r",
+									"    \r",
+									"    // Verify that the response is an array\r",
+									"    pm.expect(response).to.be.an('array');\r",
+									"\r",
+									"    // Iterate through each object in the array\r",
+									"    response.forEach(function (item) {\r",
+									"    \r",
+									"        // Verify that the field 'model' exists\r",
+									"        pm.expect(item).to.have.property('model');\r",
+									"\r",
+									"        // Verify that the field 'category' exists\r",
+									"        pm.expect(item.model).to.have.property('category');\r",
+									"        \r",
+									"        // Verify that 'model.category.idCategory' is equal to id from URL\r",
+									"        pm.expect(item.model.category.idCategory).to.equal(parseInt(idFromUrl, 10));\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byKeyWord2/spa/byCategory/2/page/0",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byKeyWord2",
+								"spa",
+								"byCategory",
+								"2",
+								"page",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Act/Inact catalog by category + size PAGE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Get the ID from the URL\r",
+									"const url = pm.request.url.toString();\r",
+									"const urlParts = url.split(\"/\");\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status is OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"// Validate fields for each item in the response\r",
+									"pm.test(\"Each element in the array has the required properties\", function () {\r",
+									"    pm.expect(response).to.be.an(\"array\").that.is.not.empty;\r",
+									"\r",
+									"    response.forEach(function (item) {\r",
+									"        pm.expect(item).to.have.property(\"idCatalog\").that.is.a(\"number\");\r",
+									"        pm.expect(item).to.have.property(\"model\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property(\"idModel\").that.is.a(\"number\");\r",
+									"        pm.expect(item.model).to.have.property(\"nameModel\").that.is.a(\"string\");\r",
+									"        pm.expect(item.model).to.have.property(\"category\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.model.category).to.have.property(\"idCategory\").that.is.a(\"number\");\r",
+									"        pm.expect(item.model.category).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property(\"urlImage\").that.is.null;\r",
+									"\r",
+									"        pm.expect(item).to.have.property(\"size\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.size).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"        pm.expect(item.size).to.have.property(\"adult\").that.is.a(\"number\");\r",
+									"        pm.expect(item.size).to.have.property(\"noSize\").that.is.a(\"string\");\r",
+									"        pm.expect(item.size).to.have.property(\"sizeDescription\").that.is.a(\"string\");\r",
+									"\r",
+									"        pm.expect(item).to.have.property(\"quantity\").that.is.a(\"number\");\r",
+									"        pm.expect(item).to.have.property(\"price\").that.is.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Adult size matches the URL parameter\", function () {\r",
+									"    // Iterate through each object in the response\r",
+									"    response.forEach(function (item) {\r",
+									"             pm.expect(item.size.adult).to.eql(parseInt(idFromUrl, 10));\r",
+									"       });\r",
+									"    })"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byCategory2/1/bySize/1/page/0",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byCategory2",
+								"1",
+								"bySize",
+								"1",
+								"page",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Act/Inact catalog by model name + size PAGE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Get the ID from the URL\r",
+									"const url = pm.request.url.toString();\r",
+									"const urlParts = url.split(\"/\");\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", () => {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each element in the array has the required properties\", function () {    \r",
+									"    response.forEach(function(item) {\r",
+									"        pm.expect(item).to.have.property('idCatalog');\r",
+									"        pm.expect(item).to.have.property('model');\r",
+									"        pm.expect(item).to.have.property('size');\r",
+									"        pm.expect(item).to.have.property('quantity');\r",
+									"        pm.expect(item).to.have.property('price');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check if the ID in the response matches the URL parameter\", function () {\r",
+									"    \r",
+									"    // Verify that the response is an array\r",
+									"    pm.expect(response).to.be.an('array');\r",
+									"\r",
+									"    // Iterate through each object in the array\r",
+									"    response.forEach(function (item) {\r",
+									"    \r",
+									"        // Verify that the field 'size' exists\r",
+									"        pm.expect(item).to.have.property('size');\r",
+									"        \r",
+									"        // Verify that 'model.category.idCategory' is equal to id from URL\r",
+									"        pm.expect(item.size.adult).to.equal(parseInt(idFromUrl, 10));\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byKeyWord2/ja/bySize/0/page/0",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byKeyWord2",
+								"ja",
+								"bySize",
+								"0",
+								"page",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Act/Inact catalog by model name + size + category PAGE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Get the ID from the URL\r",
+									"const url = pm.request.url.toString();\r",
+									"const urlParts = url.split(\"/\");\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status is OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"// Validate fields for each item in the response\r",
+									"pm.test(\"Each element in the array has the required properties\", function () {\r",
+									"    pm.expect(response).to.be.an(\"array\").that.is.not.empty;\r",
+									"\r",
+									"    response.forEach(function (item) {\r",
+									"        pm.expect(item).to.have.property(\"idCatalog\").that.is.a(\"number\");\r",
+									"        pm.expect(item).to.have.property(\"model\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property(\"idModel\").that.is.a(\"number\");\r",
+									"        pm.expect(item.model).to.have.property(\"nameModel\").that.is.a(\"string\");\r",
+									"        pm.expect(item.model).to.have.property(\"category\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.model.category).to.have.property(\"idCategory\").that.is.a(\"number\");\r",
+									"        pm.expect(item.model.category).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property(\"urlImage\").that.is.null;\r",
+									"\r",
+									"        pm.expect(item).to.have.property(\"size\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.size).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"        pm.expect(item.size).to.have.property(\"adult\").that.is.a(\"number\");\r",
+									"        pm.expect(item.size).to.have.property(\"noSize\").that.is.a(\"string\");\r",
+									"        pm.expect(item.size).to.have.property(\"sizeDescription\").that.is.a(\"string\");\r",
+									"\r",
+									"        pm.expect(item).to.have.property(\"quantity\").that.is.a(\"number\");\r",
+									"        pm.expect(item).to.have.property(\"price\").that.is.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Adult size matches the URL parameter\", function () {\r",
+									"    // Iterate through each object in the response\r",
+									"    response.forEach(function (item) {\r",
+									"             pm.expect(item.size.adult).to.eql(parseInt(idFromUrl, 10));\r",
+									"       });\r",
+									"    })"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byKeyWord2/jac/byCategory/2/bySize/1/page/0",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byKeyWord2",
+								"jac",
+								"byCategory",
+								"2",
+								"bySize",
+								"1",
+								"page",
+								"0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Catalogo completo",
+			"item": [
+				{
+					"name": "todo el catalogo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const responseJson = pm.response.json();\r",
+									"const responseJsonFirst = pm.response.json()[0];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", () => {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"The response contains an array of objects\", () => {\r",
+									"    pm.expect(responseJson).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The first object in the array is complete\", () => {\r",
+									"    pm.expect(responseJsonFirst.idCatalog).to.be.a(\"number\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The queried data in the first object is of the expected type\", () => {\r",
+									"\r",
+									"    pm.expect(responseJsonFirst.idCatalog).to.be.a(\"number\");\r",
+									"\r",
+									"    pm.expect(responseJsonFirst.model).to.be.an(\"object\");\r",
+									"\r",
+									"    pm.expect(responseJsonFirst.size).to.be.an(\"object\");\r",
+									"\r",
+									"    pm.expect(responseJsonFirst.quantity).to.be.a(\"number\");\r",
+									"    \r",
+									"    pm.expect(responseJsonFirst.price).to.be.a(\"number\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "catalog by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"// Get the ID from the URL\r",
+									"const url = pm.request.url.toString();\r",
+									"const urlParts = url.split(\"/\");\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Get the ID from the response JSON\r",
+									"const idFromResponse = responseJson.idCatalog;\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", function () {\r",
+									"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+									"});\r",
+									"\r",
+									"// Test to verify the response structure and data types\r",
+									"pm.test(\"Response structure and data types are correct\", function () {\r",
+									"\r",
+									"    pm.expect(responseJson).to.be.an(\"object\");\r",
+									"    pm.expect(responseJson).to.have.property(\"idCatalog\").that.is.a(\"number\");\r",
+									"    pm.expect(responseJson).to.have.property(\"model\").that.is.an(\"object\");\r",
+									"\r",
+									"    pm.expect(responseJson.model).to.have.property(\"idModel\").that.is.a(\"number\");\r",
+									"    pm.expect(responseJson.model).to.have.property(\"nameModel\").that.is.a(\"string\");\r",
+									"    pm.expect(responseJson.model).to.have.property(\"category\").that.is.an(\"object\");\r",
+									"\r",
+									"    pm.expect(responseJson.model.category).to.have.property(\"idCategory\").that.is.a(\"number\");\r",
+									"    pm.expect(responseJson.model.category).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"    \r",
+									"    pm.expect(responseJson.model).to.have.property(\"urlImage\").that.is.null;\r",
+									"\r",
+									"    pm.expect(responseJson).to.have.property(\"size\").that.is.an(\"object\");\r",
+									"\r",
+									"    pm.expect(responseJson.size).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"    pm.expect(responseJson.size).to.have.property(\"adult\").that.is.a(\"number\");\r",
+									"    pm.expect(responseJson.size).to.have.property(\"noSize\").that.is.a(\"string\");\r",
+									"    pm.expect(responseJson.size).to.have.property(\"sizeDescription\").that.is.a(\"string\");\r",
+									"    \r",
+									"    pm.expect(responseJson).to.have.property(\"quantity\").that.is.a(\"number\");\r",
+									"    pm.expect(responseJson).to.have.property(\"price\").that.is.a(\"number\");\r",
+									"});\r",
+									"\r",
+									"// Test to compare the IDs\r",
+									"pm.test(\"Check if the ID in the response matches the URL parameter\", function () {\r",
+									"    pm.expect(idFromResponse).to.equal(parseInt(idFromUrl));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/16",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"16"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "catalog by model",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Get the ID from the URL\r",
+									"const url = pm.request.url.toString();\r",
+									"const urlParts = url.split(\"/\");\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", () => {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"Verify the structure of the response\", function () {\r",
+									"    // Check if the response is an array\r",
+									"    pm.expect(response).to.be.an('array');\r",
+									"\r",
+									"    // Check if the array contains at least one item\r",
+									"    pm.expect(response).to.have.length.above(0);\r",
+									"\r",
+									"    // Iterate over the array to check each object's structure\r",
+									"    response.forEach(function (item) {\r",
+									"\r",
+									"        // Check if each item is an object\r",
+									"        pm.expect(item).to.be.an('object');\r",
+									"\r",
+									"        // Check the properties of the object\r",
+									"        pm.expect(item).to.have.property('idCatalog');\r",
+									"\r",
+									"        pm.expect(item.idCatalog).to.be.a('number');\r",
+									"\r",
+									"        pm.expect(item).to.have.property('model');\r",
+									"\r",
+									"        pm.expect(item.model).to.be.an('object');\r",
+									"        pm.expect(item.model).to.have.property('idModel');\r",
+									"\r",
+									"        pm.expect(item.model.idModel).to.be.a('number');\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property('nameModel');\r",
+									"\r",
+									"        pm.expect(item.model.nameModel).to.be.a('string');\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property('category');\r",
+									"\r",
+									"        pm.expect(item.model.category).to.be.an('object');\r",
+									"        pm.expect(item.model.category).to.have.property('idCategory');\r",
+									"\r",
+									"        pm.expect(item.model.category.idCategory).to.be.a('number');\r",
+									"\r",
+									"        pm.expect(item.model.category).to.have.property('name');\r",
+									"\r",
+									"        pm.expect(item.model.category.name).to.be.a('string');\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property('urlImage');\r",
+									"        \r",
+									"        pm.expect(item.model.urlImage).to.be.null;\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check if the ID in the response matches the URL parameter\", function () {\r",
+									"    \r",
+									"    // Verify that the response is an array\r",
+									"    pm.expect(response).to.be.an('array');\r",
+									"\r",
+									"    // Iterate through each object in the array\r",
+									"    response.forEach(function (item) {\r",
+									"    \r",
+									"        // Verify that the field 'model' exists\r",
+									"        pm.expect(item).to.have.property('model');\r",
+									"        \r",
+									"        // Verify that 'model.idModel' is equal to id from URL\r",
+									"        pm.expect(item.model.idModel).to.equal(parseInt(idFromUrl, 10));\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byModel2/2",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byModel2",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "catalog by size",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"const firstItem = responseJson[0];\r",
+									"\r",
+									"const url = pm.request.url.toString();\r",
+									"\r",
+									"const urlParts = url.split('/');\r",
+									"\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Status\r",
+									"pm.test('Status OK', () => {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([\r",
+									"        200,\r",
+									"        201\r",
+									"    ]);\r",
+									"})\r",
+									"\r",
+									"// Body\r",
+									"pm.test('Response is an array of objects', function () {\r",
+									"    pm.expect(responseJson).to.be.an('array');\r",
+									"    pm.expect(responseJson.length).to.be.above(0);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response structure and data types are correct', function () {\r",
+									"    pm.expect(firstItem).to.be.an('object');\r",
+									"    pm.expect(firstItem).to.have.property('idCatalog').that.is.a('number');\r",
+									"    pm.expect(firstItem).to.have.property('model').that.is.an('object');\r",
+									"    pm.expect(firstItem.model).to.have.property('idModel').that.is.a('number');\r",
+									"    pm.expect(firstItem.model).to.have.property('nameModel').that.is.a('string');\r",
+									"    pm.expect(firstItem.model).to.have.property('category').that.is.an('object');\r",
+									"    pm.expect(firstItem.model.category).to.have.property('idCategory').that.is.a('number');\r",
+									"    pm.expect(firstItem.model.category).to.have.property('name').that.is.a('string');\r",
+									"    pm.expect(firstItem).to.have.property('size').that.is.an('object');\r",
+									"    pm.expect(firstItem.size).to.have.property('id').that.is.a('number');\r",
+									"    pm.expect(firstItem.size).to.have.property('adult').that.is.a('number');\r",
+									"    pm.expect(firstItem.size).to.have.property('noSize').that.is.a('string');\r",
+									"    pm.expect(firstItem.size).to.have.property('sizeDescription').that.is.a('string');\r",
+									"    pm.expect(firstItem).to.have.property('quantity').that.is.a('number');\r",
+									"    pm.expect(firstItem).to.have.property('price').that.is.a('number');\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Adult size matches the URL parameter\", function () {\r",
+									"    // Iterate through each object in the response\r",
+									"    responseJson.forEach(function (item) {\r",
+									"        pm.expect(item.size.adult).to.eql(parseInt(idFromUrl, 10));\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/bySize/1",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"bySize",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "catalog by category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"const url = pm.request.url.toString();\r",
+									"\r",
+									"const urlParts = url.split('/');\r",
+									"\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"pm.test('Status is OK', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Verify response structure and data types', function () {\r",
+									"    pm.expect(response).to.be.an('array');\r",
+									"    response.forEach(function (item) {\r",
+									"            pm.expect(item).to.be.an('object');\r",
+									"            pm.expect(item).to.have.property('idCatalog').to.be.a('number');\r",
+									"            pm.expect(item).to.have.property('model').to.be.an('object');\r",
+									"            pm.expect(item.model).to.have.property('idModel').to.be.a('number');\r",
+									"            pm.expect(item.model).to.have.property('nameModel').to.be.a('string');\r",
+									"            pm.expect(item.model).to.have.property('category').to.be.an('object');\r",
+									"            pm.expect(item.model.category).to.have.property('idCategory').to.be.a('number');\r",
+									"            pm.expect(item.model.category).to.have.property('name').to.be.a('string');\r",
+									"            pm.expect(item.model).to.have.property('urlImage').to.be.null;\r",
+									"            pm.expect(item).to.have.property('size').to.be.an('object');\r",
+									"            pm.expect(item.size).to.have.property('id').to.be.a('number');\r",
+									"            pm.expect(item.size).to.have.property('adult').to.be.a('number');\r",
+									"            pm.expect(item.size).to.have.property('noSize').to.be.a('string');\r",
+									"            pm.expect(item.size).to.have.property('sizeDescription').to.be.a('string');\r",
+									"            pm.expect(item).to.have.property('quantity').to.be.a('number');\r",
+									"            pm.expect(item).to.have.property('price').to.be.a('number');\r",
+									"        });\r",
+									"    });\r",
+									"\r",
+									"pm.test(\"Check if the ID in the response matches the URL parameter\", function () {\r",
+									"    response.forEach(function (item) {\r",
+									"        pm.expect(item.model.category.idCategory).to.equal(parseInt(idFromUrl, 10));\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byCategory/6",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byCategory",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "catalog by model name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status is OK (200)\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response structure and data types\", function () {\r",
+									"    // Get the response JSON\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    // Verify that the response is an array\r",
+									"    pm.expect(responseData).to.be.an('array');\r",
+									"\r",
+									"  responseData.forEach(function (item) {\r",
+									"            pm.expect(item).to.have.property('idCatalog').to.be.a('number');\r",
+									"            \r",
+									"            pm.expect(item).to.have.property('model').to.be.an('object');\r",
+									"            pm.expect(item.model).to.have.property('idModel').to.be.a('number');\r",
+									"            pm.expect(item.model).to.have.property('nameModel').to.be.a('string');\r",
+									"\r",
+									"            pm.expect(item).to.have.property('size').to.be.an('object');\r",
+									"            pm.expect(item.size).to.have.property('id').to.be.a('number');\r",
+									"            pm.expect(item.size).to.have.property('adult').to.be.a('number');\r",
+									"            pm.expect(item.size).to.have.property('noSize').to.be.a('string');\r",
+									"            pm.expect(item.size).to.have.property('sizeDescription').to.be.a('string');\r",
+									"\r",
+									"            pm.expect(item).to.have.property('quantity').to.be.a('number');\r",
+									"            pm.expect(item).to.have.property('price').to.be.a('number');\r",
+									"        });\r",
+									"    });\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byKeyWord/jac",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byKeyWord",
+								"jac"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "catalog by model name + category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Get the ID from the URL\r",
+									"const url = pm.request.url.toString();\r",
+									"const urlParts = url.split(\"/\");\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", () => {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each element in the array has the required properties\", function () {    \r",
+									"    response.forEach(function(item) {\r",
+									"        pm.expect(item).to.have.property('idCatalog');\r",
+									"        pm.expect(item).to.have.property('model');\r",
+									"        pm.expect(item).to.have.property('size');\r",
+									"        pm.expect(item).to.have.property('quantity');\r",
+									"        pm.expect(item).to.have.property('price');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check if the ID in the response matches the URL parameter\", function () {\r",
+									"    \r",
+									"    // Verify that the response is an array\r",
+									"    pm.expect(response).to.be.an('array');\r",
+									"\r",
+									"    // Iterate through each object in the array\r",
+									"    response.forEach(function (item) {\r",
+									"    \r",
+									"        // Verify that the field 'model' exists\r",
+									"        pm.expect(item).to.have.property('model');\r",
+									"\r",
+									"        // Verify that the field 'category' exists\r",
+									"        pm.expect(item.model).to.have.property('category');\r",
+									"        \r",
+									"        // Verify that 'model.category.idCategory' is equal to id from URL\r",
+									"        pm.expect(item.model.category.idCategory).to.equal(parseInt(idFromUrl, 10));\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byKeyWord/spa/byCategory/2",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byKeyWord",
+								"spa",
+								"byCategory",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "catalog by model name + size",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Get the ID from the URL\r",
+									"const url = pm.request.url.toString();\r",
+									"const urlParts = url.split(\"/\");\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", () => {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each element in the array has the required properties\", function () {    \r",
+									"    response.forEach(function(item) {\r",
+									"        pm.expect(item).to.have.property('idCatalog');\r",
+									"        pm.expect(item).to.have.property('model');\r",
+									"        pm.expect(item).to.have.property('size');\r",
+									"        pm.expect(item).to.have.property('quantity');\r",
+									"        pm.expect(item).to.have.property('price');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check if the ID in the response matches the URL parameter\", function () {\r",
+									"    \r",
+									"    // Verify that the response is an array\r",
+									"    pm.expect(response).to.be.an('array');\r",
+									"\r",
+									"    // Iterate through each object in the array\r",
+									"    response.forEach(function (item) {\r",
+									"    \r",
+									"        // Verify that the field 'size' exists\r",
+									"        pm.expect(item).to.have.property('size');\r",
+									"        \r",
+									"        // Verify that 'model.category.idCategory' is equal to id from URL\r",
+									"        pm.expect(item.size.adult).to.equal(parseInt(idFromUrl, 10));\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byKeyWord/ja/bySize/0",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byKeyWord",
+								"ja",
+								"bySize",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "catalog by category + size",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Get the ID from the URL\r",
+									"const url = pm.request.url.toString();\r",
+									"const urlParts = url.split(\"/\");\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status is OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"// Validate fields for each item in the response\r",
+									"pm.test(\"Each element in the array has the required properties\", function () {\r",
+									"    pm.expect(response).to.be.an(\"array\").that.is.not.empty;\r",
+									"\r",
+									"    response.forEach(function (item) {\r",
+									"        pm.expect(item).to.have.property(\"idCatalog\").that.is.a(\"number\");\r",
+									"        pm.expect(item).to.have.property(\"model\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property(\"idModel\").that.is.a(\"number\");\r",
+									"        pm.expect(item.model).to.have.property(\"nameModel\").that.is.a(\"string\");\r",
+									"        pm.expect(item.model).to.have.property(\"category\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.model.category).to.have.property(\"idCategory\").that.is.a(\"number\");\r",
+									"        pm.expect(item.model.category).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property(\"urlImage\").that.is.null;\r",
+									"\r",
+									"        pm.expect(item).to.have.property(\"size\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.size).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"        pm.expect(item.size).to.have.property(\"adult\").that.is.a(\"number\");\r",
+									"        pm.expect(item.size).to.have.property(\"noSize\").that.is.a(\"string\");\r",
+									"        pm.expect(item.size).to.have.property(\"sizeDescription\").that.is.a(\"string\");\r",
+									"\r",
+									"        pm.expect(item).to.have.property(\"quantity\").that.is.a(\"number\");\r",
+									"        pm.expect(item).to.have.property(\"price\").that.is.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Adult size matches the URL parameter\", function () {\r",
+									"    // Iterate through each object in the response\r",
+									"    response.forEach(function (item) {\r",
+									"             pm.expect(item.size.adult).to.eql(parseInt(idFromUrl, 10));\r",
+									"       });\r",
+									"    })"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byCategory/1/bySize/1",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byCategory",
+								"1",
+								"bySize",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "catalog by model name + size + category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Get the ID from the URL\r",
+									"const url = pm.request.url.toString();\r",
+									"const urlParts = url.split(\"/\");\r",
+									"const idFromUrl = urlParts[urlParts.length - 1];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status is OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"// Validate fields for each item in the response\r",
+									"pm.test(\"Each element in the array has the required properties\", function () {\r",
+									"    pm.expect(response).to.be.an(\"array\").that.is.not.empty;\r",
+									"\r",
+									"    response.forEach(function (item) {\r",
+									"        pm.expect(item).to.have.property(\"idCatalog\").that.is.a(\"number\");\r",
+									"        pm.expect(item).to.have.property(\"model\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property(\"idModel\").that.is.a(\"number\");\r",
+									"        pm.expect(item.model).to.have.property(\"nameModel\").that.is.a(\"string\");\r",
+									"        pm.expect(item.model).to.have.property(\"category\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.model.category).to.have.property(\"idCategory\").that.is.a(\"number\");\r",
+									"        pm.expect(item.model.category).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"\r",
+									"        pm.expect(item.model).to.have.property(\"urlImage\").that.is.null;\r",
+									"\r",
+									"        pm.expect(item).to.have.property(\"size\").that.is.an(\"object\");\r",
+									"\r",
+									"        pm.expect(item.size).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"        pm.expect(item.size).to.have.property(\"adult\").that.is.a(\"number\");\r",
+									"        pm.expect(item.size).to.have.property(\"noSize\").that.is.a(\"string\");\r",
+									"        pm.expect(item.size).to.have.property(\"sizeDescription\").that.is.a(\"string\");\r",
+									"\r",
+									"        pm.expect(item).to.have.property(\"quantity\").that.is.a(\"number\");\r",
+									"        pm.expect(item).to.have.property(\"price\").that.is.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Adult size matches the URL parameter\", function () {\r",
+									"    // Iterate through each object in the response\r",
+									"    response.forEach(function (item) {\r",
+									"             pm.expect(item.size.adult).to.eql(parseInt(idFromUrl, 10));\r",
+									"       });\r",
+									"    })"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/byKeyWord/jac/byCategory/2/bySize/1",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"catalog",
+								"byKeyWord",
+								"jac",
+								"byCategory",
+								"2",
+								"bySize",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "get news",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson[0];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"The response contains an array of objects\", () => {\r",
+							"    pm.expect(responseJson).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem.modelId).to.be.a(\"number\");\r",
+							"});\r",
+							"\r",
+							"// Test to verify the response has the expected structure and data types\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"\r",
+							"    pm.expect(responseJson).to.be.an(\"array\");\r",
+							"\r",
+							"    pm.expect(firstItem).to.have.property(\"modelId\").that.is.a(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"model\").that.is.an(\"string\");\r",
+							"    pm.expect(firstItem).to.have.property(\"category\").that.is.an(\"string\");\r",
+							"    pm.expect(firstItem).to.have.property(\"image\").that.is.an(\"string\");\r",
+							"    pm.expect(firstItem).to.have.property(\"sizeType\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"price\").that.is.an(\"number\");\r",
+							"\r",
+							"    pm.expect(firstItem.sizes).to.be.an(\"array\");\r",
+							"    pm.expect(firstItem.sizes[0]).to.have.property(\"idCatalog\").that.is.a(\"number\");\r",
+							"    pm.expect(firstItem.sizes[0]).to.have.property(\"size\").that.is.a(\"string\");\r",
+							"    pm.expect(firstItem.sizes[0]).to.have.property(\"quantity\").that.is.an(\"number\");\r",
+							"\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/news/12",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"catalog",
+						"news",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create catalog",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Response status code is Ok\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([201,200,202]);\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"Validate the idCatalog in the response\", function () {\r",
+							"    \r",
+							"    pm.expect(response).to.be.an('object');\r",
+							"\r",
+							"    pm.expect(response.idCatalog).to.exist.and.to.be.a('number');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate idCategory and name in the category object\", function () {\r",
+							"  \r",
+							"  pm.expect(response).to.be.an('object');\r",
+							"\r",
+							"  pm.expect(response.model).to.exist.and.to.be.an('object');\r",
+							"\r",
+							"  pm.expect(response.model.category).to.exist.and.to.be.an('object');\r",
+							"\r",
+							"  pm.expect(response.model.category.idCategory).to.exist.and.to.be.a('number');\r",
+							"\r",
+							"  pm.expect(response.model.category.name).to.exist.and.to.be.a('string');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"model\": 1,\r\n    \"size\": 1,\r\n    \"quantity\": 6,\r\n    \"price\": 10.5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/create",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"catalog",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "catalog - quantity sold",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Response status code is Ok\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([200,202]);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"Verify the structure of the response\", function () {\r",
+							" \r",
+							"        pm.expect(response).to.be.an('object');\r",
+							"\r",
+							"        // Check the properties of the object\r",
+							"        pm.expect(response).to.have.property('idCatalog');\r",
+							"\r",
+							"        pm.expect(response.idCatalog).to.be.a('number');\r",
+							"\r",
+							"        pm.expect(response).to.have.property('model');\r",
+							"\r",
+							"        pm.expect(response.model).to.be.an('object');\r",
+							"        pm.expect(response.model).to.have.property('idModel');\r",
+							"\r",
+							"        pm.expect(response.model.idModel).to.be.a('number');\r",
+							"\r",
+							"        pm.expect(response.model).to.have.property('nameModel');\r",
+							"\r",
+							"        pm.expect(response.model.nameModel).to.be.a('string');\r",
+							"\r",
+							"        pm.expect(response.model).to.have.property('category');\r",
+							"\r",
+							"        pm.expect(response.model.category).to.be.an('object');\r",
+							"        pm.expect(response.model.category).to.have.property('idCategory');\r",
+							"\r",
+							"        pm.expect(response.model.category.idCategory).to.be.a('number');\r",
+							"\r",
+							"        pm.expect(response.model.category).to.have.property('name');\r",
+							"\r",
+							"        pm.expect(response.model.category.name).to.be.a('string');\r",
+							"\r",
+							"        pm.expect(response.model).to.have.property('urlImage');\r",
+							"        \r",
+							"        pm.expect(response.model.urlImage).to.be.null;\r",
+							"    });\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/10?quantity=2",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"catalog",
+						"10"
+					],
+					"query": [
+						{
+							"key": "quantity",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update catalog",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Response status code is Ok\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([200,202]);\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"Validate the idCatalog field\", function () {\r",
+							"\r",
+							"    pm.expect(response).to.be.an('object');\r",
+							"\r",
+							"    pm.expect(response.idCatalog).to.exist;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validate the quantity and price fields\", function () {\r",
+							"    \r",
+							"    pm.expect(response).to.be.an('object');\r",
+							"\r",
+							"    pm.expect(response.quantity).to.exist.and.to.be.a('number');\r",
+							"\r",
+							"    pm.expect(response.price).to.exist.and.to.be.a('number');\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"model\": 2,\r\n    \"size\": 10,\r\n    \"quantity\": 60,\r\n    \"price\": 110.5,\r\n    \"status\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/catalog/modify/62",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"catalog",
+						"modify",
+						"62"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete catalog",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Response status code is Ok\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([200,202]);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"Verify the structure of the response\", function () {\r",
+							" \r",
+							"        pm.expect(response).to.be.an('object');\r",
+							"\r",
+							"        // Check the properties of the object\r",
+							"        pm.expect(response).to.have.property('idCatalog');\r",
+							"\r",
+							"        pm.expect(response.idCatalog).to.be.a('number');\r",
+							"\r",
+							"        pm.expect(response).to.have.property('model');\r",
+							"\r",
+							"        pm.expect(response.model).to.be.an('object');\r",
+							"        pm.expect(response.model).to.have.property('idModel');\r",
+							"\r",
+							"        pm.expect(response.model.idModel).to.be.a('number');\r",
+							"\r",
+							"        pm.expect(response.model).to.have.property('nameModel');\r",
+							"\r",
+							"        pm.expect(response.model.nameModel).to.be.a('string');\r",
+							"\r",
+							"        pm.expect(response.model).to.have.property('category');\r",
+							"\r",
+							"        pm.expect(response.model.category).to.be.an('object');\r",
+							"        pm.expect(response.model.category).to.have.property('idCategory');\r",
+							"\r",
+							"        pm.expect(response.model.category.idCategory).to.be.a('number');\r",
+							"\r",
+							"        pm.expect(response.model.category).to.have.property('name');\r",
+							"\r",
+							"        pm.expect(response.model.category.name).to.be.a('string');\r",
+							"\r",
+							"        pm.expect(response.model).to.have.property('urlImage');\r",
+							"        \r",
+							"        pm.expect(response.model.urlImage).to.be.null;\r",
+							"    });\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/catalog/delete/88",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"catalog",
+						"delete",
+						"88"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete catalog by model",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Response status code is Ok\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([200,202]);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"Verify the structure of the response\", function () {\r",
+							" \r",
+							"        pm.expect(response).to.be.an('object');\r",
+							"\r",
+							"        // Check the properties of the object\r",
+							"        pm.expect(response).to.have.property('idCatalog');\r",
+							"\r",
+							"        pm.expect(response.idCatalog).to.be.a('number');\r",
+							"\r",
+							"        pm.expect(response).to.have.property('model');\r",
+							"\r",
+							"        pm.expect(response.model).to.be.an('object');\r",
+							"        pm.expect(response.model).to.have.property('idModel');\r",
+							"\r",
+							"        pm.expect(response.model.idModel).to.be.a('number');\r",
+							"\r",
+							"        pm.expect(response.model).to.have.property('nameModel');\r",
+							"\r",
+							"        pm.expect(response.model.nameModel).to.be.a('string');\r",
+							"\r",
+							"        pm.expect(response.model).to.have.property('category');\r",
+							"\r",
+							"        pm.expect(response.model.category).to.be.an('object');\r",
+							"        pm.expect(response.model.category).to.have.property('idCategory');\r",
+							"\r",
+							"        pm.expect(response.model.category.idCategory).to.be.a('number');\r",
+							"\r",
+							"        pm.expect(response.model.category).to.have.property('name');\r",
+							"\r",
+							"        pm.expect(response.model.category.name).to.be.a('string');\r",
+							"\r",
+							"        pm.expect(response.model).to.have.property('urlImage');\r",
+							"        \r",
+							"        pm.expect(response.model.urlImage).to.be.null;\r",
+							"    });\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/catalog/deleteByM/36",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"catalog",
+						"deleteByM",
+						"36"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete catalog by category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Response status code is Ok\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([200,202]);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"Verify the structure of the response\", function () {\r",
+							" \r",
+							"        pm.expect(response).to.be.an('object');\r",
+							"\r",
+							"        // Check the properties of the object\r",
+							"        pm.expect(response).to.have.property('idCatalog');\r",
+							"\r",
+							"        pm.expect(response.idCatalog).to.be.a('number');\r",
+							"\r",
+							"        pm.expect(response).to.have.property('model');\r",
+							"\r",
+							"        pm.expect(response.model).to.be.an('object');\r",
+							"        pm.expect(response.model).to.have.property('idModel');\r",
+							"\r",
+							"        pm.expect(response.model.idModel).to.be.a('number');\r",
+							"\r",
+							"        pm.expect(response.model).to.have.property('nameModel');\r",
+							"\r",
+							"        pm.expect(response.model.nameModel).to.be.a('string');\r",
+							"\r",
+							"        pm.expect(response.model).to.have.property('category');\r",
+							"\r",
+							"        pm.expect(response.model.category).to.be.an('object');\r",
+							"        pm.expect(response.model.category).to.have.property('idCategory');\r",
+							"\r",
+							"        pm.expect(response.model.category.idCategory).to.be.a('number');\r",
+							"\r",
+							"        pm.expect(response.model.category).to.have.property('name');\r",
+							"\r",
+							"        pm.expect(response.model.category.name).to.be.a('string');\r",
+							"\r",
+							"        pm.expect(response.model).to.have.property('urlImage');\r",
+							"        \r",
+							"        pm.expect(response.model.urlImage).to.be.null;\r",
+							"    });\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/catalog/deleteByC/8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"catalog",
+						"deleteByC",
+						"8"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

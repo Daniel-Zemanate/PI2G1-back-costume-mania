@@ -14,6 +14,8 @@ import java.util.Optional;
 public interface ModelRepository extends JpaRepository<Model,Integer> {
     @Query(value= "SELECT * FROM model m  WHERE m.status_model=1",nativeQuery = true)
     List<Model> findAll();
+    @Query(value= "SELECT * FROM model m  WHERE m.status_model=1 order by id_model desc Limit ?1",nativeQuery = true)
+    List<Model> getNewsLimit(int limit);
     @Query(value= "SELECT * FROM model m",nativeQuery = true)
     List<Model> findAllComplete();
     @Query( value ="SELECT * FROM model m WHERE m.name_model LIKE %?1% AND m.status_model=1",nativeQuery = true)
