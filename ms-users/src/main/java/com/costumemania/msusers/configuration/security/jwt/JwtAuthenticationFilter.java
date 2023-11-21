@@ -1,5 +1,6 @@
 package com.costumemania.msusers.configuration.security.jwt;
 
+import com.costumemania.msusers.configuration.security.UserDetailsServiceImpl;
 import com.costumemania.msusers.model.entity.UserEntity;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
@@ -23,9 +24,16 @@ import java.util.Map;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private JwtUtils jwtUtils;
+    private UserDetailsServiceImpl userDetailsService;
 
-    public JwtAuthenticationFilter(JwtUtils jwtUtils) {
+//
+//    public JwtAuthenticationFilter(JwtUtils jwtUtils) {
+//        this.jwtUtils = jwtUtils;
+//    }
+
+    public JwtAuthenticationFilter(JwtUtils jwtUtils, UserDetailsServiceImpl userDetailsService) {
         this.jwtUtils = jwtUtils;
+        this.userDetailsService = userDetailsService;
     }
 
 
@@ -58,12 +66,19 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         User user = (User) authResult.getPrincipal();
         String token = jwtUtils.generateAccessToken(user.getUsername());
+        Integer userId = null;
 
+        try {
+            userId = userDetailsService.searchUsername(user.getUsername()).getId();
+        } catch (Exception e) {
+            System.out.println("Successful authentication failed to load user id.");
+        }
 
         response.addHeader("Authorization", token);
 
 
         Map<String, Object> httpResponse = new HashMap<>();
+        httpResponse.put("user_id", userId);
         httpResponse.put("token", token);
         httpResponse.put("email", user.getUsername());
 //        httpResponse.put("username", user.getUsername());

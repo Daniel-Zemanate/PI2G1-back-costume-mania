@@ -25,8 +25,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-//        UserEntity userEntityByUsername = userRepository.findOneByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Not found user: " + username));
-//        UserEntity userEntiByEmail = userRepository.findOneByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Not found user: " + username));
+        UserEntity userEntity = searchUsername(username);
+
+
+        Collection<GrantedAuthority> authorities = new HashSet<>();
+        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + userEntity.getRole().name());
+        authorities.add(authority);
+
+        return new User(userEntity.getUsername(), userEntity.getPassword(), true, true, true, true, authorities);
+    }
+
+    public UserEntity searchUsername(String username) {
 
         Optional<UserEntity> userEntityByUsername = userRepository.findOneByUsername(username);
         Optional<UserEntity> userEntityByEmail = userRepository.findOneByEmail(username);
@@ -39,11 +48,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         } else {
             userEntity = userEntityByEmail.get();
         }
-
-        Collection<GrantedAuthority> authorities = new HashSet<>();
-        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + userEntity.getRole().name());
-        authorities.add(authority);
-
-        return new User(userEntity.getUsername(), userEntity.getPassword(), true, true, true, true, authorities);
+        return userEntity;
     }
 }

@@ -7,7 +7,6 @@ import com.costumemania.msusers.model.dto.UserAccountResponse;
 import com.costumemania.msusers.model.entity.UserEntity;
 import com.costumemania.msusers.repository.IUserRepository;
 import com.costumemania.msusers.service.IUserService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -96,7 +95,7 @@ public class UserController {
         return ResponseEntity.ok(userEntity);
     }
 
-    @GetMapping(path = "/all")
+    @GetMapping(path = "/all", produces = {"application/json"})
     public ResponseEntity<?> allUsers() {
 
         Set<UserAccountResponse> setUsers = new HashSet<>();

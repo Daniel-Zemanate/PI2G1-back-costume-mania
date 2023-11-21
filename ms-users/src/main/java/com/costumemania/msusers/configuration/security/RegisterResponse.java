@@ -11,8 +11,8 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RegisterResponse {
-    private String token;
     private Integer userId;
     private String email;
+    private String token;
 //    private String username;
 }

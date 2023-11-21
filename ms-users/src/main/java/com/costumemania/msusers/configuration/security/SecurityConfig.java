@@ -34,7 +34,7 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtils);
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtils, (UserDetailsServiceImpl) userDetailsService);
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
         jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
 
@@ -43,9 +43,6 @@ public class SecurityConfig {
                 .cors(corsConfig -> corsConfig.disable())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-//                            auth.requestMatchers(HttpMethod.GET,"/api/v1/users/**").hasAnyRole("USER", "ANONYMOUS");
-//                            auth.requestMatchers(HttpMethod.PUT).hasRole("USER");
-//                            auth.requestMatchers("/api/v1/users/**").hasRole("ADMIN");
                             auth.anyRequest().authenticated();
                         }
                 )
