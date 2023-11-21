@@ -147,7 +147,10 @@ CREATE TABLE IF NOT EXISTS `costumemania`.`users` (
   `created_at` DATE DEFAULT NULL,
   `updated_at` DATE DEFAULT NULL,
   `role` enum('ADMIN','USER') DEFAULT NULL,
-  PRIMARY KEY (`id_user`))
+  PRIMARY KEY (`id_user`),
+  UNIQUE KEY `unique_dni` (`dni`),
+  UNIQUE KEY `unique_username` (`username`),
+  UNIQUE KEY `unique_email` (`email`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb4

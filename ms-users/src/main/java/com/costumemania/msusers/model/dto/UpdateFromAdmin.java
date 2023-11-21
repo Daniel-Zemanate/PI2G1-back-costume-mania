@@ -5,45 +5,42 @@ import com.costumemania.msusers.model.entity.UserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UserAccountResponse {
+public class UpdateFromAdmin {
+
     Integer id;
     String dni;
-//    String username;
+    //    String username;
     String email;
+    String password;
     String firstName;
     String lastName;
-    Boolean status;
-    Boolean softDelete;
-    LocalDate createdAt;
-    LocalDate updatedAt;
-    Role role;
+    String role;
 
-    public static UserAccountResponse fromUserEntity(UserEntity user){
-        return UserAccountResponse.builder()
+
+    public static UserEntity toUserEntity(UpdateFromAdmin user) {
+        return UserEntity.builder()
                 .id(user.getId())
                 .dni(user.getDni())
 //                .username(user.getUsername())
+                .username(user.getEmail())
                 .email(user.getEmail())
+                .password(user.getPassword())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .status(user.getStatus())
-                .softDelete(user.getSoftDelete())
-                .createdAt(user.getCreatedAt())
-                .updatedAt(user.getUpdatedAt())
-                .role(user.getRole())
+                .status(true)
+                .softDelete(false)
+//                .createdAt(LocalDate.now()) //Parameter from ddbb
+                .updatedAt(LocalDate.now())
+                .role(Role.valueOf(user.getRole().trim().toUpperCase()))
                 .build();
     }
 
