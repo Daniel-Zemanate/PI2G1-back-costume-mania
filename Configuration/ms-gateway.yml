@@ -35,10 +35,10 @@ spring:
           uri: lb://ms-product
           predicates:
             - Path=/api/v1/model/**
-        - id: ms-users
-          uri: lb://ms-users
-          predicates:
-            - Path=/api/v1/users/**
+#        - id: ms-users
+#          uri: lb://ms-users
+#          predicates:
+#            - Path=/api/v1/users/**
 #        - id: ms-users-auth
 #          uri: lb://ms-users
 #          predicates:

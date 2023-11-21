@@ -22,15 +22,22 @@ public class AuthenticationFilter implements GatewayFilter {
 
         ServerHttpRequest request = exchange.getRequest();
         if (validator.isSecure.test(request)) {
-            if (authMissing(request)){
+            if (authMissing(request)) {
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }
-        }
 
-        final String token = request.getHeaders().getOrEmpty("Authorization").get(0);
+            final String tokenHeader = request.getHeaders().getFirst("Authorization");
+//            final String tokenHeader = request.getHeaders().getOrEmpty("Authorization").get(0);
 
-        if (jwtUtil.isExpired(token)){
-            return onError(exchange, HttpStatus.UNAUTHORIZED);
+            if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
+                String token = tokenHeader.substring(7);
+
+                if (jwtUtil.isExpired(token)) {
+                    return onError(exchange, HttpStatus.UNAUTHORIZED);
+                }
+            } else {
+                return onError(exchange, HttpStatus.UNAUTHORIZED);
+            }
         }
 
         return chain.filter(exchange);
