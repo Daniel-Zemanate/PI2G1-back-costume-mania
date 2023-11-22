@@ -173,6 +173,8 @@ public class SaleController {
         private String shippingCity;
         private float shippingcost;
         private float total;
+        LocalDateTime invoiceDate;
+        LocalDateTime shippingDate;
 
         private static class ItemInvoice {
             private Integer catalog;
@@ -180,6 +182,7 @@ public class SaleController {
             private Integer quantity;
             private float price;
             private float PxQ;
+            private String image;
 
             public Integer getCatalog() {
                 return catalog;
@@ -210,6 +213,12 @@ public class SaleController {
             }
             public void setPxQ(float pxQ) {
                 PxQ = pxQ;
+            }
+            public String getImage() {
+                return image;
+            }
+            public void setImage(String image) {
+                this.image = image;
             }
         }
 
@@ -249,6 +258,18 @@ public class SaleController {
         public float getTotal() {
             return total;
         }
+        public LocalDateTime getInvoiceDate() {
+            return invoiceDate;
+        }
+        public void setInvoiceDate(LocalDateTime invoiceDate) {
+            this.invoiceDate = invoiceDate;
+        }
+        public LocalDateTime getShippingDate() {
+            return shippingDate;
+        }
+        public void setShippingDate(LocalDateTime shippingDate) {
+            this.shippingDate = shippingDate;
+        }
     }
 
     // user + adm
@@ -263,6 +284,8 @@ public class SaleController {
         invoice.setStatus(saleList.get().get(0).getStatus().getStatus());
         invoice.setShippingCity(saleList.get().get(0).getCity().getDestination());
         invoice.setShippingcost(saleList.get().get(0).getCity().getCost());
+        invoice.setInvoiceDate(saleList.get().get(0).getSaleDate());
+        invoice.setShippingDate(saleList.get().get(0).getShippingDate());
         List<Invoice.ItemInvoice> items = new ArrayList<>();
         float finalCost = 0.0f;
         for (Sale sale : saleList.get()) {
@@ -272,12 +295,45 @@ public class SaleController {
             item.setQuantity(sale.getQuantity());
             item.setPrice(sale.getCatalog().getPrice());
             item.setPxQ(item.getQuantity()*item.getPrice());
+            item.setImage(sale.getCatalog().getModel().getUrlImage());
             items.add(item);
             finalCost += item.getQuantity()*item.getPrice();
         }
         invoice.setItems(items);
         invoice.setTotal(finalCost += saleList.get().get(0).getCity().getCost());
         return ResponseEntity.ok(invoice);
+    }
+
+    // user + adm
+    @GetMapping ("/invoice/user/{idUser}")
+    public ResponseEntity<List<Invoice>> getInvoiceByUser (HttpServletRequest request, @PathVariable Integer idUser) {
+        String authorizationHeader = request.getHeader("Authorization");
+        // validate user
+        try {
+            ResponseEntity<?> userProof = userService.userById(authorizationHeader, idUser);
+            if (userProof.getStatusCode()==HttpStatus.NOT_FOUND) {
+                return ResponseEntity.badRequest().build();
+            }
+        } catch (FeignException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+        // searching each invoice
+        ResponseEntity<List<Sale>> saleList = getByUser(request, idUser);
+        if (saleList.getBody()==null){
+            return ResponseEntity.noContent().build();
+        }
+        if (saleList.getBody().isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        List<Integer> listNumbers = saleService.getInvoiceNumbersByUser(idUser).get();
+        List<Invoice> result = new ArrayList<>();
+        for (int i=0; i<listNumbers.size(); i++) {
+            // ejecuta la busqueda por invoice
+            if (getInvoiceByNo(listNumbers.get(i)).getStatusCode()==HttpStatus.OK) {
+                result.add(getInvoiceByNo(listNumbers.get(i)).getBody());
+            }
+        }
+        return ResponseEntity.ok(result);
     }
 
     // adm  -- todo: agregar a la base de datos de factura, el valor estático por unidad y por costo de envío para que no se actualice todo el tiempo.
