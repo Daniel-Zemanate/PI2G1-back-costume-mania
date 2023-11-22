@@ -1,5 +1,6 @@
 package com.costumemania.msbills.service;
 
+import com.costumemania.msbills.configuration.feign.UserFeign;
 import com.costumemania.msbills.repository.UsersRepositoryFeign;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,4 +15,7 @@ public class UserService {
     public ResponseEntity<?> userById(@PathVariable(name = "id") int id) {
         return usersRepositoryFeign.userById(id);
     };
+    public UserFeign getByUsername(String username) {
+        return usersRepositoryFeign.authUsersFeign(username);
+    }
 }
