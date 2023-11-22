@@ -1005,9 +1005,9 @@ public class CatalogController {
     }
 
     // users - to buy
-    @PutMapping("{idCatalog}")
+    @PutMapping("/{idCatalog}/{quantity}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Catalog> catalogSold(@PathVariable Integer idCatalog, @Param("quantity") Integer quantity) {
+    public ResponseEntity<Catalog> catalogSold(@PathVariable Integer idCatalog, @PathVariable Integer quantity) {
         // verify if catalog exists - 404
         Optional<Catalog> searchCatalog = catalogService.getCatalogById(idCatalog);
         if (searchCatalog.isEmpty()) {
