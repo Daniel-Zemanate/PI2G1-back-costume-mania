@@ -5,6 +5,7 @@ import com.costumemania.mscatalog.service.CatalogService;
 import com.costumemania.mscatalog.service.ModelService;
 import com.costumemania.mscatalog.service.SizeService;
 import feign.FeignException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;

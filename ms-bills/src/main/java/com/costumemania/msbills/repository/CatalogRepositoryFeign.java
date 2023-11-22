@@ -1,17 +1,20 @@
 package com.costumemania.msbills.repository;
 
 import com.costumemania.msbills.model.requiredEntity.Catalog;
+import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 import java.util.Optional;
 
 @FeignClient(name="ms-catalog")
+@Headers("Authorization: {token}")
 public interface CatalogRepositoryFeign {
     @GetMapping("/api/v1/catalog/{idCatalog}")
     ResponseEntity<Optional<Catalog>> getById(@PathVariable Integer idCatalog);
@@ -20,5 +23,5 @@ public interface CatalogRepositoryFeign {
     @GetMapping("/api/v1/catalog/bySize/{bolleanAdult}")
     ResponseEntity<List<Catalog>> getBySize(@PathVariable Integer bolleanAdult);
     @PutMapping("/api/v1/catalog/{idCatalog}/{quantity}")
-    ResponseEntity<Catalog> catalogSold(@PathVariable Integer idCatalog, @PathVariable Integer quantity);
+    ResponseEntity<Catalog> catalogSold(@RequestHeader("Authorization") String token, @PathVariable Integer idCatalog, @PathVariable Integer quantity);
 }

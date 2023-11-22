@@ -7,6 +7,7 @@ import com.costumemania.msbills.model.requiredEntity.Catalog;
 import com.costumemania.msbills.model.requiredEntity.User;
 import com.costumemania.msbills.service.*;
 import feign.FeignException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
@@ -83,9 +84,10 @@ public class SaleController {
 
     // user + adm
     @GetMapping("/user/{idUser}")
-    public ResponseEntity<List<Sale>> getByUser (@PathVariable Integer idUser){
+    public ResponseEntity<List<Sale>> getByUser (HttpServletRequest request, @PathVariable Integer idUser){
+        String authorizationHeader = request.getHeader("Authorization");
         try {
-            ResponseEntity<?> userProof = userService.userById(idUser);
+            ResponseEntity<?> userProof = userService.userById(authorizationHeader, idUser);
             if (userProof.getStatusCode()==HttpStatus.NOT_FOUND) {
                 return ResponseEntity.notFound().build();
             }
@@ -478,10 +480,11 @@ public class SaleController {
 
     // user - To create bill
     @PostMapping("/create")
-    public ResponseEntity<List<Sale>> createBill (@RequestBody SaleRequired body){
+    public ResponseEntity<List<Sale>> createBill (HttpServletRequest request, @RequestBody SaleRequired body){
+        String authorizationHeader = request.getHeader("Authorization");
         // validate user
         try {
-            ResponseEntity<?> userProof = userService.userById(body.getUser());
+            ResponseEntity<?> userProof = userService.userById(authorizationHeader, body.getUser());
             if (userProof.getStatusCode()==HttpStatus.NOT_FOUND) {
                 return ResponseEntity.badRequest().build();
             }
@@ -503,7 +506,7 @@ public class SaleController {
                 }
                 // register sold stock
                 try {
-                    catalogService.catalogSold(itemSold.getCatalog(), itemSold.getQuantitySold());
+                    catalogService.catalogSold(authorizationHeader, itemSold.getCatalog(), itemSold.getQuantitySold());
                 } catch (FeignException e) {
                     return ResponseEntity.unprocessableEntity().build();
                 }
@@ -529,7 +532,8 @@ public class SaleController {
 
     // user
     @PutMapping("/{noInvoice}")
-    public ResponseEntity<List<Sale>> canceledByUser (@PathVariable Integer noInvoice) {
+    public ResponseEntity<List<Sale>> canceledByUser (HttpServletRequest request, @PathVariable Integer noInvoice) {
+        String authorizationHeader = request.getHeader("Authorization");
         Optional<List<Sale>> invoiceProof = saleService.getByInvoice(noInvoice);
         if (invoiceProof.get().isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -539,7 +543,7 @@ public class SaleController {
         }
         for (Sale sale : invoiceProof.get()) {
             try {
-                catalogService.catalogSold(sale.getCatalog().getIdCatalog(),-(sale.getQuantity()));
+                catalogService.catalogSold(authorizationHeader, sale.getCatalog().getIdCatalog(),-(sale.getQuantity()));
             } catch (FeignException e) {
                 return ResponseEntity.internalServerError().build();
             }
@@ -551,7 +555,8 @@ public class SaleController {
 
     // adm
     @PutMapping("/modify/{noInvoice}")
-    public ResponseEntity<List<Sale>> modifyByAdm (@PathVariable Integer noInvoice, @RequestBody ModifyBill body) {
+    public ResponseEntity<List<Sale>> modifyByAdm (HttpServletRequest request, @PathVariable Integer noInvoice, @RequestBody ModifyBill body) {
+        String authorizationHeader = request.getHeader("Authorization");
         Optional<List<Sale>> invoiceProof = saleService.getByInvoice(noInvoice);
         if (invoiceProof.get().isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -562,7 +567,7 @@ public class SaleController {
             if (body.getNewStatus() == 5 || body.getNewStatus() == 6) {
                 for (Sale sale : invoiceProof.get()) {
                     try {
-                        catalogService.catalogSold(sale.getCatalog().getIdCatalog(), -(sale.getQuantity()));
+                        catalogService.catalogSold(authorizationHeader, sale.getCatalog().getIdCatalog(), -(sale.getQuantity()));
                     } catch (FeignException e) {
                         return ResponseEntity.internalServerError().build();
                     }
@@ -636,7 +641,7 @@ public class SaleController {
                 if (body.getShippingDate() == null) {
                     for (Sale sale : invoiceProof.get()) {
                         try {
-                            catalogService.catalogSold(sale.getCatalog().getIdCatalog(), sale.getQuantity());
+                            catalogService.catalogSold(authorizationHeader, sale.getCatalog().getIdCatalog(), sale.getQuantity());
                         } catch (FeignException e) {
                             return ResponseEntity.internalServerError().build();
                         }
@@ -646,7 +651,7 @@ public class SaleController {
                 } else {
                     for (Sale sale : invoiceProof.get()) {
                         try {
-                            catalogService.catalogSold(sale.getCatalog().getIdCatalog(), sale.getQuantity());
+                            catalogService.catalogSold(authorizationHeader, sale.getCatalog().getIdCatalog(), sale.getQuantity());
                         } catch (FeignException e) {
                             return ResponseEntity.internalServerError().build();
                         }
