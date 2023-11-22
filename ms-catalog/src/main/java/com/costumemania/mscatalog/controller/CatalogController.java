@@ -5,6 +5,7 @@ import com.costumemania.mscatalog.service.CatalogService;
 import com.costumemania.mscatalog.service.ModelService;
 import com.costumemania.mscatalog.service.SizeService;
 import feign.FeignException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -1004,9 +1005,9 @@ public class CatalogController {
     }
 
     // users - to buy
-    @PutMapping("{idCatalog}")
+    @PutMapping("/{idCatalog}/{quantity}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Catalog> catalogSold(@PathVariable Integer idCatalog, @Param("quantity") Integer quantity) {
+    public ResponseEntity<Catalog> catalogSold(@PathVariable Integer idCatalog, @PathVariable Integer quantity) {
         // verify if catalog exists - 404
         Optional<Catalog> searchCatalog = catalogService.getCatalogById(idCatalog);
         if (searchCatalog.isEmpty()) {
