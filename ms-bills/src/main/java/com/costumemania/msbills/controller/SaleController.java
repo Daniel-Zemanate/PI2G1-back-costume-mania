@@ -419,6 +419,7 @@ public class SaleController {
     @Getter
     @Setter
     public static class SaleResponse {
+        Integer invoiceNumber;
         List<ItemSoldWithCost> itemSoldList;
         float shippingCost;
         float total;
@@ -473,6 +474,7 @@ public class SaleController {
             semiTotal += resp3.getQuantity();
         }
 
+        saleResponse.setInvoiceNumber(null);
         saleResponse.setItemSoldList(list);
         saleResponse.setTotal(semiTotal+resp.getQuantity());
         return ResponseEntity.ok(saleResponse);
@@ -480,7 +482,7 @@ public class SaleController {
 
     // user - To create bill
     @PostMapping("/create")
-    public ResponseEntity<List<Sale>> createBill (HttpServletRequest request, @RequestBody SaleRequired body){
+    public ResponseEntity<SaleResponse> createBill (HttpServletRequest request, @RequestBody SaleRequired body){
         String authorizationHeader = request.getHeader("Authorization");
         // validate user
         try {
@@ -521,7 +523,8 @@ public class SaleController {
                         new Status(1,"In progress"));
                 results.add(saleService.create(s));
             }
-            return ResponseEntity.ok(results);
+            billValidate.getBody().setInvoiceNumber(newInvoice);
+            return ResponseEntity.ok(billValidate.getBody());
         }
         return ResponseEntity.badRequest().build();
     }
