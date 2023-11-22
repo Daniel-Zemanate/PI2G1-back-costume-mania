@@ -1,9 +1,6 @@
 package com.costumemania.msusers.controller;
 
-import com.costumemania.msusers.model.dto.CreateUserRequest;
-import com.costumemania.msusers.model.dto.UpdateFromAdmin;
-import com.costumemania.msusers.model.dto.UpdateUserRequest;
-import com.costumemania.msusers.model.dto.UserAccountResponse;
+import com.costumemania.msusers.model.dto.*;
 import com.costumemania.msusers.model.entity.UserEntity;
 import com.costumemania.msusers.repository.IUserRepository;
 import com.costumemania.msusers.service.IUserService;
@@ -76,6 +73,22 @@ public class UserController {
             userResponse = userService.getById(id);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatusCode.valueOf(404));
+        }
+
+        return ResponseEntity.ok(userResponse);
+    }
+
+    @GetMapping(path = "/exists/{id}")
+//    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<UserExists> userExists(@PathVariable(name = "id") int id) {
+        UserExists userResponse = UserExists.builder()
+                .userExists(false)
+                .build();
+
+        try {
+            userResponse = userService.userExists(id);
+        } catch (Exception e) {
+            System.out.println("An exception was thrown during your request: " + e.getMessage());
         }
 
         return ResponseEntity.ok(userResponse);

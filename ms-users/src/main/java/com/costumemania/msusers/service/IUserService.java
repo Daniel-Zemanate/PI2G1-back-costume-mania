@@ -1,9 +1,6 @@
 package com.costumemania.msusers.service;
 
-import com.costumemania.msusers.model.dto.CreateUserRequest;
-import com.costumemania.msusers.model.dto.UpdateFromAdmin;
-import com.costumemania.msusers.model.dto.UpdateUserRequest;
-import com.costumemania.msusers.model.dto.UserAccountResponse;
+import com.costumemania.msusers.model.dto.*;
 
 import java.util.Set;
 
@@ -14,6 +11,7 @@ public interface IUserService {
     UserAccountResponse getByUsername(String username) throws Exception;
 
     UserAccountResponse getById(int id);
+    UserExists userExists(int id);
 
     UserAccountResponse getByDni(String dni);
 

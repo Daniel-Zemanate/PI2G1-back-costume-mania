@@ -1,9 +1,6 @@
 package com.costumemania.msusers.service.implementation;
 
-import com.costumemania.msusers.model.dto.CreateUserRequest;
-import com.costumemania.msusers.model.dto.UpdateFromAdmin;
-import com.costumemania.msusers.model.dto.UpdateUserRequest;
-import com.costumemania.msusers.model.dto.UserAccountResponse;
+import com.costumemania.msusers.model.dto.*;
 import com.costumemania.msusers.model.entity.UserEntity;
 import com.costumemania.msusers.repository.IUserRepository;
 import com.costumemania.msusers.service.IUserService;
@@ -63,6 +60,11 @@ public class UserServiceImplementation implements IUserService {
 
         UserAccountResponse userResponse = UserAccountResponse.fromUserEntity(userExists.get());
         return userResponse;
+    }
+
+    @Override
+    public UserExists userExists(int id) {
+        return UserExists.fromUserAccountResponse(getById(id));
     }
 
     @Override
