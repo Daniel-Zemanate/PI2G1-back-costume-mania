@@ -4,11 +4,16 @@ import com.costumemania.msreporting.model.jsonResponses.AverageShippingTime;
 import com.costumemania.msreporting.model.requiredEntity.Sale;
 import com.costumemania.msreporting.service.SaleService;
 import feign.FeignException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -64,17 +69,22 @@ public class ReportingController {
         // get every sale
         List<Sale> sales = new ArrayList<>();
         String firstDay = year + "-" + month + "-01";
-
-        // una forma de obtener el ultimo dia del mes. Ojo que no va a funcionar para el limite diciembre/enero, hay que ponerle logica
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year,month,1);
-        int last = calendar.getActualMaximum ( Calendar.DATE);
-        String lastDay = year + "-" + month + "-" + last;
-        // otra forma podria ser restando 1 al primero del mes anterior. Pero tambien hay que agregar lógica.
-
+        // to generate last date
+        LocalDate nextMonth;
+        if (month == 12) {
+            nextMonth = LocalDate.of(year+1,1,1);
+        } else {
+            nextMonth = LocalDate.of(year,month+1,1);
+        }
+        LocalDate lastDay = nextMonth.minusDays(1);
         try {
-            sales = saleService.getByDates(firstDay, lastDay).getBody();
-            if (sales.isEmpty()) {
+            ResponseEntity respSales = saleService.getByDates(firstDay, String.valueOf(lastDay));
+            if (respSales.getStatusCode()== HttpStatus.OK) {
+                sales = (List<Sale>) respSales.getBody();
+                if (sales.isEmpty()) {
+                    return ResponseEntity.noContent().build();
+                }
+            } else {
                 return ResponseEntity.noContent().build();
             }
         } catch (FeignException e) {
