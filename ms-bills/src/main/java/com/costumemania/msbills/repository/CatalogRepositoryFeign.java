@@ -1,9 +1,10 @@
 package com.costumemania.msbills.repository;
 
+import com.costumemania.msbills.LoadBalancerConfiguration;
 import com.costumemania.msbills.model.requiredEntity.Catalog;
 import feign.Headers;
+import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @FeignClient(name="ms-catalog")
+@LoadBalancerClient(name = "ms-catalog", configuration = LoadBalancerConfiguration.class)
 @Headers("Authorization: {token}")
 public interface CatalogRepositoryFeign {
     @GetMapping("/api/v1/catalog/{idCatalog}")
