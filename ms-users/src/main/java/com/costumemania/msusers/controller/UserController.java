@@ -4,6 +4,7 @@ import com.costumemania.msusers.model.dto.*;
 import com.costumemania.msusers.model.entity.UserEntity;
 import com.costumemania.msusers.repository.IUserRepository;
 import com.costumemania.msusers.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +24,7 @@ public class UserController {
 
     private IUserRepository authUsersFeignRepository;
 
+    @Autowired
     public UserController(IUserService userService, IUserRepository authUsersFeignRepository) {
         this.userService = userService;
         this.authUsersFeignRepository = authUsersFeignRepository;
