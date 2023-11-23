@@ -483,7 +483,7 @@ public class CatalogController {
     public ResponseEntity<Page<CatalogResponse>> getByCategoryPageable(@PathVariable Integer idCategory,@PathVariable Integer page){
         // first verify if the category exists with feign
         try {
-            modelService.getCategorydById(idCategory);
+            modelService.getModelByIdCategory(idCategory);
         }
         catch (FeignException e){
             return ResponseEntity.notFound().build();
