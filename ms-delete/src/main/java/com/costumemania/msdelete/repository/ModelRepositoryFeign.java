@@ -1,7 +1,9 @@
 package com.costumemania.msdelete.repository;
 
+import com.costumemania.msdelete.LoadBalancerConfiguration;
 import com.costumemania.msdelete.model.Category;
 import com.costumemania.msdelete.model.Model;
+import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @FeignClient(name="ms-product")
+@LoadBalancerClient(name = "ms-product", configuration = LoadBalancerConfiguration.class)
 public interface ModelRepositoryFeign {
     @PutMapping("/api/v1/model/delete/{idModel}")
     ResponseEntity<Model> makeInactive(@PathVariable Integer idModel);
