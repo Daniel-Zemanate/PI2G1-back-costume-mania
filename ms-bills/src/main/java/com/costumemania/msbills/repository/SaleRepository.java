@@ -29,6 +29,8 @@ public interface SaleRepository extends JpaRepository<Sale, Integer> {
     Integer getLastInvoice ();
     @Query(value = "SELECT no_invoice FROM sale order by no_invoice asc limit 1", nativeQuery = true)
     Integer getFirstInvoice ();
+    @Query(value = "select distinct no_invoice from sale where users=?1", nativeQuery = true)
+    Optional<List<Integer>> getInvoiceNumbersByUser (Integer idUser);
 
     @Query(value = "SELECT * FROM sale order by no_invoice desc", nativeQuery = true)
     List<Sale> getAllByInvoice ();
