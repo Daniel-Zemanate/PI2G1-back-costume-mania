@@ -40,11 +40,11 @@ services:
       context: ./ms-config-server/
     container_name: ms-config-server
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: "1.0"
-          memory: 512M
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: "1.0"
+          #memory: 512M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -65,11 +65,11 @@ services:
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     container_name: ms-eureka-server
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 256M
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: "0.5"
+          #memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -90,11 +90,11 @@ services:
         - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 256M
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: "0.5"
+          #memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -119,11 +119,11 @@ services:
         - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 256M
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: "0.5"
+          #memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -152,11 +152,11 @@ services:
         - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 256M
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: "0.5"
+          #memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -184,11 +184,11 @@ services:
         - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 256M
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: "0.5"
+          #memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -217,11 +217,11 @@ services:
         - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 256M
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: "0.5"
+          #memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -249,11 +249,11 @@ services:
         - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 256M
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: "0.5"
+          #memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
@@ -282,11 +282,11 @@ services:
         - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
         - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 256M
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: "0.5"
+          #memory: 256M
     #   Create your personal .env file from .envTemplate
     env_file:
       - ./.env
