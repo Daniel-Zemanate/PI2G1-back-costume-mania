@@ -351,6 +351,34 @@ public class SaleController {
         return ResponseEntity.ok(result);
     }
 
+    // class to identify dates
+    @Getter
+    @Setter
+    public class DateJson {
+        int month;
+        int year;
+    }
+    // adm
+    @GetMapping("/invoiceDate/{order}")
+    public ResponseEntity<DateJson> getFirstOrLastDate (@PathVariable int order) {
+        // constructor answer
+        DateJson dateJson = new DateJson();
+        // verify pathVariable
+        if (order==0) {
+            LocalDateTime resp = saleService.getFistDate();
+            dateJson.setMonth(resp.getMonthValue());
+            dateJson.setYear(resp.getYear());
+            return ResponseEntity.ok(dateJson);
+        } if (order==1) {
+            LocalDateTime resp = saleService.getLastDate();
+            dateJson.setMonth(resp.getMonthValue());
+            dateJson.setYear(resp.getYear());
+            return ResponseEntity.ok(dateJson);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     //////////////////////////////////////////////////////////////////////
 
     ///////////////////------- BILLS GENERATORS -------///////////////////

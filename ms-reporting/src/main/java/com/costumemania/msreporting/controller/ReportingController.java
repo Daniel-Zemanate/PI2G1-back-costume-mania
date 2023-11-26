@@ -1,6 +1,8 @@
 package com.costumemania.msreporting.controller;
 
 import com.costumemania.msreporting.model.jsonResponses.AverageShippingTime;
+import com.costumemania.msreporting.model.jsonResponses.DateJson;
+import com.costumemania.msreporting.model.jsonResponses.ShippingTimePeriod;
 import com.costumemania.msreporting.model.requiredEntity.Sale;
 import com.costumemania.msreporting.service.SaleService;
 import feign.FeignException;
@@ -155,6 +157,45 @@ public class ReportingController {
                 sales.size(),
                 salesWithShipping.size(),
                 average);
+        return ResponseEntity.ok(result);
+    }
+
+    // array per month
+    @GetMapping("/report1/detailed")
+    public ResponseEntity<List<ShippingTimePeriod>> getReportDetailed () {
+        // get first and last dates
+        DateJson firstMonth;
+        DateJson lastMonth;
+        try {
+            firstMonth = saleService.getFirstOrLastDate(0).getBody();
+            lastMonth = saleService.getFirstOrLastDate(1).getBody();
+        } catch (FeignException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+        List<ShippingTimePeriod> result = new ArrayList<>();
+        // if they are from same year, iterator per month
+        if (firstMonth.getYear() == lastMonth.getYear()) {
+            for (int i= firstMonth.getMonth(); i <= lastMonth.getMonth(); i++) {
+                ResponseEntity<AverageShippingTime> response = averageShippingTimeByMonth (i, firstMonth.getYear());
+                if (response.getStatusCode()==HttpStatus.OK) {
+                    DateJson dateJson = new DateJson(i,firstMonth.getYear());
+                    ShippingTimePeriod newPeriod = new ShippingTimePeriod(dateJson, response.getBody().getAverageDelay());
+                    result.add(newPeriod);
+                }
+            }
+            return ResponseEntity.ok(result);
+        }
+        // if they are from different year, iterator per year and month
+        for (int j= firstMonth.getYear(); j <= lastMonth.getYear(); j++) {
+            for (int i=1; i <= 12; i++) {
+                ResponseEntity<AverageShippingTime> response = averageShippingTimeByMonth (i, j);
+                if (response.getStatusCode()==HttpStatus.OK) {
+                    DateJson dateJson = new DateJson(i,firstMonth.getYear());
+                    ShippingTimePeriod newPeriod = new ShippingTimePeriod(dateJson, response.getBody().getAverageDelay());
+                    result.add(newPeriod);
+                }
+            }
+        }
         return ResponseEntity.ok(result);
     }
 }

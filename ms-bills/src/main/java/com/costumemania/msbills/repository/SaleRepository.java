@@ -7,6 +7,7 @@ import com.costumemania.msbills.model.requiredEntity.Catalog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +32,10 @@ public interface SaleRepository extends JpaRepository<Sale, Integer> {
     Integer getFirstInvoice ();
     @Query(value = "select distinct no_invoice from sale where users=?1", nativeQuery = true)
     Optional<List<Integer>> getInvoiceNumbersByUser (Integer idUser);
+    @Query(value = "SELECT sale_date FROM sale order by sale_date ASC limit 1", nativeQuery = true)
+    LocalDateTime getFistDate ();
+    @Query(value = "SELECT sale_date FROM sale order by sale_date DESC limit 1", nativeQuery = true)
+    LocalDateTime getLastDate ();
 
     @Query(value = "SELECT * FROM sale order by no_invoice desc", nativeQuery = true)
     List<Sale> getAllByInvoice ();
