@@ -190,7 +190,7 @@ public class ReportingController {
             for (int i=1; i <= 12; i++) {
                 ResponseEntity<AverageShippingTime> response = averageShippingTimeByMonth (i, j);
                 if (response.getStatusCode()==HttpStatus.OK) {
-                    DateJson dateJson = new DateJson(i,firstMonth.getYear());
+                    DateJson dateJson = new DateJson(i,j);
                     ShippingTimePeriod newPeriod = new ShippingTimePeriod(dateJson, response.getBody().getAverageDelay());
                     result.add(newPeriod);
                 }
