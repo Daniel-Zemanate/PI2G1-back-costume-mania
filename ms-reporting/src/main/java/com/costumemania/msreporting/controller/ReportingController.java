@@ -2,6 +2,7 @@ package com.costumemania.msreporting.controller;
 
 import com.costumemania.msreporting.model.jsonResponses.AverageShippingTime;
 import com.costumemania.msreporting.model.jsonResponses.DateJson;
+import com.costumemania.msreporting.model.jsonResponses.ShippingTimeComplete;
 import com.costumemania.msreporting.model.jsonResponses.ShippingTimePeriod;
 import com.costumemania.msreporting.model.requiredEntity.Sale;
 import com.costumemania.msreporting.service.SaleService;
@@ -197,5 +198,40 @@ public class ReportingController {
             }
         }
         return ResponseEntity.ok(result);
+    }
+
+    // complete info for dashboard
+    @GetMapping ("/report1/complete")
+    public ResponseEntity<ShippingTimeComplete> report1Complete () {
+        float minDelay;
+        DateJson dateMin;
+        float maxDelay;
+        DateJson dateMax;
+        ResponseEntity<List<ShippingTimePeriod>> list = getReportDetailed();
+        if (list.getStatusCode()==HttpStatus.OK && !list.getBody().isEmpty()) {
+            minDelay = list.getBody().get(0).getAverageShippingTime();
+            maxDelay = list.getBody().get(0).getAverageShippingTime();
+            dateMin = list.getBody().get(0).getPeriod();
+            dateMax = list.getBody().get(0).getPeriod();
+            for (ShippingTimePeriod period : list.getBody()) {
+                if (period.getAverageShippingTime() <= minDelay) {
+                    minDelay = period.getAverageShippingTime();
+                    dateMin = period.getPeriod();
+                }
+                if (period.getAverageShippingTime() >= maxDelay) {
+                    maxDelay = period.getAverageShippingTime();
+                    dateMax = period.getPeriod();
+                }
+            }
+        } else {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+
+        ShippingTimeComplete shippingTimeComplete = new ShippingTimeComplete();
+        shippingTimeComplete.setGeneralShippingTime(averageShippingTime().getBody());
+        shippingTimeComplete.setMaxDelay(dateMax);
+        shippingTimeComplete.setMinDelay(dateMin);
+        shippingTimeComplete.setDetailedShippingTime(list.getBody());
+        return ResponseEntity.ok(shippingTimeComplete);
     }
 }
