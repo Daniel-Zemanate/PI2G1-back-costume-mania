@@ -46,36 +46,57 @@ public class FavController {
         }
         favService.DeleteById(idFav);
         return ResponseEntity.ok().body("Fav with ID " + idFav + " deleted");
+
     }
 
     // USER
     @PostMapping()
-    public ResponseEntity<Fav> addFav(@RequestBody Fav fav){
+    public ResponseEntity<?> addFav(@RequestBody Fav fav){
 
-        favService.save(fav);
+        if(favService.findUser(fav.getUsers()).equals(true)){
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(fav);
+            favService.save(fav);
+            return ResponseEntity.status(HttpStatus.CREATED).body(fav);
+        }
+        else
+            return ResponseEntity.status(404).body("Your request could not be processed." + " user id " + fav.getUsers() + " dont exist");
+
+
     }
 
 
     // USER
-    @GetMapping("/user/{idUser}")
-    public ResponseEntity<List<Object>> getByUser(@PathVariable Integer idUser) {
 
-        List<Object> f = favService.getByUser(idUser);
-        if(f.isEmpty()){
-            return ResponseEntity.notFound().build();
+    @GetMapping("/user/{idUser}")
+    public ResponseEntity<Object> getByUser(@PathVariable Integer idUser) {
+
+        if(favService.findUser(idUser).equals(true)){
+
+
+                List<Object> f = favService.getByUser(idUser);
+                if (f.isEmpty()) {
+                    return ResponseEntity.status(404).body("User id " + idUser + " dont have favorites");
+                }
+                return ResponseEntity.ok().body(favService.getByUser(idUser));
         }
 
-        return ResponseEntity.ok().body(favService.getByUser(idUser));
+        else return ResponseEntity.badRequest().body("User id " + idUser + " not found");
+
     }
 
 
     //ADMIN
     @GetMapping("/FavModel")
-    public ResponseEntity<List<FavModelDTO>> FavOrderModel(){
+    public ResponseEntity<?> FavOrderModel(){
 
-        return ResponseEntity.ok().body(favService.FavOrderModel());
+        try {
+            return ResponseEntity.ok().body(favService.FavOrderModel());
+
+        }
+        catch (Exception e){
+            return ResponseEntity.internalServerError().body("Your request could not be processed. Error ms-product" );
+        }
+
 
     }
 

@@ -1,12 +1,11 @@
 package com.costumemania.msfavorite.api.service;
 
-import com.costumemania.msfavorite.DTO.FavDTO;
-import com.costumemania.msfavorite.DTO.FavModelDTO;
-import com.costumemania.msfavorite.DTO.ModelDTO;
-import com.costumemania.msfavorite.DTO.ModelFavDTO;
+import com.costumemania.msfavorite.DTO.*;
 import com.costumemania.msfavorite.client.IProductClient;
+import com.costumemania.msfavorite.client.IUserClient;
 import com.costumemania.msfavorite.model.Fav;
 import com.costumemania.msfavorite.model.Model;
+import com.costumemania.msfavorite.model.UsersEntity;
 import com.costumemania.msfavorite.repository.IFavRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.PersistenceContext;
@@ -30,6 +29,9 @@ public class FavService {
 
     @Autowired
     IProductClient iProductClient;
+
+    @Autowired
+    IUserClient iUserClient;
 
 
     @PersistenceContext
@@ -104,20 +106,6 @@ public class FavService {
     }
 
 
-    /*
-    public List<Object> getByUser(Integer user, Integer limit) {
-
-        List<Object> modelByUserLimit = new ArrayList<>();
-        modelByUserLimit =  getByUser(user);
-        if(modelByUserLimit.size() >= limit){
-            return modelByUserLimit.subList(0,limit);
-        }
-        else
-           return modelByUserLimit.subList(0,modelByUserLimit.size());
-
-    }
-    */
-
 
     public List<FavModelDTO> FavOrderModel() {
 
@@ -169,6 +157,21 @@ public class FavService {
         return FinalDto;
 
 
+        }
+
+        public Boolean findUser(Integer us){
+
+        List<UsersEntity> users = iUserClient.allUsers();
+        Boolean find = false;
+
+        for(int x = 0; x<users.size(); x++){
+
+            Integer z = Integer.valueOf(users.get(x).id());
+            if(z == us){
+                find = true;
+            }
+        }
+        return  find;
         }
 
 
