@@ -28,6 +28,7 @@ public class ReportingController {
         this.saleService = saleService;
     }
 
+    // general average woth every sale
     @GetMapping("/report1")
     public ResponseEntity<AverageShippingTime> averageShippingTime (){
         // get every sale
@@ -64,6 +65,7 @@ public class ReportingController {
         return ResponseEntity.ok(result);
     }
 
+    // average per month
     @GetMapping("/report1/{month}/{year}")
     public ResponseEntity<AverageShippingTime> averageShippingTimeByMonth (@PathVariable int month, @PathVariable int year){
         // get every sale
@@ -79,6 +81,48 @@ public class ReportingController {
         LocalDate lastDay = nextMonth.minusDays(1);
         try {
             ResponseEntity respSales = saleService.getByDates(firstDay, String.valueOf(lastDay));
+            if (respSales.getStatusCode()== HttpStatus.OK) {
+                sales = (List<Sale>) respSales.getBody();
+                if (sales.isEmpty()) {
+                    return ResponseEntity.noContent().build();
+                }
+            } else {
+                return ResponseEntity.noContent().build();
+            }
+        } catch (FeignException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+        // get sales with shipping
+        List<Sale> salesWithShipping = new ArrayList<>();
+        for (Sale sale : sales) {
+            if (sale.getShippingDate()!=null) {
+                salesWithShipping.add(sale);
+            }
+        }
+        if (salesWithShipping.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        // average days
+        long totalDays = 0;
+        for (Sale sale : salesWithShipping) {
+            totalDays += DAYS.between(sale.getSaleDate(), sale.getShippingDate());
+        }
+        float average = (float) totalDays /salesWithShipping.size();
+        AverageShippingTime result = new AverageShippingTime(salesWithShipping.get(0).getSaleDate(),
+                salesWithShipping.get(salesWithShipping.size()-1).getSaleDate(),
+                sales.size(),
+                salesWithShipping.size(),
+                average);
+        return ResponseEntity.ok(result);
+    }
+
+    // average per customized period
+    @GetMapping("/report1/dates/{firstDate}/{lastDate}")
+    public ResponseEntity<AverageShippingTime> averageShippingCustom (@PathVariable String firstDate, @PathVariable String lastDate){
+        // get every sale
+        List<Sale> sales = new ArrayList<>();
+        try {
+            ResponseEntity respSales = saleService.getByDates(firstDate, lastDate);
             if (respSales.getStatusCode()== HttpStatus.OK) {
                 sales = (List<Sale>) respSales.getBody();
                 if (sales.isEmpty()) {
