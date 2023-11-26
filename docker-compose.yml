@@ -307,6 +307,39 @@ services:
       - ms-gateway
 
 
+  ms-reporting:
+    build:
+      context: ./ms-reporting/
+      args:
+        - PROFILE=$MS_REPORTING_PROFILE
+        - MS_CONFIG_SERVER_HOST=$MS_CONFIG_SERVER_HOST
+        - MS_CONFIG_SERVER_PORT=$MS_CONFIG_SERVER_DOCKER_PORT
+    restart: unless-stopped
+      #deploy:
+      #resources:
+      #limits:
+      #cpus: "0.5"
+    #memory: 256M
+    #   Create your personal .env file from .envTemplate
+    env_file:
+      - ./.env
+    environment:
+      - PORT=$MS_REPORTING_DOCKER_PORT
+      - EUREKA_SERVER_HOST=$MS_EUREKA_SERVER_HOST
+      - EUREKA_SERVER_PORT=$MS_EUREKA_SERVER_DOCKER_PORT
+      - DB_URL=$MYSQLDB_HOST
+      - DB_PORT=$MYSQLDB_DOCKER_PORT
+      - DB_SERVICE=$MYSQLDB_DATABASE
+      - DB_USER=$MYSQLDB_USER
+      - DB_PASS=$MYSQLDB_PASSWORD
+    ports:
+      - ${MS_REPORTING_LOCAL_PORT}:${MS_REPORTING_DOCKER_PORT}
+    networks:
+      - net-costume-mania
+    depends_on:
+      - ms-gateway
+
+
 #  ms-keycloak:
 #    image: quay.io/keycloak/keycloak:21.0.1
 #    command:
