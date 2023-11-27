@@ -43,12 +43,13 @@ jobs:
       run: sudo docker system prune -a -f
 
     - name: Create ENV variables on HOST from secrets
-      run: |
-        export DB_URL=${{ secrets.DB_URL }}
-        export DB_PORT=${{ secrets.DB_PORT }}
-        export DB_USER=${{ secrets.DB_USER }}
-        export DB_PASS=${{ secrets.DB_PASS }}
-        export DB_SERVICE=${{ secrets.DB_SERVICE }}
+      run: export DB_URL=${{ secrets.DB_URL }}
+#      run: |
+#        export DB_URL=${{ secrets.DB_URL }}
+#        export DB_PORT=${{ secrets.DB_PORT }}
+#        export DB_USER=${{ secrets.DB_USER }}
+#        export DB_PASS=${{ secrets.DB_PASS }}
+#        export DB_SERVICE=${{ secrets.DB_SERVICE }}
     - name: Copy .env
       run: |
         cp .env-aws .env
