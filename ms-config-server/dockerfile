@@ -10,4 +10,5 @@ COPY target/ms-config-server-0.0.1-SNAPSHOT.jar /app/ms-config-server.jar
 WORKDIR /app
 
 # Exec command to run the app
-CMD ["java", "-jar", "ms-config-server.jar"]
+#CMD ["java", "-jar", "ms-config-server.jar"]
+ENTRYPOINT java -Xmx128m -jar ./ms-config-server.jar

@@ -14,4 +14,4 @@ COPY target/ms-catalog-0.0.1-SNAPSHOT.jar /app/ms-catalog.jar
 WORKDIR /app
 
 # Exec command to run the app
-ENTRYPOINT java -jar ./ms-catalog.jar
+ENTRYPOINT java -Xmx256m -jar ./ms-catalog.jar
