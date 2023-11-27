@@ -17,7 +17,7 @@ jobs:
       packages: write
 
     steps:    
-    - name: Change permisions to working folder
+    - name: Change permissions to working folder
       run: sudo chmod -R 777 '/home/ubuntu/actions-runner/_work/'
     - uses: actions/checkout@v3
     - name: Set up JDK 17
@@ -42,6 +42,13 @@ jobs:
       continue-on-error: true
       run: sudo docker system prune -a -f
 
+    - name: Create ENV variables on HOST from secrets
+      run: |
+        export DB_URL="${{ secrets.DB_URL }}"
+        export DB_PORT="${{ secrets.DB_PORT }}"
+        export DB_USER="${{ secrets.DB_USER }}"
+        export DB_PASS="${{ secrets.DB_PASS }}"
+        export DB_SERVICE="${{ secrets.DB_SERVICE }}"
     - name: Copy .env
       run: |
         cp .env-aws .env
