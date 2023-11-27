@@ -1,6 +1,7 @@
 package com.costumemania.msreporting.repository;
 
 import com.costumemania.msreporting.LoadBalancerConfiguration;
+import com.costumemania.msreporting.model.jsonResponses.DateJson;
 import com.costumemania.msreporting.model.requiredEntity.Sale;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -17,4 +18,6 @@ public interface SaleRepositoryFeign {
     ResponseEntity<List<Sale>> getAllSales();
     @GetMapping("/api/v1/sale/dates/{date1}/{date2}")
     ResponseEntity<List<Sale>> getByDates (@PathVariable String date1, @PathVariable String date2);
+    @GetMapping("/api/v1/sale/invoiceDate/{order}")
+    ResponseEntity<DateJson> getFirstOrLastDate (@PathVariable int order);
 }

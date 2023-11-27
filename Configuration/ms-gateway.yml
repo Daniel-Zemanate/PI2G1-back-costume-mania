@@ -43,7 +43,6 @@ spring:
           uri: lb://ms-users
           predicates:
             - Path=/api/v1/auth/**
-
         - id: ms-bills
           uri: lb://ms-bills
           predicates:
@@ -56,6 +55,10 @@ spring:
           uri: lb://ms-bills
           predicates:
             - Path=/api/v1/status/**
+        - id: ms-reporting
+          uri: lb://ms-reporting
+          predicates:
+            - Path=/api/v1/reporting/**
 
 management:
   endpoints:

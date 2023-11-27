@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,6 +63,12 @@ public class SaleService {
     };
     public Optional<List<Integer>> getInvoiceNumbersByUser (Integer idUser) {
         return saleRepository.getInvoiceNumbersByUser(idUser);
+    };
+    public LocalDateTime getFistDate () {
+        return saleRepository.getFistDate();
+    };
+    public LocalDateTime getLastDate () {
+        return saleRepository.getLastDate();
     };
 
     public List<Sale> getAllByInvoice () {

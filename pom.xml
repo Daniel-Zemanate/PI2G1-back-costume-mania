@@ -21,6 +21,7 @@
         <module>ms-users</module>
         <module>ms-favorite</module>
         <module>ms-delete</module>
+        <module>ms-reporting</module>
     </modules>
 
     <build>
