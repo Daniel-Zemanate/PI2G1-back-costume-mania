@@ -17,4 +17,4 @@ WORKDIR /app
 
 # Exec command to run the app
 #CMD ["java", "-jar", "ms-eureka-server.jar", "--spring.profiles.active=$PROFILE", "--spring.config.import=$MS_CONFIG_SERVER_HOST"]
-ENTRYPOINT java -jar ./ms-eureka-server.jar
+ENTRYPOINT java -Xmx128m -jar ./ms-eureka-server.jar

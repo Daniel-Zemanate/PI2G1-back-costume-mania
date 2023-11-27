@@ -14,4 +14,4 @@ COPY target/ms-bills-0.0.1-SNAPSHOT.jar /app/ms-bills.jar
 WORKDIR /app
 
 # Exec command to run the app
-ENTRYPOINT java -jar ./ms-bills.jar
+ENTRYPOINT java -Xmx128m -jar ./ms-bills.jar
