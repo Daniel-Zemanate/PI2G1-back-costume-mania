@@ -42,17 +42,17 @@ jobs:
       continue-on-error: true
       run: sudo docker system prune -a -f
 
-    - name: Create ENV variables on HOST from secrets
-      run: export DB_URL=${{ secrets.DB_URL }}
-#      run: |
-#        export DB_URL=${{ secrets.DB_URL }}
-#        export DB_PORT=${{ secrets.DB_PORT }}
-#        export DB_USER=${{ secrets.DB_USER }}
-#        export DB_PASS=${{ secrets.DB_PASS }}
-#        export DB_SERVICE=${{ secrets.DB_SERVICE }}
     - name: Copy .env
       run: |
         cp .env-aws .env
+
+    - name: Create ENV variables on HOST from secrets
+      run: |
+        echo >> ${{ secrets.DB_URL }}
+        echo >> ${{ secrets.DB_PORT }}
+        echo >> ${{ secrets.DB_SERVICE }}
+        echo >> ${{ secrets.DB_USER }}
+        echo >> ${{ secrets.DB_PASS }}
 
     - name: Build with Maven
       run: sudo mvn -B package --file pom.xml
