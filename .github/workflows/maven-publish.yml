@@ -48,11 +48,11 @@ jobs:
 
     - name: Create ENV variables on HOST from secrets
       run: |
-        echo >> ${{ secrets.DB_URL }}
-        echo >> ${{ secrets.DB_PORT }}
-        echo >> ${{ secrets.DB_SERVICE }}
-        echo >> ${{ secrets.DB_USER }}
-        echo >> ${{ secrets.DB_PASS }}
+        echo "${{ secrets.DB_URL }}" >> .env
+        echo "${{ secrets.DB_PORT }}" >> .env 
+        echo "${{ secrets.DB_SERVICE }}" >> .env 
+        echo "${{ secrets.DB_USER }}" >> .env 
+        echo "${{ secrets.DB_PASS }}" >> .env 
 
     - name: Build with Maven
       run: sudo mvn -B package --file pom.xml
