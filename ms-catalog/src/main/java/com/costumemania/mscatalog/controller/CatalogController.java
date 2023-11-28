@@ -167,7 +167,7 @@ public class CatalogController {
     public ResponseEntity<List<Catalog>> getByCategory(@PathVariable Integer idCategory){
         // first verify if the category exists with feign
         try {
-            modelService.getModelByIdCategory(idCategory);
+            modelService.getCategorydById(idCategory);
         }
         catch (FeignException e){
             return ResponseEntity.notFound().build();
@@ -272,7 +272,7 @@ public class CatalogController {
     public ResponseEntity<List<Catalog>> getByCategoryAndSize(@PathVariable Integer idCategory, @PathVariable Integer bolleanAdult){
         // first verify if the category exists with feign
         try {
-            modelService.getModelByIdCategory(idCategory);
+            modelService.getCategorydById(idCategory);
         }
         catch (FeignException e){
             return ResponseEntity.notFound().build();
@@ -441,7 +441,7 @@ public class CatalogController {
     public ResponseEntity<Page<Catalog>> getByCategoryPageable2(@PathVariable Integer idCategory,@PathVariable Integer page){
         // first verify if the category exists with feign
         try {
-            modelService.getModelByIdCategory(idCategory);
+            modelService.getCategorydById(idCategory);
         }
         catch (FeignException e){
             return ResponseEntity.notFound().build();
@@ -695,7 +695,7 @@ public class CatalogController {
     public ResponseEntity<Page<Catalog>> getByCategoryAndSizePageable2(@PathVariable Integer idCategory, @PathVariable Integer bolleanAdult,@PathVariable Integer page){
         // first verify if the category exists with feign
         try {
-            modelService.getModelByIdCategory(idCategory);
+            modelService.getCategorydById(idCategory);
         }
         catch (FeignException e){
             return ResponseEntity.notFound().build();
@@ -742,7 +742,7 @@ public class CatalogController {
     public ResponseEntity<Page<CatalogResponse>> getByCategoryAndSizePageable(@PathVariable Integer idCategory, @PathVariable Integer bolleanAdult,@PathVariable Integer page){
         // first verify if the category exists with feign
         try {
-            modelService.getModelByIdCategory(idCategory);
+            modelService.getCategorydById(idCategory);
         }
         catch (FeignException e){
             return ResponseEntity.notFound().build();
@@ -962,10 +962,6 @@ public class CatalogController {
             }
         }
 
-        if (catalogResponses.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
         return ResponseEntity.ok().body(catalogResponses);
     }
 
@@ -974,9 +970,8 @@ public class CatalogController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Catalog> createModel(@RequestBody CatalogDTO catalogDTO){
         // verify model with Feign - 404
-        ResponseEntity<Optional<Model>> response;
         try {
-            response = modelService.getByIdModel(catalogDTO.getModel());
+            ResponseEntity<Optional<Model>> response = modelService.getByIdModel(catalogDTO.getModel());
         }
         catch (FeignException e){
             return ResponseEntity.notFound().build();
@@ -1001,8 +996,8 @@ public class CatalogController {
         }
         // create - 202
         Catalog catalogCreated = new Catalog();
-        catalogCreated.setModel(response.getBody().get());
-        catalogCreated.setSize(searchSize.get());
+        catalogCreated.setModel(modelService.getByIdModelSEC(catalogDTO.getModel()));
+        catalogCreated.setSize(sizeService.getByIdSEC(catalogDTO.getSize()));
         catalogCreated.setStock(catalogDTO.getQuantity());
         catalogCreated.setPrice(catalogDTO.getPrice());
         catalogCreated.setStatus(new StatusComponent(1, "active"));
@@ -1037,9 +1032,8 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // verify model with Feign - 404
-        ResponseEntity<Optional<Model>> response;
         try {
-            response = modelService.getByIdModel(catalogDTO.getModel());
+            ResponseEntity<Optional<Model>> response = modelService.getByIdModel(catalogDTO.getModel());
         }
         catch (FeignException e){
             return ResponseEntity.notFound().build();
@@ -1060,8 +1054,8 @@ public class CatalogController {
         // create Catalog
         Catalog catalogCreated = new Catalog();
         catalogCreated.setIdCatalog(idCatalog);
-        catalogCreated.setModel(response.getBody().get());
-        catalogCreated.setSize(searchSize.get());
+        catalogCreated.setModel(modelService.getByIdModelSEC(catalogDTO.getModel()));
+        catalogCreated.setSize(sizeService.getByIdSEC(catalogDTO.getSize()));
         catalogCreated.setStock(catalogDTO.getQuantity());
         catalogCreated.setPrice(catalogDTO.getPrice());
         if (catalogDTO.getStatus() == 1) {
@@ -1115,7 +1109,7 @@ public class CatalogController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> makeInactivByCat (@PathVariable Integer idCategory) {
         try {
-            modelService.getModelByIdCategory(idCategory);
+            modelService.getCategorydById(idCategory);
         }
         catch (FeignException e){
             return ResponseEntity.notFound().build();
@@ -1124,4 +1118,29 @@ public class CatalogController {
         catalogService.inactiveByCategory(idCategory);
         return ResponseEntity.ok().body("all catalog with category " + idCategory + " disabled");
     }
+
+    // adm - deprecated
+    /*@DeleteMapping("/{idCatalog}")
+    public ResponseEntity<String> delete(@PathVariable Integer idCatalog) {
+        // first verify if the ID exist
+        Optional<Catalog> catalogProof = catalogService.getCatalogById(idCatalog);
+        if (catalogProof.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        // else...
+        catalogService.delete(idCatalog);
+        return ResponseEntity.ok().body("Catalog item with ID " + idCatalog + " deleted");
+    }
+    // adm - deprecated
+    @DeleteMapping("/byModel/{idModel}")
+    public ResponseEntity<String> deleteByModel (@PathVariable Integer idModel) {
+        // verify if there are results
+        Optional<List<Catalog>> catalogProof = catalogService.getCatalogByModel(idModel);
+        if (catalogProof.get().isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        // else
+        catalogService.deleteByModel(idModel);
+        return ResponseEntity.ok().body("Catalog items with ID model " + idModel + " deleted");
+    }*/
 }
