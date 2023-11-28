@@ -35,8 +35,6 @@ public interface CatalogRepository extends JpaRepository<Catalog, Integer> {
 
     @Query(value="SELECT * FROM catalog c INNER JOIN model m ON c.model=m.id_model WHERE c.model =?1 AND c.size =?2", nativeQuery = true)
     Optional<List<Catalog>> findByModelAndSize (Integer idModel, Integer size);
-    @Query(value="SELECT * FROM catalog c WHERE c.status_catalog=1 ORDER BY c.id_catalog DESC LIMIT 8", nativeQuery = true)
-    List<Catalog> findNews ();
 
     @Transactional
     @Modifying

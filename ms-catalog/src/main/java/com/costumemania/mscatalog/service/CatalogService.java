@@ -51,9 +51,6 @@ public class CatalogService {
     public Optional<List<Catalog>> findByModelAndSize (Integer idModel, Integer size) {
         return catalogRepository.findByModelAndSize(idModel, size);
     };
-    public List<Catalog> getNews () {
-        return catalogRepository.findNews();
-    };
     public Catalog save (Catalog c) {
         return catalogRepository.save(c);
     }
