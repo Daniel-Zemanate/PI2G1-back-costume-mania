@@ -25,12 +25,6 @@ public class ModelService {
     public ResponseEntity<Optional<Model>> getByIdModel(Integer id){
         return modelRepositoryFeign.getByIdModel(id);
     }
-    public Model getByIdModelSEC(Integer id){
-        return modelRepositoryFeign.getByIdModelSEC(id);
-    }
-    public ResponseEntity<Category> getCategorydById (Integer idCategory) {
-        return modelRepositoryFeign.getdById(idCategory);
-    };
     public  ResponseEntity<List<Model>> getModelByIdCategory(Integer idCategory) {
         return modelRepositoryFeign.getModelByIdCategory(idCategory);
     };
