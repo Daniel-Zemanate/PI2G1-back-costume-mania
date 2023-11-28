@@ -47,9 +47,6 @@ public class ModelService {
     public List<Model> admGetByIdCategoryModel(Integer idCategory) {
         return modelRepository.admFindByIdCategory(idCategory);
     }
-    public List<Model> getByCategoryModel(String category){
-        return modelRepository.findByCategory(category);
-    }
     public void inactiveByCategory (Integer idCategory) {
         modelRepository.inactiveByCategory(idCategory);
     };

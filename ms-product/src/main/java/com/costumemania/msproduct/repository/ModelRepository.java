@@ -22,8 +22,6 @@ public interface ModelRepository extends JpaRepository<Model,Integer> {
     Optional<List<Model>> findByName(String nameModel);
     @Query( value ="SELECT * FROM model m WHERE m.name_model =?1",nativeQuery = true)
     Optional<Model> admFindByName(String nameModel);
-    @Query( value ="SELECT * FROM model m INNER JOIN category c ON m.category=c.id_category WHERE c.name LIKE %?1%",nativeQuery = true)
-    List<Model> findByCategory(String category);
     @Query(value= "SELECT * FROM model m INNER JOIN category c ON m.category=c.id_category WHERE (m.name_model LIKE %?1%) AND (m.category =?2) AND m.status_model=1",nativeQuery = true)
     List<Model> findByNameAndCategory(String name, Integer category);
     @Query(value= "SELECT * FROM model m INNER JOIN category c ON m.category=c.id_category WHERE (m.name_model =?1) AND (m.category =?2)",nativeQuery = true)

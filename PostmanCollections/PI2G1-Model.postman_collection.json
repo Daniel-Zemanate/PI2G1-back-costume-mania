@@ -1,11 +1,1016 @@
 {
 	"info": {
-		"_postman_id": "2288c8f5-f220-4500-ac74-12dda83ec6cd",
+		"_postman_id": "43adfb2c-4087-43da-9641-04c89669d316",
 		"name": "PI2G1-Model",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "24071944"
+		"_exporter_id": "18574247",
+		"_collection_link": "https://dark-meadow-935543.postman.co/workspace/PI2-G1~283cec54-33b6-4230-a826-cafcc1dffd25/collection/18574247-43adfb2c-4087-43da-9641-04c89669d316?action=share&source=collection_link&creator=18574247"
 	},
 	"item": [
+		{
+			"name": "Negative tests",
+			"item": [
+				{
+					"name": "Active model by id inactive",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/37",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"37"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active model by id inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/370",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"370"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active/Inactive model by id inexistente ADM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/adm/100",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"adm",
+								"100"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active model by name inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/name/reino",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"name",
+								"reino"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active/Inactive model by name inexists ADM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/adm/name/helpeer",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"adm",
+								"name",
+								"helpeer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active model by category ID inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/category/id/9",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"category",
+								"id",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active model by category ID empty",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/category/id/9",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"category",
+								"id",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active model by category ID inactive",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/category/id/9",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"category",
+								"id",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active/Inactive model by category ID empty ADM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/adm/category/id/9",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"adm",
+								"category",
+								"id",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active model by name + category id - name inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/name/jaci/category/id/2",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"name",
+								"jaci",
+								"category",
+								"id",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active model by name + category id - category inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/name/j/category/id/20",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"name",
+								"j",
+								"category",
+								"id",
+								"20"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create model already exists (name + category)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status Not Processing\", function () {\r",
+									"    pm.response.to.have.status(422); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nameModel\": \"prueba\",\r\n    \"category\": 8,\r\n    \"urlImage\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/create",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create model - inexist category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nameModel\": \"prueba\",\r\n    \"category\": 80,\r\n    \"urlImage\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/create",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create model - empty name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status bad request\", function () {\r",
+									"    pm.response.to.have.status(400); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nameModel\": \"\",\r\n    \"category\": 8,\r\n    \"urlImage\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/create",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update model already exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status Not Processing\", function () {\r",
+									"    pm.response.to.have.status(422); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nameModel\": \"prueba2\",\r\n    \"category\": 8,\r\n    \"urlImage\": \"\",\r\n    \"status\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/38",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"38"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update model - inexist category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nameModel\": \"prueba2\",\r\n    \"category\": 80,\r\n    \"urlImage\": \"\",\r\n    \"status\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/38",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"38"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update model - inexist model",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nameModel\": \"prueba2\",\r\n    \"category\": 9,\r\n    \"urlImage\": \"\",\r\n    \"status\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/380",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"380"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update model - bad status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status bad request\", function () {\r",
+									"    pm.response.to.have.status(400); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nameModel\": \"prueba4\",\r\n    \"category\": 9,\r\n    \"urlImage\": \"\",\r\n    \"status\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/38",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"38"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update model - empty name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status bad request\", function () {\r",
+									"    pm.response.to.have.status(400); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nameModel\": \"\",\r\n    \"category\": 9,\r\n    \"urlImage\": \"\",\r\n    \"status\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/38",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"38"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete inexist model",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/delete/390",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"delete",
+								"390"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete by category Inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/model/deleteByC/90",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"deleteByC",
+								"90"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "todos los modelos Activos",
 			"event": [
@@ -32,12 +1037,15 @@
 							"});\r",
 							"\r",
 							"pm.test(\"The queried data in the first object is of the expected type\", () => {\r",
-							"\r",
 							"    pm.expect(responseJsonFirst.idModel).to.be.a(\"number\");\r",
-							"\r",
 							"    pm.expect(responseJsonFirst.nameModel).to.be.a(\"string\");\r",
-							"\r",
 							"    pm.expect(responseJsonFirst.category).to.be.an(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify every category is active\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    // Check the structure of each object in the array\r",
+							"    response.forEach (item => {pm.expect(item.statusModel.id).equal(1)});\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -89,12 +1097,15 @@
 							"});\r",
 							"\r",
 							"pm.test(\"The queried data in the first object is of the expected type\", () => {\r",
-							"\r",
 							"    pm.expect(responseJsonFirst.idModel).to.be.a(\"number\");\r",
-							"\r",
 							"    pm.expect(responseJsonFirst.nameModel).to.be.a(\"string\");\r",
-							"\r",
 							"    pm.expect(responseJsonFirst.category).to.be.an(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify every category is active or inactive\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    // Check the structure of each object in the array\r",
+							"    response.forEach (item => {pm.expect(item.statusModel.id).to.be.oneOf([1,2])});\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -102,6 +1113,16 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -116,6 +1137,68 @@
 						"v1",
 						"model",
 						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "new active models",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const responseJsonFirst = pm.response.json()[0];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"The response contains an array of objects\", () => {\r",
+							"    pm.expect(responseJson).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(responseJsonFirst.idModel).to.be.a(\"number\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The queried data in the first object is of the expected type\", () => {\r",
+							"    pm.expect(responseJsonFirst.idModel).to.be.a(\"number\");\r",
+							"    pm.expect(responseJsonFirst.nameModel).to.be.a(\"string\");\r",
+							"    pm.expect(responseJsonFirst.category).to.be.an(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify every category is active\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    // Check the structure of each object in the array\r",
+							"    response.forEach (item => {pm.expect(item.statusModel.id).equal(1)});\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/model/news/8",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"model",
+						"news",
+						"8"
 					]
 				}
 			},
@@ -144,6 +1227,12 @@
 							"    pm.expect(response).to.have.property('idModel').to.be.a('number');\r",
 							"    pm.expect(response).to.have.property('nameModel').to.be.a('string');\r",
 							"    pm.expect(response).to.have.property('category').to.be.an('object');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify every category is active or inactive\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    // Check the structure of each object in the array\r",
+							"    pm.expect(response.statusModel.id).to.be.equal(1);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -154,7 +1243,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{URL-AWS}}:8080/api/v1/model/1",
+					"raw": "http://{{URL-AWS}}:8080/api/v1/model/37",
 					"protocol": "http",
 					"host": [
 						"{{URL-AWS}}"
@@ -164,7 +1253,7 @@
 						"api",
 						"v1",
 						"model",
-						"1"
+						"37"
 					]
 				}
 			},
@@ -193,6 +1282,12 @@
 							"    pm.expect(response).to.have.property('idModel').to.be.a('number');\r",
 							"    pm.expect(response).to.have.property('nameModel').to.be.a('string');\r",
 							"    pm.expect(response).to.have.property('category').to.be.an('object');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify every category is active or inactive\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    // Check the structure of each object in the array\r",
+							"    pm.expect(response.statusModel.id).to.be.oneOf([1,2]);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -200,6 +1295,16 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -235,15 +1340,22 @@
 							"pm.test(\"Verify the structure of the response\", function () {\r",
 							"    const response = pm.response.json();\r",
 							"\r",
-							"    response.forEach(function (item){\r",
-							"    // Check if the response is an object\r",
-							"    pm.expect(item).to.be.an('object');\r",
+							"    response.forEach(function (item) {\r",
+							"        // Check if the response is an object\r",
+							"        pm.expect(item).to.be.an('object');\r",
 							"\r",
-							"      // Check the properties of the object\r",
-							"    pm.expect(item).to.have.property('idModel').to.be.a('number');\r",
-							"    pm.expect(item).to.have.property('nameModel').to.be.a('string');\r",
-							"    pm.expect(item).to.have.property('category').to.be.an('object');\r",
+							"        // Check the properties of the object\r",
+							"        pm.expect(item).to.have.property('idModel').to.be.a('number');\r",
+							"        pm.expect(item).to.have.property('nameModel').to.be.a('string');\r",
+							"        pm.expect(item).to.have.property('category').to.be.an('object');\r",
 							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify every category is active or inactive\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    response.forEach( item => {\r",
+							"        pm.expect(item.statusModel.id).to.be.equal(1);\r",
+							"    })\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -254,7 +1366,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{URL-AWS}}:8080/api/v1/model/name/Witch%20child",
+					"raw": "http://{{URL-AWS}}:8080/api/v1/model/name/rein",
 					"protocol": "http",
 					"host": [
 						"{{URL-AWS}}"
@@ -265,7 +1377,7 @@
 						"v1",
 						"model",
 						"name",
-						"Witch%20child"
+						"rein"
 					]
 				}
 			},
@@ -286,15 +1398,19 @@
 							"pm.test(\"Verify the structure of the response\", function () {\r",
 							"    const response = pm.response.json();\r",
 							"\r",
-							"    response.forEach(function (item){\r",
 							"    // Check if the response is an object\r",
-							"    pm.expect(item).to.be.an('object');\r",
-							"\r",
+							"    pm.expect(response).to.be.an('object');\r",
 							"      // Check the properties of the object\r",
-							"    pm.expect(item).to.have.property('idModel').to.be.a('number');\r",
-							"    pm.expect(item).to.have.property('nameModel').to.be.a('string');\r",
-							"    pm.expect(item).to.have.property('category').to.be.an('object');\r",
-							"    });\r",
+							"    pm.expect(response).to.have.property('idModel').to.be.a('number');\r",
+							"    pm.expect(response).to.have.property('nameModel').to.be.a('string');\r",
+							"    pm.expect(response).to.have.property('category').to.be.an('object');\r",
+							"\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify every category is active or inactive\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    // Check the structure of each object in the array\r",
+							"    pm.expect(response.statusModel.id).to.be.oneOf([1,2]);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -302,10 +1418,20 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{URL-AWS}}:8080/api/v1/model/adm/name/prueba31",
+					"raw": "http://{{URL-AWS}}:8080/api/v1/model/adm/name/helper%20man",
 					"protocol": "http",
 					"host": [
 						"{{URL-AWS}}"
@@ -317,7 +1443,7 @@
 						"model",
 						"adm",
 						"name",
-						"prueba31"
+						"helper%20man"
 					]
 				}
 			},
@@ -347,6 +1473,13 @@
 							"    pm.expect(item).to.have.property('nameModel').to.be.a('string');\r",
 							"    pm.expect(item).to.have.property('category').to.be.an('object');\r",
 							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify every category is active or inactive\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    response.forEach( item => {\r",
+							"        pm.expect(item.statusModel.id).to.be.equal(1);\r",
+							"    })\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -357,7 +1490,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{URL-AWS}}:8080/api/v1/model/category/id/1",
+					"raw": "http://{{URL-AWS}}:8080/api/v1/model/category/id/7",
 					"protocol": "http",
 					"host": [
 						"{{URL-AWS}}"
@@ -369,7 +1502,7 @@
 						"model",
 						"category",
 						"id",
-						"1"
+						"7"
 					]
 				}
 			},
@@ -399,6 +1532,12 @@
 							"    pm.expect(item).to.have.property('nameModel').to.be.a('string');\r",
 							"    pm.expect(item).to.have.property('category').to.be.an('object');\r",
 							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify every category is active or inactive\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    // Check the structure of each object in the array\r",
+							"    response.forEach (item => {pm.expect(item.statusModel.id).to.be.oneOf([1,2])});\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -406,6 +1545,16 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -430,11 +1579,46 @@
 		},
 		{
 			"name": "Active model by name + category id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the structure of the response\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"\r",
+							"    response.forEach(function (item){\r",
+							"    // Check if the response is an object\r",
+							"    pm.expect(item).to.be.an('object');\r",
+							"\r",
+							"      // Check the properties of the object\r",
+							"    pm.expect(item).to.have.property('idModel').to.be.a('number');\r",
+							"    pm.expect(item).to.have.property('nameModel').to.be.a('string');\r",
+							"    pm.expect(item).to.have.property('category').to.be.an('object');\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify every category is active or inactive\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    response.forEach( item => {\r",
+							"        pm.expect(item.statusModel.id).to.be.equal(1);\r",
+							"    })\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{URL-AWS}}:8080/api/v1/model/name/ja/category/2",
+					"raw": "http://{{URL-AWS}}:8080/api/v1/model/name/ja/category/id/2",
 					"protocol": "http",
 					"host": [
 						"{{URL-AWS}}"
@@ -447,6 +1631,7 @@
 						"name",
 						"ja",
 						"category",
+						"id",
 						"2"
 					]
 				}
@@ -470,18 +1655,29 @@
 							"\r",
 							"// Tests to verify the response body\r",
 							"pm.test(\"Validate the idModel in the response\", function () {\r",
-							"    \r",
 							"    pm.expect(response).to.be.an('object');\r",
-							"\r",
 							"    pm.expect(response.idModel).to.exist.and.to.be.a('number');\r",
 							"});\r",
-							""
+							"\r",
+							"pm.test(\"Verify the new category is active\", function () {\r",
+							"    pm.expect(response.statusModel.id).to.be.equal(1);\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -539,6 +1735,16 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [],
 				"body": {
@@ -551,7 +1757,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{URL-AWS}}:8080/api/v1/model/35",
+					"raw": "http://{{URL-AWS}}:8080/api/v1/model/38",
 					"protocol": "http",
 					"host": [
 						"{{URL-AWS}}"
@@ -561,7 +1767,7 @@
 						"api",
 						"v1",
 						"model",
-						"35"
+						"38"
 					]
 				}
 			},
@@ -579,8 +1785,8 @@
 							"  pm.expect(pm.response.code).to.be.oneOf([201,200,202]);\r",
 							"})\r",
 							"\r",
-							"pm.test(\"Response message is 'Model item deleted'\", function () {\r",
-							"    pm.expect(pm.response.text()).to.include(\"deleted\");\r",
+							"pm.test(\"Response message is 'model item deleted'\", function () {\r",
+							"    pm.expect(pm.response.json().statusModel.id).to.be.equal(2);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -588,6 +1794,16 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [],
 				"body": {
@@ -600,7 +1816,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{URL-AWS}}:8080/api/v1/model/delete/35",
+					"raw": "http://{{URL-AWS}}:8080/api/v1/model/delete/39",
 					"protocol": "http",
 					"host": [
 						"{{URL-AWS}}"
@@ -611,7 +1827,7 @@
 						"v1",
 						"model",
 						"delete",
-						"35"
+						"39"
 					]
 				}
 			},
@@ -619,7 +1835,35 @@
 		},
 		{
 			"name": "delete by category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to verify the response status\r",
+							"pm.test(\"Response status code is Ok\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([201,200,202]);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Response message is 'model item deleted'\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"disabled\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [],
 				"body": {
@@ -632,7 +1876,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{URL-AWS}}:8080/api/v1/model/deleteByC/9",
+					"raw": "http://{{URL-AWS}}:8080/api/v1/model/deleteByC/8",
 					"protocol": "http",
 					"host": [
 						"{{URL-AWS}}"
@@ -643,117 +1887,7 @@
 						"v1",
 						"model",
 						"deleteByC",
-						"9"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DEPRECATED - Active model by category name",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Test to verify the response status\r",
-							"pm.test(\"Status OK\", function () {\r",
-							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Verify the structure of the response\", function () {\r",
-							"    const response = pm.response.json();\r",
-							"\r",
-							"    response.forEach(function (item){\r",
-							"    // Check if the response is an object\r",
-							"    pm.expect(item).to.be.an('object');\r",
-							"\r",
-							"      // Check the properties of the object\r",
-							"    pm.expect(item).to.have.property('idModel').to.be.a('number');\r",
-							"    pm.expect(item).to.have.property('nameModel').to.be.a('string');\r",
-							"    pm.expect(item).to.have.property('category').to.be.an('object');\r",
-							"    });\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://{{URL-AWS}}:8080/api/v1/model/category/sexy",
-					"protocol": "http",
-					"host": [
-						"{{URL-AWS}}"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"model",
-						"category",
-						"sexy"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Los modelos más recientes (news)",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Constants\r",
-							"const responseJson = pm.response.json();\r",
-							"const responseJsonFirst = pm.response.json()[0];\r",
-							"\r",
-							"// Test to verify the response status\r",
-							"pm.test(\"Status OK\", () => {\r",
-							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
-							"});\r",
-							"\r",
-							"// Tests to verify the response body\r",
-							"pm.test(\"The response contains an array of objects\", () => {\r",
-							"    pm.expect(responseJson).to.be.an(\"array\");\r",
-							"});\r",
-							"\r",
-							"pm.test(\"The first object in the array is complete\", () => {\r",
-							"    pm.expect(responseJsonFirst.idModel).to.be.a(\"number\");\r",
-							"});\r",
-							"\r",
-							"pm.test(\"The queried data in the first object is of the expected type\", () => {\r",
-							"\r",
-							"    pm.expect(responseJsonFirst.idModel).to.be.a(\"number\");\r",
-							"\r",
-							"    pm.expect(responseJsonFirst.nameModel).to.be.a(\"string\");\r",
-							"\r",
-							"    pm.expect(responseJsonFirst.category).to.be.an(\"object\");\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://{{URL-AWS}}:8080/api/v1/model/news/12",
-					"protocol": "http",
-					"host": [
-						"{{URL-AWS}}"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"model",
-						"news",
-						"12"
+						"8"
 					]
 				}
 			},

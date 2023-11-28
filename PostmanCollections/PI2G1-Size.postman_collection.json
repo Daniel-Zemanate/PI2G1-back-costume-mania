@@ -1,0 +1,279 @@
+{
+	"info": {
+		"_postman_id": "2fb99481-a6f1-4f0a-a04e-428a8881b4db",
+		"name": "PI2G1-Size",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18574247",
+		"_collection_link": "https://dark-meadow-935543.postman.co/workspace/PI2-G1~283cec54-33b6-4230-a826-cafcc1dffd25/collection/18574247-2fb99481-a6f1-4f0a-a04e-428a8881b4db?action=share&source=collection_link&creator=18574247"
+	},
+	"item": [
+		{
+			"name": "Negative tests",
+			"item": [
+				{
+					"name": "size inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", () => {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"The response contains an array of objects\", () => {\r",
+									"    pm.expect(responseJson).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The first object in the array is complete\", () => {\r",
+									"    pm.expect(responseJson).to.be.empty;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/size/type/3",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"size",
+								"type",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "size by id inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", function () {\r",
+									"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+									"});\r",
+									"\r",
+									"// Test to verify the response structure and data types\r",
+									"pm.test(\"Verify the structure of the response\", function () {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(response).to.be.null;\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/size/20",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"size",
+								"20"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "todos los size",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const responseJsonFirst = pm.response.json()[0];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"The response contains an array of objects\", () => {\r",
+							"    pm.expect(responseJson).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(responseJsonFirst.id).to.be.a(\"number\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The queried data in the first object is of the expected type\", () => {\r",
+							"\r",
+							"    pm.expect(responseJsonFirst.id).to.be.a(\"number\");\r",
+							"\r",
+							"    pm.expect(responseJsonFirst.adult).to.be.oneOf([0,1]);\r",
+							"\r",
+							"    pm.expect(responseJsonFirst.noSize).to.be.a(\"string\");\r",
+							"\r",
+							"    pm.expect(responseJsonFirst.sizeDescription).to.be.a(\"string\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/size",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"size"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "todos los size adultos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const responseJsonFirst = pm.response.json()[0];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"The response contains an array of objects\", () => {\r",
+							"    pm.expect(responseJson).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(responseJsonFirst.id).to.be.a(\"number\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The queried data in the first object is of the expected type\", () => {\r",
+							"\r",
+							"    pm.expect(responseJsonFirst.id).to.be.a(\"number\");\r",
+							"\r",
+							"    pm.expect(responseJsonFirst.adult).to.be.oneOf([0,1]);\r",
+							"\r",
+							"    pm.expect(responseJsonFirst.noSize).to.be.a(\"string\");\r",
+							"\r",
+							"    pm.expect(responseJsonFirst.sizeDescription).to.be.a(\"string\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/size/type/1",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"size",
+						"type",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "size by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"// Test to verify the response structure and data types\r",
+							"pm.test(\"Verify the structure of the response\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"\r",
+							"    // Check if the response is an object\r",
+							"    pm.expect(response).to.be.an('object');\r",
+							"\r",
+							"    // Check the properties of the object\r",
+							"    pm.expect(response).to.have.property('id');\r",
+							"    pm.expect(response.id).to.be.a('number');\r",
+							"    pm.expect(response.adult).to.be.oneOf([0,1]);     \r",
+							"    pm.expect(response.noSize).to.be.a(\"string\");\r",
+							"\r",
+							"    pm.expect(response.sizeDescription).to.be.a(\"string\");\r",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/size/7",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"size",
+						"7"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
