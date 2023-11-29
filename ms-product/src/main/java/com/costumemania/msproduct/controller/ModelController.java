@@ -71,7 +71,7 @@ public class ModelController {
     public ResponseEntity<Optional<List<Model>>> getByNameModel(@PathVariable String name){
         // verify list by name empty
         Optional<List<Model>> model = modelService.getByNameModel(name);
-        if(model.isEmpty()){
+        if(model.isEmpty() || model.get().isEmpty() ) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(model);
@@ -116,22 +116,6 @@ public class ModelController {
         List<Model> listModel = modelService.admGetByIdCategoryModel(idCategory);
         if (listModel.isEmpty()){
             return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok().body(listModel);
-    }
-
-    // public - deprecated - gets every model by exact category name
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<Model>> getByCategory(@PathVariable String category){
-        // verify category empty
-        Optional<Category> searchedCategory = categoryService.getByName(category);
-        if(searchedCategory.isEmpty()){
-            return ResponseEntity.badRequest().build();
-        }
-        // verify list by category empty
-        List<Model> listModel = modelService.getByCategoryModel(category);
-        if (listModel.isEmpty()){
-            ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(listModel);
     }
@@ -250,29 +234,4 @@ public class ModelController {
         modelService.inactiveByCategory(idCategory);
         return ResponseEntity.ok().body("Every models within category " + idCategory + " disabled");
     }
-
-    // adm - deprecated
-/*    @DeleteMapping("/delete/{idModel}")
-    public ResponseEntity<String> deleteModel(@PathVariable Integer idModel){
-        // verify model empty
-        Optional<Model> model =modelService.getByIdModel(idModel);
-        if(model.isEmpty()){
-           return ResponseEntity.notFound().build();
-        }
-        // deleting model
-        modelService.deleteModel(idModel);
-        return ResponseEntity.ok().body("Model item with ID " + idModel + " deleted.");
-    }
-    // adm - deprecated
-    @DeleteMapping("/deleteByCategory/{idCategory}")
-    public ResponseEntity<String> deleteModelByCategory(@PathVariable Integer idCategory){
-        // verify if there are results
-        List<Model> modelProof = modelService.getByIdCategoryModel(idCategory);
-        if(modelProof.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-        // deleting model
-        modelService.deleteModelByCat(idCategory);
-        return ResponseEntity.ok().body("Model items from Category ID " + idCategory + " deleted.");
-    }*/
 }

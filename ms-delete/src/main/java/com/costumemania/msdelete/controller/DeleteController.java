@@ -4,6 +4,7 @@ import com.costumemania.msdelete.model.Model;
 import com.costumemania.msdelete.service.CatalogService;
 import com.costumemania.msdelete.service.ModelService;
 import feign.FeignException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,17 +27,18 @@ public class DeleteController {
     }
 
     @PutMapping("/deleteModel/{idModel}")
-    public ResponseEntity<String> deleteModel(@PathVariable Integer idModel){
+    public ResponseEntity<String> deleteModel(HttpServletRequest request, @PathVariable Integer idModel){
+        String authorizationHeader = request.getHeader("Authorization");
         String message;
         // deleting catalog
         try {
-            message = catalogService.makeInactivByModel(idModel).getBody();
+            message = catalogService.makeInactivByModel(authorizationHeader, idModel).getBody();
         } catch (FeignException e){
             message = "We couldn´t verify catalog";
         }
         // deleting model
         try {
-            ResponseEntity result = modelService.makeInactive(idModel);
+            ResponseEntity result = modelService.makeInactive(authorizationHeader, idModel);
             if (result.getStatusCode()== HttpStatus.OK) {
                 message = "Model with id " + idModel + " disabled. " + message;
             }
@@ -44,24 +46,25 @@ public class DeleteController {
                 message = "We couldn´t verify model, " + message;
             }
         } catch (FeignException e){
-            message = "We couldn´t verify model" + message;
+            message = "We couldn´t verify model, " + message;
         }
         // else it´s a 200
         return ResponseEntity.ok().body(message);
     }
 
     @PutMapping("/deleteCategory/{idCategory}")
-    public ResponseEntity<String> deleteCategory(@PathVariable Integer idCategory){
+    public ResponseEntity<String> deleteCategory(HttpServletRequest request, @PathVariable Integer idCategory){
+        String authorizationHeader = request.getHeader("Authorization");
         String message;
         // deleting catalog
         try {
-            message = catalogService.makeInactivByCat(idCategory).getBody();
+            message = catalogService.makeInactivByCat(authorizationHeader, idCategory).getBody();
         } catch (FeignException e){
             message = "We couldn´t verify catalog in category";
         }
         // deleting model
         try {
-            ResponseEntity result = modelService.makeInactivByCat(idCategory);
+            ResponseEntity result = modelService.makeInactivByCat(authorizationHeader, idCategory);
             if (result.getStatusCode()== HttpStatus.OK) {
                 message = result.getBody() + ", " + message;
             }
@@ -72,7 +75,7 @@ public class DeleteController {
             message = "We couldn´t verify models in category, " + message;
         }
         try {
-            ResponseEntity result = modelService.makeInactiveCat(idCategory);
+            ResponseEntity result = modelService.makeInactiveCat(authorizationHeader, idCategory);
             if (result.getStatusCode()== HttpStatus.OK) {
                 message = "Category with id " + idCategory + " disabled, " + message;
             }

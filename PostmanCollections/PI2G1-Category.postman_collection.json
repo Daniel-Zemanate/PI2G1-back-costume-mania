@@ -1,0 +1,986 @@
+{
+	"info": {
+		"_postman_id": "50a0e64d-16fd-4586-913f-0ac1c88695f4",
+		"name": "PI2G1-Category",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18574247",
+		"_collection_link": "https://dark-meadow-935543.postman.co/workspace/PI2-G1~283cec54-33b6-4230-a826-cafcc1dffd25/collection/18574247-50a0e64d-16fd-4586-913f-0ac1c88695f4?action=share&source=collection_link&creator=18574247"
+	},
+	"item": [
+		{
+			"name": "Negative tests",
+			"item": [
+				{
+					"name": "Active category by id inactive",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/category/7",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active category by id inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/category/10",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active/Inactive category by id inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/category/adm/10",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"adm",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "category by name inexistente ADM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/category/name/dis",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"name",
+								"dis"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create category already exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status Not Processing\", function () {\r",
+									"    pm.response.to.have.status(422); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Disney\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/category/create",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update category Inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"categoria de prueba modificada\",\r\n    \"status\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/category/80",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"80"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update category already exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status Not Processing\", function () {\r",
+									"    pm.response.to.have.status(422); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Disney\",\r\n    \"status\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/category/7",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update category bad status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status bad request\", function () {\r",
+									"    pm.response.to.have.status(400); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Disney2\",\r\n    \"status\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/category/7",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete inexistente categoria",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/category/delete/11",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"delete",
+								"11"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "todas las categorias Activas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the structure of the response\", function () {\r",
+							"    const response = pm.response.json()[0];\r",
+							"    // Check the structure of each object in the array\r",
+							"        pm.expect(response).to.be.an('object');\r",
+							"        pm.expect(response).to.have.property('idCategory');\r",
+							"        pm.expect(response.idCategory).to.be.a('number');\r",
+							"        pm.expect(response).to.have.property('name');\r",
+							"        pm.expect(response.name).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify every category is active\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    // Check the structure of each object in the array\r",
+							"    response.forEach (item => {pm.expect(item.statusCategory.id).equal(1)});\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/category",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "todas las categorias Activas/Inactivas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the structure of the response\", function () {\r",
+							"    const response = pm.response.json()[0];\r",
+							"\r",
+							"    // Check the structure of each object in the array\r",
+							"        pm.expect(response).to.be.an('object');\r",
+							"        pm.expect(response).to.have.property('idCategory');\r",
+							"        pm.expect(response.idCategory).to.be.a('number');\r",
+							"        pm.expect(response).to.have.property('name');\r",
+							"        pm.expect(response.name).to.be.a('string');\r",
+							"    });\r",
+							"\r",
+							"pm.test(\"Verify every category is active or inactive\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    // Check the structure of each object in the array\r",
+							"    response.forEach (item => {pm.expect(item.statusCategory.id).to.be.oneOf([1,2])});\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/category/all",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"category",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Active category by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"// Test to verify the response structure and data types\r",
+							"pm.test(\"Verify the structure of the response\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"\r",
+							"    // Check if the response is an object\r",
+							"    pm.expect(response).to.be.an('object');\r",
+							"\r",
+							"    // Check the properties of the object\r",
+							"    pm.expect(response).to.have.property('idCategory');\r",
+							"    pm.expect(response.idCategory).to.be.a('number');\r",
+							"    pm.expect(response).to.have.property('name');\r",
+							"    pm.expect(response.name).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"// Get the ID from the URL\r",
+							"const url = pm.request.url.toString();\r",
+							"const urlParts = url.split(\"/\");\r",
+							"const idFromUrl = urlParts[urlParts.length - 1];\r",
+							"// Get the ID from the response JSON\r",
+							"const responseJson = pm.response.json();\r",
+							"const idFromResponse = responseJson.idCategory;\r",
+							"// Test to compare the IDs\r",
+							"pm.test(\"Check if the ID in the response matches the URL parameter\", function () {\r",
+							"    pm.expect(idFromResponse).to.equal(parseInt(idFromUrl));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify every category is active\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    // Check the structure of each object in the array\r",
+							"    pm.expect(response.statusCategory.id).equal(1);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/category/1",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"category",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Active/Inactive category by id ADM",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"// Test to verify the response structure and data types\r",
+							"pm.test(\"Verify the structure of the response\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"\r",
+							"    // Check if the response is an object\r",
+							"    pm.expect(response).to.be.an('object');\r",
+							"\r",
+							"    // Check the properties of the object\r",
+							"    pm.expect(response).to.have.property('idCategory');\r",
+							"    pm.expect(response.idCategory).to.be.a('number');\r",
+							"    pm.expect(response).to.have.property('name');\r",
+							"    pm.expect(response.name).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"// Get the ID from the URL\r",
+							"const url = pm.request.url.toString();\r",
+							"const urlParts = url.split(\"/\");\r",
+							"const idFromUrl = urlParts[urlParts.length - 1];\r",
+							"\r",
+							"// Get the ID from the response JSON\r",
+							"const responseJson = pm.response.json();\r",
+							"const idFromResponse = responseJson.idCategory;\r",
+							"\r",
+							"// Test to compare the IDs\r",
+							"pm.test(\"Check if the ID in the response matches the URL parameter\", function () {\r",
+							"    pm.expect(idFromResponse).to.equal(parseInt(idFromUrl));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify every category is active or inactive\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    // Check the structure of each object in the array\r",
+							"    pm.expect(response.statusCategory.id).to.be.oneOf([1,2]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/category/adm/1",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"category",
+						"adm",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "category by name ADM",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the structure of the response\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"\r",
+							"    // Check if the response is an object\r",
+							"    pm.expect(response).to.be.an('object');\r",
+							"\r",
+							"    // Check the properties of the object\r",
+							"    pm.expect(response).to.have.property('idCategory');\r",
+							"    pm.expect(response.idCategory).to.be.a('number');\r",
+							"    pm.expect(response).to.have.property('name');\r",
+							"    pm.expect(response.name).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify every category is active or inactive\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    // Check the structure of each object in the array\r",
+							"    pm.expect(response.statusCategory.id).to.be.oneOf([1,2]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/category/name/disney",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"category",
+						"name",
+						"disney"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Response status code is Ok\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([201,200,202]);\r",
+							"})\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"Validate the idCategory in the response\", function () {\r",
+							"    \r",
+							"    pm.expect(response).to.be.an('object');\r",
+							"\r",
+							"    pm.expect(response.idCategory).to.exist.and.to.be.a('number');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the new category is active\", function () {\r",
+							"    // Check the structure of each object in the array\r",
+							"    pm.expect(response.statusCategory.id).to.be.equal(1);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"categoria de prueba\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/category/create",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"category",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Response status code is Ok\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([200,202]);\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"Validate the idCategory field\", function () {\r",
+							"\r",
+							"    pm.expect(response).to.be.an('object');\r",
+							"\r",
+							"    pm.expect(response.idCategory).to.exist;\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"categoria de prueba modificada\",\r\n    \"status\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/category/8",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"category",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to verify the response status\r",
+							"pm.test(\"Response status code is Ok\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([201,200,202]);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Response message is 'Category item deleted'\", function () {\r",
+							"    pm.expect(pm.response.json().statusCategory.id).to.be.equal(2);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/category/delete/11",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"category",
+						"delete",
+						"11"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,15 +17,15 @@ public class ModelService {
     @Autowired
     ModelRepositoryFeign modelRepositoryFeign;
 
-    public ResponseEntity<Model> makeInactive(@PathVariable Integer idModel) {
-        return modelRepositoryFeign.makeInactive(idModel);
+    public ResponseEntity<Model> makeInactive(@RequestHeader("Authorization") String token, @PathVariable Integer idModel) {
+        return modelRepositoryFeign.makeInactive(token, idModel);
     }
 
-    public ResponseEntity<String> makeInactivByCat (@PathVariable Integer idCategory) {
-        return modelRepositoryFeign.makeInactivByCat(idCategory);
+    public ResponseEntity<String> makeInactivByCat (@RequestHeader("Authorization") String token, @PathVariable Integer idCategory) {
+        return modelRepositoryFeign.makeInactivByCat(token, idCategory);
     };
 
-    public ResponseEntity<Category> makeInactiveCat (@PathVariable Integer idCategory) {
-        return modelRepositoryFeign.makeInactiveCat(idCategory);
+    public ResponseEntity<Category> makeInactiveCat (@RequestHeader("Authorization") String token, @PathVariable Integer idCategory) {
+        return modelRepositoryFeign.makeInactiveCat(token, idCategory);
     }
 }

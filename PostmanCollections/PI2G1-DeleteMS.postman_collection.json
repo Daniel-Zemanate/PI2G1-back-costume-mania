@@ -1,0 +1,317 @@
+{
+	"info": {
+		"_postman_id": "dec8af78-2864-44ac-a33c-c2f4c94d3f83",
+		"name": "PI2G1-DeleteMS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18574247",
+		"_collection_link": "https://dark-meadow-935543.postman.co/workspace/PI2-G1~283cec54-33b6-4230-a826-cafcc1dffd25/collection/18574247-dec8af78-2864-44ac-a33c-c2f4c94d3f83?action=share&source=collection_link&creator=18574247"
+	},
+	"item": [
+		{
+			"name": "delete model + catalog",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to verify the response status\r",
+							"pm.test(\"Response status code is Ok\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([201,200,202]);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Response message - item deleted\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"disabled\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/deleteMS/deleteModel/39",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"deleteMS",
+						"deleteModel",
+						"39"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete model + catalog - model inexists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to verify the response status\r",
+							"pm.test(\"Response status code is Ok\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([201,200,202]);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Response message - item deleted\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"We couldn´t verify\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/deleteMS/deleteModel/390",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"deleteMS",
+						"deleteModel",
+						"390"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete model + catalog - catalog empty",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to verify the response status\r",
+							"pm.test(\"Response status code is Ok\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([201,200,202]);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Response message - item deleted\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"there isn´t catalog\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/deleteMS/deleteModel/41",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"deleteMS",
+						"deleteModel",
+						"41"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete category + model + catalog",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to verify the response status\r",
+							"pm.test(\"Response status code is Ok\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([201,200,202]);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Response message - item deleted\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"disabled\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/deleteMS/deleteCategory/9",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"deleteMS",
+						"deleteCategory",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete category + model + catalog - category inexists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to verify the response status\r",
+							"pm.test(\"Response status code is Ok\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([201,200,202]);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Response message - item deleted\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"We couldn´t verify\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/deleteMS/deleteCategory/90",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"deleteMS",
+						"deleteCategory",
+						"90"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete category + model + catalog - model empty",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to verify the response status\r",
+							"pm.test(\"Response status code is Ok\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([201,200,202]);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Response message - item deleted\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"We couldn´t verify\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/deleteMS/deleteCategory/10",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"deleteMS",
+						"deleteCategory",
+						"10"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

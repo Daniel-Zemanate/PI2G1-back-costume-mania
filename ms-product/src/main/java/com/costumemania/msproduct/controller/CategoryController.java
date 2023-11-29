@@ -128,17 +128,4 @@ public class CategoryController {
         categoryProof.get().setStatusCategory(new StatusComponent(2, "inactive"));
         return ResponseEntity.ok().body(categoryService.create(categoryProof.get()));
     }
-
-    // adm - deprecated
-    /*@DeleteMapping("/delete/{idCategory}")
-    public ResponseEntity<String> delete (@PathVariable Integer idCategory) {
-        // first verify if the ID exist
-        Optional<Category> categoryProof = categoryService.getdById(idCategory);
-        if (categoryProof.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        // else...
-        categoryService.delete(idCategory);
-        return ResponseEntity.ok().body("Category item with ID " + idCategory + " deleted.");
-    }*/
 }
