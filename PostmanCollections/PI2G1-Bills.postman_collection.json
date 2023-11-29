@@ -1,0 +1,3046 @@
+{
+	"info": {
+		"_postman_id": "071ce096-8b77-4a6a-bbbd-b3d895911d49",
+		"name": "PI2G1-Bills",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18574247",
+		"_collection_link": "https://dark-meadow-935543.postman.co/workspace/PI2-G1~283cec54-33b6-4230-a826-cafcc1dffd25/collection/18574247-071ce096-8b77-4a6a-bbbd-b3d895911d49?action=share&source=collection_link&creator=18574247"
+	},
+	"item": [
+		{
+			"name": "Shipping & Status",
+			"item": [
+				{
+					"name": "getAll shipping",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const responseJson = pm.response.json();\r",
+									"const firstItem = responseJson[0];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", function () {\r",
+									"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"The response contains an array of objects\", () => {\r",
+									"    pm.expect(responseJson).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The first object in the array is complete\", () => {\r",
+									"    pm.expect(firstItem).to.be.a(\"object\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response structure and data types are correct\", function () {\r",
+									"    pm.expect(firstItem).to.have.property(\"idShippping\").that.is.an(\"number\");\r",
+									"    pm.expect(firstItem).to.have.property(\"destination\").that.is.an(\"string\");\r",
+									"    pm.expect(firstItem).to.have.property(\"cost\").that.is.a(\"number\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/shipping",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"shipping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get shipping by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const responseJson = pm.response.json();\r",
+									"const firstItem = responseJson;\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", function () {\r",
+									"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The first object in the array is complete\", () => {\r",
+									"    pm.expect(firstItem).to.be.a(\"object\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response structure and data types are correct\", function () {\r",
+									"    pm.expect(firstItem).to.have.property(\"idShippping\").that.is.an(\"number\");\r",
+									"    pm.expect(firstItem).to.have.property(\"destination\").that.is.an(\"string\");\r",
+									"    pm.expect(firstItem).to.have.property(\"cost\").that.is.a(\"number\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/shipping/2",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"shipping",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get shipping by name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const responseJson = pm.response.json();\r",
+									"const firstItem = responseJson[0];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", function () {\r",
+									"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"The response contains an array of objects\", () => {\r",
+									"    pm.expect(responseJson).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The first object in the array is complete\", () => {\r",
+									"    pm.expect(firstItem).to.be.a(\"object\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response structure and data types are correct\", function () {\r",
+									"    pm.expect(firstItem).to.have.property(\"idShippping\").that.is.an(\"number\");\r",
+									"    pm.expect(firstItem).to.have.property(\"destination\").that.is.an(\"string\");\r",
+									"    pm.expect(firstItem).to.have.property(\"cost\").that.is.a(\"number\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/shipping/destination/bue",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"shipping",
+								"destination",
+								"bue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create shipping",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", function () {\r",
+									"    pm.response.to.have.status(202); // You can adjust the expected status code as needed\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The first object in the array is complete\", () => {\r",
+									"    pm.expect(responseJson).to.be.a(\"object\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response structure and data types are correct\", function () {\r",
+									"    pm.expect(responseJson).to.have.property(\"idShippping\").that.is.an(\"number\");\r",
+									"    pm.expect(responseJson).to.have.property(\"destination\").that.is.an(\"string\");\r",
+									"    pm.expect(responseJson).to.have.property(\"cost\").that.is.a(\"number\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"destination\": \"prueba1\",\r\n    \"cost\": 10.1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/shipping/create",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"shipping",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update shipping",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"const pathVariable = pm.request.url.path[3];\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", function () {\r",
+									"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The first object in the array is complete\", () => {\r",
+									"    pm.expect(responseJson).to.be.a(\"object\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response structure and data types are correct\", function () {\r",
+									"    pm.expect(responseJson).to.have.property(\"idShippping\").that.is.an(\"number\");\r",
+									"    pm.expect(responseJson).to.have.property(\"destination\").that.is.an(\"string\");\r",
+									"    pm.expect(responseJson).to.have.property(\"cost\").that.is.a(\"number\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate updating correct ID\", function () {\r",
+									"    pm.expect(responseJson.idShippping.toString()).to.be.equal(pathVariable);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"destination\": \"prueba3\",\r\n    \"cost\": 10.1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/shipping/11",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"shipping",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const responseJson = pm.response.json();\r",
+									"const firstItem = responseJson[0];\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", function () {\r",
+									"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+									"});\r",
+									"\r",
+									"// Tests to verify the response body\r",
+									"pm.test(\"The response contains an array of objects\", () => {\r",
+									"    pm.expect(responseJson).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The first object in the array is complete\", () => {\r",
+									"    pm.expect(firstItem).to.be.a(\"object\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response structure and data types are correct\", function () {\r",
+									"    pm.expect(firstItem).to.have.property(\"idStatus\").that.is.an(\"number\");\r",
+									"    pm.expect(firstItem).to.have.property(\"status\").that.is.an(\"string\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/status",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get status by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const responseJson = pm.response.json();\r",
+									"const firstItem = responseJson;\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", function () {\r",
+									"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The first object in the array is complete\", () => {\r",
+									"    pm.expect(firstItem).to.be.a(\"object\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response structure and data types are correct\", function () {\r",
+									"    pm.expect(firstItem).to.have.property(\"idStatus\").that.is.an(\"number\");\r",
+									"    pm.expect(firstItem).to.have.property(\"status\").that.is.an(\"string\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/status/2",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"status",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Negative tests",
+			"item": [
+				{
+					"name": "get shipping by ID inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/shipping/20",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"shipping",
+								"20"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get shipping by name inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/shipping/destination/chaca",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"shipping",
+								"destination",
+								"chaca"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create shipping already exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status Not Processing\", function () {\r",
+									"    pm.response.to.have.status(422); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"destination\": \"prueba1\",\r\n    \"cost\": 10.1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/shipping/create",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"shipping",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create shipping - bad city",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status Not Processing\", function () {\r",
+									"    pm.response.to.have.status(422); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"destination\": \"\",\r\n    \"cost\": 10.1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/shipping/create",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"shipping",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create shipping with cost 0",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", function () {\r",
+									"    pm.response.to.have.status(202); // You can adjust the expected status code as needed\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The first object in the array is complete\", () => {\r",
+									"    pm.expect(responseJson).to.be.a(\"object\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response structure and data types are correct\", function () {\r",
+									"    pm.expect(responseJson).to.have.property(\"idShippping\").that.is.an(\"number\");\r",
+									"    pm.expect(responseJson).to.have.property(\"destination\").that.is.an(\"string\");\r",
+									"    pm.expect(responseJson).to.have.property(\"cost\").that.is.a(\"number\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate cost\", function () {\r",
+									"    pm.expect(responseJson.cost).to.be.equal(0.0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"destination\": \"prueba2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/shipping/create",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"shipping",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update shipping inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"destination\": \"prueba3\",\r\n    \"cost\": 10.1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/shipping/15",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"shipping",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update shipping - already exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status Not Processing\", function () {\r",
+									"    pm.response.to.have.status(422); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"destination\": \"prueba3\",\r\n    \"cost\": 10.1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/shipping/11",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"shipping",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update shipping with cost 0",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"const pathVariable = pm.request.url.path[3];\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status OK\", function () {\r",
+									"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The first object in the array is complete\", () => {\r",
+									"    pm.expect(responseJson).to.be.a(\"object\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response structure and data types are correct\", function () {\r",
+									"    pm.expect(responseJson).to.have.property(\"idShippping\").that.is.an(\"number\");\r",
+									"    pm.expect(responseJson).to.have.property(\"destination\").that.is.an(\"string\");\r",
+									"    pm.expect(responseJson).to.have.property(\"cost\").that.is.a(\"number\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate updating correct ID\", function () {\r",
+									"    pm.expect(responseJson.idShippping.toString()).to.be.equal(pathVariable);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate cost\", function () {\r",
+									"    pm.expect(responseJson.cost).to.be.equal(0.0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"destination\": \"prueba4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/shipping/11",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"shipping",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get status by ID inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/status/20",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"status",
+								"20"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get sale by ID inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/100",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"100"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get sale by status inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/status/100",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"status",
+								"100"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get sale by status empty",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOCONTENT\", function () {\r",
+									"    pm.response.to.have.status(204); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/status/6",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"status",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get sale by model inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/model/100",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"model",
+								"100"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get sale by model empty",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NO Content\", function () {\r",
+									"    pm.response.to.have.status(204); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/model/10",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"model",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get sale by catalog inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/catalog/200",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"catalog",
+								"200"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get sale by catalog empty",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NO Content\", function () {\r",
+									"    pm.response.to.have.status(204); // You can adjust the expected status code as needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/catalog/49",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"catalog",
+								"49"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get sale by size inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/size/3",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"size",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get sale by dates empty",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NO Content\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/dates/2023-02-12/2023-02-a",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"dates",
+								"2023-02-12",
+								"2023-02-a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by invoice inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/invoice/290",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"invoice",
+								"290"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar compra - stock agotado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const responseJson = pm.response.json();\r",
+									"const firstItem = responseJson;\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status Not Processing\", function () {\r",
+									"    pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The first object in the array is complete\", () => {\r",
+									"    pm.expect(firstItem).to.be.a(\"object\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response structure and data types are correct\", function () {\r",
+									"    pm.expect(firstItem).to.have.property(\"errorMessage\").that.include(\"isn´t enough, There are only\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"city\": 2,\r\n    \"itemSoldList\": [\r\n        {\r\n            \"catalog\": 2,\r\n            \"quantitySold\": 100\r\n        },\r\n        {\r\n            \"catalog\": 1,\r\n            \"quantitySold\": 2\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/startSale",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"startSale"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar compra - catalog inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const responseJson = pm.response.json();\r",
+									"const firstItem = responseJson;\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status Not Processing\", function () {\r",
+									"    pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The first object in the array is complete\", () => {\r",
+									"    pm.expect(firstItem).to.be.a(\"object\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response structure and data types are correct\", function () {\r",
+									"    pm.expect(firstItem).to.have.property(\"errorMessage\").that.include(\"We can´t process your purchase\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"city\": 2,\r\n    \"itemSoldList\": [\r\n        {\r\n            \"catalog\": 200,\r\n            \"quantitySold\": 1\r\n        },\r\n        {\r\n            \"catalog\": 1,\r\n            \"quantitySold\": 2\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/startSale",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"startSale"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar compra - city inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Constants\r",
+									"const responseJson = pm.response.json();\r",
+									"const firstItem = responseJson;\r",
+									"\r",
+									"// Test to verify the response status\r",
+									"pm.test(\"Status Not Processing\", function () {\r",
+									"    pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The first object in the array is complete\", () => {\r",
+									"    pm.expect(firstItem).to.be.a(\"object\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response structure and data types are correct\", function () {\r",
+									"    pm.expect(firstItem).to.have.property(\"errorMessage\").that.include(\"We can´t process your purchase\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"city\": 20,\r\n    \"itemSoldList\": [\r\n        {\r\n            \"catalog\": 2,\r\n            \"quantitySold\": 1\r\n        },\r\n        {\r\n            \"catalog\": 1,\r\n            \"quantitySold\": 2\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/startSale",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"startSale"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete by user - invoice inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMiIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzAxMzMyMjM2LCJpYXQiOjE3MDEyNDU3NTZ9.78UBG6uqOG7L3de-l5Zp5NyQddbj9JFCOB9e4TUCL0U",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/330",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"330"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete by user - invoice deliveried",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status Not Processing\", function () {\r",
+									"    pm.response.to.have.status(422);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMiIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzAxMzMyMjM2LCJpYXQiOjE3MDEyNDU3NTZ9.78UBG6uqOG7L3de-l5Zp5NyQddbj9JFCOB9e4TUCL0U",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/23",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modify by adm - status inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status bad request\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTMzMjYyMSwiaWF0IjoxNzAxMjQ2MTQxfQ.ny65xSWpa-2kIW2_5HzsTyXhPIwqEFPslDq5OxjUNDM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"newStatus\": 30,\r\n    \"shippingDate\": \"2018-02-05T12:59:11.332\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/modify/33",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"modify",
+								"33"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modify by adm - wrong shippingDate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status bad request\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTMzMjYyMSwiaWF0IjoxNzAxMjQ2MTQxfQ.ny65xSWpa-2kIW2_5HzsTyXhPIwqEFPslDq5OxjUNDM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"newStatus\": 3,\r\n    \"shippingDate\": \"2018-02-05T12:59:11.332\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/modify/33",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"modify",
+								"33"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modify by adm - delivered without shippingDate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status bad request\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTMzMjYyMSwiaWF0IjoxNzAxMjQ2MTQxfQ.ny65xSWpa-2kIW2_5HzsTyXhPIwqEFPslDq5OxjUNDM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"newStatus\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/modify/33",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"modify",
+								"33"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "getAll Sales",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson[0];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"The response contains an array of objects\", () => {\r",
+							"    pm.expect(responseJson).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem).to.be.a(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"    pm.expect(firstItem).to.have.property(\"idSale\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"invoice\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"user\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"catalog\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"city\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"status\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"saleDate\").that.is.an(\"string\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/sale",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"sale"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAll Sales PAGE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson.content[0];\r",
+							"const pathVariable = pm.request.url.path[4];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"The response contains an array of objects\", () => {\r",
+							"    pm.expect(responseJson.content).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem).to.be.a(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"    pm.expect(firstItem).to.have.property(\"idSale\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"invoice\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"user\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"catalog\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"city\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"status\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"saleDate\").that.is.an(\"string\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"It´s a Page object\", () => {\r",
+							"    pm.expect(responseJson.pageable.pageNumber.toString()).equal(pathVariable);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/sale/page/0",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"sale",
+						"page",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get sale by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson;\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem).to.be.a(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"    pm.expect(firstItem).to.have.property(\"idSale\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"invoice\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"user\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"catalog\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"city\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"status\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"saleDate\").that.is.an(\"string\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/sale/1",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"sale",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get sale by status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson[0];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"The response contains an array of objects\", () => {\r",
+							"    pm.expect(responseJson).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem).to.be.a(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"    pm.expect(firstItem).to.have.property(\"idSale\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"invoice\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"user\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"catalog\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"city\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"status\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"saleDate\").that.is.an(\"string\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/sale/status/1",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"sale",
+						"status",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SIN PROBAR get sale by user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson[0];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"The response contains an array of objects\", () => {\r",
+							"    pm.expect(responseJson).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem).to.be.a(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"    pm.expect(firstItem).to.have.property(\"idSale\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"invoice\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"user\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"catalog\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"city\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"status\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"saleDate\").that.is.an(\"string\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8084/api/v1/sale/user/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"v1",
+						"sale",
+						"user",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get sale by model",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson[0];\r",
+							"const pathVariable = pm.request.url.path[4];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"The response contains an array of objects\", () => {\r",
+							"    pm.expect(responseJson).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem).to.be.a(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"    pm.expect(firstItem).to.have.property(\"idSale\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"invoice\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"user\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"catalog\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"city\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"status\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"saleDate\").that.is.an(\"string\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify ID model\", function () {\r",
+							"    pm.expect(firstItem.catalog.model.idModel.toString()).to.be.equal(pathVariable);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/sale/model/1",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"sale",
+						"model",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get sale by catalog",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson[0];\r",
+							"const pathVariable = pm.request.url.path[4];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"The response contains an array of objects\", () => {\r",
+							"    pm.expect(responseJson).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem).to.be.a(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"    pm.expect(firstItem).to.have.property(\"idSale\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"invoice\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"user\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"catalog\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"city\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"status\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"saleDate\").that.is.an(\"string\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify ID cayalog\", function () {\r",
+							"    pm.expect(firstItem.catalog.idCatalog.toString()).to.be.equal(pathVariable);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/sale/catalog/2",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"sale",
+						"catalog",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get sale by size",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson[0];\r",
+							"const pathVariable = pm.request.url.path[4];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"The response contains an array of objects\", () => {\r",
+							"    pm.expect(responseJson).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem).to.be.a(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"    pm.expect(firstItem).to.have.property(\"idSale\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"invoice\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"user\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"catalog\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"city\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"status\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"saleDate\").that.is.an(\"string\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify ID size\", function () {\r",
+							"    pm.expect(firstItem.catalog.size.adult.toString()).to.be.equal(pathVariable);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/sale/size/1",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"sale",
+						"size",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get sale by dates",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson[0];\r",
+							"const pathVariable = pm.request.url.path[4];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"The response contains an array of objects\", () => {\r",
+							"    pm.expect(responseJson).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem).to.be.a(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"    pm.expect(firstItem).to.have.property(\"idSale\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"invoice\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"user\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"catalog\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"city\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"status\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"saleDate\").that.is.an(\"string\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/sale/dates/2023-02-12/2023-02-16",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"sale",
+						"dates",
+						"2023-02-12",
+						"2023-02-16"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get by invoice",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson;\r",
+							"const pathVariable = pm.request.url.path[4];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem).to.be.a(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"    pm.expect(firstItem).to.have.property(\"no_invoice\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"status\").that.is.an(\"string\");\r",
+							"    pm.expect(firstItem).to.have.property(\"items\").that.is.an(\"array\");\r",
+							"    pm.expect(firstItem).to.have.property(\"shippingCity\").that.is.an(\"string\");\r",
+							"    pm.expect(firstItem).to.have.property(\"total\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"invoiceDate\").that.is.an(\"string\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify ID invoice\", function () {\r",
+							"    pm.expect(firstItem.no_invoice.toString()).to.be.equal(pathVariable);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/sale/invoice/29",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"sale",
+						"invoice",
+						"29"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SIN PROBAR get invoices by user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson;\r",
+							"const pathVariable = pm.request.url.path[4];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem).to.be.a(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"    pm.expect(firstItem).to.have.property(\"no_invoice\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"status\").that.is.an(\"string\");\r",
+							"    pm.expect(firstItem).to.have.property(\"items\").that.is.an(\"array\");\r",
+							"    pm.expect(firstItem).to.have.property(\"shippingCity\").that.is.an(\"string\");\r",
+							"    pm.expect(firstItem).to.have.property(\"total\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"invoiceDate\").that.is.an(\"string\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify ID invoice\", function () {\r",
+							"    pm.expect(firstItem.no_invoice.toString()).to.be.equal(pathVariable);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/sale/invoice/user/2",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"sale",
+						"invoice",
+						"user",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get every invoice",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson[0];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem).to.be.a(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"    pm.expect(firstItem).to.have.property(\"no_invoice\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"status\").that.is.an(\"string\");\r",
+							"    pm.expect(firstItem).to.have.property(\"items\").that.is.an(\"array\");\r",
+							"    pm.expect(firstItem).to.have.property(\"shippingCity\").that.is.an(\"string\");\r",
+							"    pm.expect(firstItem).to.have.property(\"total\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"invoiceDate\").that.is.an(\"string\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"city\": 2,\r\n    \"itemSoldList\": [\r\n        {\r\n            \"catalog\": 20,\r\n            \"quantitySold\": 2\r\n        },\r\n        {\r\n            \"catalog\": 2,\r\n            \"quantitySold\": 1\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/sale/invoice",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"sale",
+						"invoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verificar compra",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson;\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem).to.be.a(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"    pm.expect(firstItem).to.have.property(\"invoiceNumber\").that.is.an(\"null\");\r",
+							"    pm.expect(firstItem).to.have.property(\"itemSoldList\").that.is.an(\"array\");\r",
+							"    pm.expect(firstItem).to.have.property(\"shippingCost\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"total\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"errorMessage\").that.is.an(\"null\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"city\": 2,\r\n    \"itemSoldList\": [\r\n        {\r\n            \"catalog\": 2,\r\n            \"quantitySold\": 1\r\n        },\r\n        {\r\n            \"catalog\": 1,\r\n            \"quantitySold\": 2\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/sale/startSale",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"sale",
+						"startSale"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SIN PROBAR Hacer compra",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user\": 4,\r\n    \"city\": 2,\r\n    \"itemSoldList\": [\r\n        {\r\n            \"catalog\": 2,\r\n            \"quantitySold\": 1\r\n        },\r\n        {\r\n            \"catalog\": 1,\r\n            \"quantitySold\": 1\r\n        }\r\n    ],\r\n    \"address\": \"prueba de compra1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/sale/create",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"sale",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete by user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson[0];\r",
+							"const pathVariable = pm.request.url.path[3];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(202); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"The response contains an array of objects\", () => {\r",
+							"    pm.expect(responseJson).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem).to.be.a(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"    pm.expect(firstItem).to.have.property(\"idSale\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"invoice\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"user\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"catalog\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"city\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"status\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"saleDate\").that.is.an(\"string\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify ID invoice\", function () {\r",
+							"    responseJson.forEach( item => {\r",
+							"        pm.expect(item.invoice.toString()).to.be.equal(pathVariable);\r",
+							"    })\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify new status\", function () {\r",
+							"    responseJson.forEach( item => {\r",
+							"        pm.expect(item.status.status.toString()).to.be.equal(\"Cancelled by the customer\");\r",
+							"    })\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMiIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzAxMzMyMjM2LCJpYXQiOjE3MDEyNDU3NTZ9.78UBG6uqOG7L3de-l5Zp5NyQddbj9JFCOB9e4TUCL0U",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/sale/33",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"sale",
+						"33"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modify by adm",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson[0];\r",
+							"const pathVariable = pm.request.url.path[4];\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(202); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"// Tests to verify the response body\r",
+							"pm.test(\"The response contains an array of objects\", () => {\r",
+							"    pm.expect(responseJson).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem).to.be.a(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"    pm.expect(firstItem).to.have.property(\"idSale\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"invoice\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"user\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"catalog\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"city\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"status\").that.is.an(\"object\");\r",
+							"    pm.expect(firstItem).to.have.property(\"saleDate\").that.is.an(\"string\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify ID invoice\", function () {\r",
+							"    responseJson.forEach( item => {\r",
+							"        pm.expect(item.invoice.toString()).to.be.equal(pathVariable);\r",
+							"    })\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTMzMjYyMSwiaWF0IjoxNzAxMjQ2MTQxfQ.ny65xSWpa-2kIW2_5HzsTyXhPIwqEFPslDq5OxjUNDM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"newStatus\": 3,\r\n    \"shippingDate\": \"2024-02-05T12:59:11.332\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/sale/modify/33",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"sale",
+						"modify",
+						"33"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
