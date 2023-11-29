@@ -5,6 +5,7 @@ import com.costumemania.msbills.model.Shipping;
 import com.costumemania.msbills.model.Status;
 import com.costumemania.msbills.model.requiredEntity.Catalog;
 import com.costumemania.msbills.model.requiredEntity.User;
+import com.costumemania.msbills.model.requiredEntity.UserExists;
 import com.costumemania.msbills.service.*;
 import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -87,8 +88,8 @@ public class SaleController {
     public ResponseEntity<List<Sale>> getByUser (HttpServletRequest request, @PathVariable Integer idUser){
         String authorizationHeader = request.getHeader("Authorization");
         try {
-            ResponseEntity<?> userProof = userService.userById(authorizationHeader, idUser);
-            if (userProof.getStatusCode()==HttpStatus.NOT_FOUND) {
+            ResponseEntity<UserExists> userProof = userService.userExists(authorizationHeader, idUser);
+            if (!userProof.getBody().isUserExists()) {
                 return ResponseEntity.notFound().build();
             }
         } catch (FeignException e) {
@@ -336,7 +337,7 @@ public class SaleController {
         return ResponseEntity.ok(result);
     }
 
-    // adm  -- todo: agregar a la base de datos de factura, el valor estático por unidad y por costo de envío para que no se actualice todo el tiempo.
+    // adm
     @GetMapping("/invoice")
     public ResponseEntity<List<Invoice>> getAllInvoices () {
         Integer lastInvoice = saleService.getLastInvoice();
@@ -682,6 +683,9 @@ public class SaleController {
                         saleService.create(sale);
                     }
                 } else {
+                    if (body.getShippingDate().isBefore(invoiceProof.get().get(0).getSaleDate())) {
+                        return ResponseEntity.badRequest().build();
+                    }
                     for (Sale sale : invoiceProof.get()) {
                         String statusString;
                         if (body.getNewStatus() == 1) {
@@ -736,6 +740,9 @@ public class SaleController {
                         saleService.create(sale);
                     }
                 } else {
+                    if (body.getShippingDate().isBefore(invoiceProof.get().get(0).getSaleDate())) {
+                        return ResponseEntity.badRequest().build();
+                    }
                     for (Sale sale : invoiceProof.get()) {
                         try {
                             catalogService.catalogSold(authorizationHeader, sale.getCatalog().getIdCatalog(), sale.getQuantity());
