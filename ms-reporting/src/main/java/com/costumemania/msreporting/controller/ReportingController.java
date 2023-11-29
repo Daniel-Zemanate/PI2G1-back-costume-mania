@@ -1,23 +1,19 @@
 package com.costumemania.msreporting.controller;
 
-import com.costumemania.msreporting.model.jsonResponses.AverageShippingTime;
-import com.costumemania.msreporting.model.jsonResponses.DateJson;
-import com.costumemania.msreporting.model.jsonResponses.ShippingTimeComplete;
-import com.costumemania.msreporting.model.jsonResponses.ShippingTimePeriod;
+import com.costumemania.msreporting.model.jsonResponses.*;
 import com.costumemania.msreporting.model.requiredEntity.Sale;
 import com.costumemania.msreporting.service.SaleService;
 import feign.FeignException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
+import jakarta.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.time.ZoneId;
+import java.util.*;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -234,4 +230,180 @@ public class ReportingController {
         shippingTimeComplete.setDetailedShippingTime(list.getBody());
         return ResponseEntity.ok(shippingTimeComplete);
     }
+            //////////////////////////////////////////////////////////////////
+
+            //////////////---------- Download ----------//////////////
+
+    @GetMapping("/generatePdfReport")
+    public ResponseEntity<byte[]> generatePdfReportAllSale(HttpServletResponse response) {
+        //System.setProperty("net.sf.jasperreports.builder.logger.factory", "net.sf.jasperreports.engine.simple.SimpleLoggerFactory");
+        List<Sale> sales = new ArrayList<>();
+        try {
+            sales = saleService.getAllSales().getBody();
+            if (sales.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+        } catch (FeignException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+        // get sales with shipping
+        Collections.sort(sales, Comparator.comparing(Sale::getSaleDate));
+        List<Sale> salesWithShipping = new ArrayList<>();
+        for (Sale sale : sales) {
+            if (sale.getShippingDate()!=null) {
+                salesWithShipping.add(sale);
+            }
+        }
+        if (salesWithShipping.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        // average days
+        long totalDays = 0;
+        for (Sale sale : salesWithShipping) {
+            totalDays += DAYS.between(sale.getSaleDate(), sale.getShippingDate());
+        }
+        float average = (float) totalDays /salesWithShipping.size();
+
+        AverageShippingTime averageShippingResul = new AverageShippingTime(salesWithShipping.get(0).getSaleDate(),
+                salesWithShipping.get(salesWithShipping.size()-1).getSaleDate(),
+                sales.size(),
+                salesWithShipping.size(),
+                average);
+
+        // All Sales
+        List<SaleDTO> saleDTOList = new ArrayList<>();
+        for (Sale sale: sales) {
+            LocalDate shippingDate = null;
+
+            if (sale.getShippingDate() != null) {
+                shippingDate = sale.getShippingDate().toLocalDate();
+            }
+
+            saleDTOList.add(new SaleDTO(sale.getIdSale(),sale.getCatalog().getModel().getNameModel(),sale.getSaleDate().toLocalDate(),shippingDate,sale.getQuantity(),sale.getStatus().getStatus()));
+        }
+
+        try {
+
+            // Load .jrxml file and compile into a JasperReport
+        JasperReport jasperReport = JasperCompileManager.compileReport("ms-reporting/src/main/resources/AllSaleShippingReport.jrxml");
+
+            // parameters
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(saleDTOList);
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("createdBy", "Costume Mania");
+        parameters.put("firstDate", averageShippingResul.getFirstDate().toLocalDate());
+        parameters.put("lastDate", averageShippingResul.getLastDate().toLocalDate());
+        parameters.put("averageDelay", averageShippingResul.getAverageDelay());
+        parameters.put("quantitySales", averageShippingResul.getQuantitySales());
+        parameters.put("quantityDeliveredSales", averageShippingResul.getQuantityDeliveredSales());
+
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+
+            //  configure the response to bytes in PDF
+
+        byte[] pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("inline", "salesReport.pdf");
+
+        return new ResponseEntity<>(pdfBytes, headers, org.springframework.http.HttpStatus.OK);
+
+        } catch (JRException e) {
+
+            return ResponseEntity.internalServerError().build();
+        }
+
+    }
+
+    // average per customized period
+    @GetMapping("/generatePdfReport/dates/{firstDate}/{lastDate}")
+    public ResponseEntity<byte[]> generatePdfaverageShippingCustom (@PathVariable String firstDate, @PathVariable String lastDate){
+        //System.setProperty("net.sf.jasperreports.builder.logger.factory", "net.sf.jasperreports.engine.simple.SimpleLoggerFactory");
+        // get every sale
+        List<Sale> sales = new ArrayList<>();
+        try {
+            ResponseEntity respSales = saleService.getByDates(firstDate, lastDate);
+            if (respSales.getStatusCode()== HttpStatus.OK) {
+                sales = (List<Sale>) respSales.getBody();
+                if (sales.isEmpty()) {
+                    return ResponseEntity.noContent().build();
+                }
+            } else {
+                return ResponseEntity.noContent().build();
+            }
+        } catch (FeignException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+        // get sales with shipping
+        Collections.sort(sales, Comparator.comparing(Sale::getSaleDate));
+        List<Sale> salesWithShipping = new ArrayList<>();
+        for (Sale sale : sales) {
+            if (sale.getShippingDate()!=null) {
+                salesWithShipping.add(sale);
+            }
+        }
+        if (salesWithShipping.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        // average days
+        long totalDays = 0;
+        for (Sale sale : salesWithShipping) {
+            totalDays += DAYS.between(sale.getSaleDate(), sale.getShippingDate());
+        }
+        float average = (float) totalDays /salesWithShipping.size();
+        AverageShippingTime averageShippingResul = new AverageShippingTime(salesWithShipping.get(0).getSaleDate(),
+                salesWithShipping.get(salesWithShipping.size()-1).getSaleDate(),
+                sales.size(),
+                salesWithShipping.size(),
+                average);
+
+        // All Sales
+        List<SaleDTO> saleDTOList = new ArrayList<>();
+        for (Sale sale: sales) {
+            LocalDate shippingDate = null;
+
+            if (sale.getShippingDate() != null) {
+                shippingDate = sale.getShippingDate().toLocalDate();
+            }
+
+            saleDTOList.add(new SaleDTO(sale.getIdSale(),sale.getCatalog().getModel().getNameModel(),sale.getSaleDate().toLocalDate(),shippingDate,sale.getQuantity(),sale.getStatus().getStatus()));
+        }
+
+        try {
+
+            // Load .jrxml file and compile into a JasperReport
+            JasperReport jasperReport = JasperCompileManager.compileReport("ms-reporting/src/main/resources/CustomSaleShippingReport.jrxml");
+
+            // parameters
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(saleDTOList);
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("createdBy", "Costume Mania");
+            parameters.put("firstDate", averageShippingResul.getFirstDate().toLocalDate());
+            parameters.put("lastDate", averageShippingResul.getLastDate().toLocalDate());
+            parameters.put("averageDelay", averageShippingResul.getAverageDelay());
+            parameters.put("quantitySales", averageShippingResul.getQuantitySales());
+            parameters.put("quantityDeliveredSales", averageShippingResul.getQuantityDeliveredSales());
+
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+
+            //  configure the response to bytes in PDF
+
+            byte[] pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("inline", "salesReport.pdf");
+
+            return new ResponseEntity<>(pdfBytes, headers, org.springframework.http.HttpStatus.OK);
+
+        } catch (JRException e) {
+
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+
 }
