@@ -1,5 +1,6 @@
 package com.costumemania.msbills.service;
 
+import com.costumemania.msbills.model.requiredEntity.UserExists;
 import com.costumemania.msbills.repository.UsersRepositoryFeign;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,5 +15,8 @@ public class UserService {
 
     public ResponseEntity<?> userById(@RequestHeader("Authorization") String token, @PathVariable(name = "id") int id) {
         return usersRepositoryFeign.userById(token, id);
+    };
+    public ResponseEntity<UserExists> userExists(@RequestHeader("Authorization") String token, @PathVariable(name = "id") int id) {
+        return usersRepositoryFeign.userExists(token, id);
     };
 }
