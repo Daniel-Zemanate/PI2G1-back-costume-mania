@@ -1401,6 +1401,220 @@
 					"response": []
 				},
 				{
+					"name": "get sale by user inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMiIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzAxMzUzMjQwLCJpYXQiOjE3MDEyNjY3NjB9.6DsYdA9fFCOfaWOEdBql6Ua4JN1noSmgTJUvVrrv7Oc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/user/40",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"user",
+								"40"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get sale by user empty",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NO Content\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMiIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzAxMzUzMjQwLCJpYXQiOjE3MDEyNjY3NjB9.6DsYdA9fFCOfaWOEdBql6Ua4JN1noSmgTJUvVrrv7Oc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/user/15",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"user",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get invoices by user inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMiIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzAxMzUzOTc5LCJpYXQiOjE3MDEyNjc0OTl9.ZmaseeB-_2E0W9ZVHvPzn3FmiN59BGBnbHheJnQCOYo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/invoice/user/40",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"invoice",
+								"user",
+								"40"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get invoices by user empty",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NO Content\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMiIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzAxMzUzOTc5LCJpYXQiOjE3MDEyNjc0OTl9.ZmaseeB-_2E0W9ZVHvPzn3FmiN59BGBnbHheJnQCOYo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/invoice/user/1",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"invoice",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Verificar compra - stock agotado",
 					"event": [
 						{
@@ -1596,6 +1810,336 @@
 								"v1",
 								"sale",
 								"startSale"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hacer compra - user inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status NOTFOUND\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMiIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzAxMzUzOTc5LCJpYXQiOjE3MDEyNjc0OTl9.ZmaseeB-_2E0W9ZVHvPzn3FmiN59BGBnbHheJnQCOYo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": 40,\r\n    \"city\": 2,\r\n    \"itemSoldList\": [\r\n        {\r\n            \"catalog\": 2,\r\n            \"quantitySold\": 1\r\n        },\r\n        {\r\n            \"catalog\": 1,\r\n            \"quantitySold\": 1\r\n        }\r\n    ],\r\n    \"address\": \"prueba de compra1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/create",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hacer compra - city inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status bad request\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMiIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzAxMzUzOTc5LCJpYXQiOjE3MDEyNjc0OTl9.ZmaseeB-_2E0W9ZVHvPzn3FmiN59BGBnbHheJnQCOYo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": 4,\r\n    \"city\": 20,\r\n    \"itemSoldList\": [\r\n        {\r\n            \"catalog\": 2,\r\n            \"quantitySold\": 1\r\n        },\r\n        {\r\n            \"catalog\": 1,\r\n            \"quantitySold\": 1\r\n        }\r\n    ],\r\n    \"address\": \"prueba de compra1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/create",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hacer compra - no address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status bad request\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMiIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzAxMzUzOTc5LCJpYXQiOjE3MDEyNjc0OTl9.ZmaseeB-_2E0W9ZVHvPzn3FmiN59BGBnbHheJnQCOYo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": 4,\r\n    \"city\": 20,\r\n    \"itemSoldList\": [\r\n        {\r\n            \"catalog\": 2,\r\n            \"quantitySold\": 1\r\n        },\r\n        {\r\n            \"catalog\": 1,\r\n            \"quantitySold\": 1\r\n        }\r\n    ],\r\n    \"address\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8084/api/v1/sale/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hacer compra - no items",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status bad request\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMiIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzAxMzUzOTc5LCJpYXQiOjE3MDEyNjc0OTl9.ZmaseeB-_2E0W9ZVHvPzn3FmiN59BGBnbHheJnQCOYo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": 4,\r\n    \"city\": 2,\r\n    \"itemSoldList\": [\r\n        {}\r\n    ],\r\n    \"address\": \"prueba de compra1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8084/api/v1/sale/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hacer compra - catalog inexists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status bad request\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMiIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzAxMzUzOTc5LCJpYXQiOjE3MDEyNjc0OTl9.ZmaseeB-_2E0W9ZVHvPzn3FmiN59BGBnbHheJnQCOYo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": 4,\r\n    \"city\": 20,\r\n    \"itemSoldList\": [\r\n        {\r\n            \"catalog\": 200,\r\n            \"quantitySold\": 1\r\n        },\r\n        {\r\n            \"catalog\": 1,\r\n            \"quantitySold\": 1\r\n        }\r\n    ],\r\n    \"address\": \"prueba\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/create",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hacer compra - catalog without stock",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the response status\r",
+									"pm.test(\"Status bad request\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMiIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzAxMzUzOTc5LCJpYXQiOjE3MDEyNjc0OTl9.ZmaseeB-_2E0W9ZVHvPzn3FmiN59BGBnbHheJnQCOYo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": 4,\r\n    \"city\": 20,\r\n    \"itemSoldList\": [\r\n        {\r\n            \"catalog\": 2,\r\n            \"quantitySold\": 100\r\n        },\r\n        {\r\n            \"catalog\": 1,\r\n            \"quantitySold\": 1\r\n        }\r\n    ],\r\n    \"address\": \"prueba\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/sale/create",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sale",
+								"create"
 							]
 						}
 					},
@@ -2159,7 +2703,7 @@
 			"response": []
 		},
 		{
-			"name": "SIN PROBAR get sale by user",
+			"name": "get sale by user",
 			"event": [
 				{
 					"listen": "test",
@@ -2203,7 +2747,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMiIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzAxMzUzMjQwLCJpYXQiOjE3MDEyNjY3NjB9.6DsYdA9fFCOfaWOEdBql6Ua4JN1noSmgTJUvVrrv7Oc",
 							"type": "string"
 						}
 					]
@@ -2211,12 +2755,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8084/api/v1/sale/user/4",
+					"raw": "http://{{URL-AWS}}:8080/api/v1/sale/user/4",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{URL-AWS}}"
 					],
-					"port": "8084",
+					"port": "8080",
 					"path": [
 						"api",
 						"v1",
@@ -2607,7 +3151,7 @@
 			"response": []
 		},
 		{
-			"name": "SIN PROBAR get invoices by user",
+			"name": "get invoices by user",
 			"event": [
 				{
 					"listen": "test",
@@ -2615,8 +3159,7 @@
 						"exec": [
 							"// Constants\r",
 							"const responseJson = pm.response.json();\r",
-							"const firstItem = responseJson;\r",
-							"const pathVariable = pm.request.url.path[4];\r",
+							"const firstItem = responseJson[0];\r",
 							"\r",
 							"// Test to verify the response status\r",
 							"pm.test(\"Status OK\", function () {\r",
@@ -2634,10 +3177,6 @@
 							"    pm.expect(firstItem).to.have.property(\"shippingCity\").that.is.an(\"string\");\r",
 							"    pm.expect(firstItem).to.have.property(\"total\").that.is.an(\"number\");\r",
 							"    pm.expect(firstItem).to.have.property(\"invoiceDate\").that.is.an(\"string\");\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Verify ID invoice\", function () {\r",
-							"    pm.expect(firstItem.no_invoice.toString()).to.be.equal(pathVariable);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -2653,7 +3192,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcwMTIzMTU4NSwiaWF0IjoxNzAxMTQ1MTA1fQ.fRlFUdDlyIq4TyL3-9ID3C-D9sv_vOFNPShkmc4wdMc",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMiIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzAxMzUzMjQwLCJpYXQiOjE3MDEyNjY3NjB9.6DsYdA9fFCOfaWOEdBql6Ua4JN1noSmgTJUvVrrv7Oc",
 							"type": "string"
 						}
 					]
@@ -2835,8 +3374,48 @@
 			"response": []
 		},
 		{
-			"name": "SIN PROBAR Hacer compra",
+			"name": "Hacer compra",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Constants\r",
+							"const responseJson = pm.response.json();\r",
+							"const firstItem = responseJson;\r",
+							"\r",
+							"// Test to verify the response status\r",
+							"pm.test(\"Status OK\", function () {\r",
+							"    pm.response.to.have.status(200); // You can adjust the expected status code as needed\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The first object in the array is complete\", () => {\r",
+							"    pm.expect(firstItem).to.be.a(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response structure and data types are correct\", function () {\r",
+							"    pm.expect(firstItem).to.have.property(\"invoiceNumber\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"itemSoldList\").that.is.an(\"array\");\r",
+							"    pm.expect(firstItem).to.have.property(\"shippingCost\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"total\").that.is.an(\"number\");\r",
+							"    pm.expect(firstItem).to.have.property(\"errorMessage\").that.is.an(\"null\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLXRlc3QtMiIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzAxMzUzOTc5LCJpYXQiOjE3MDEyNjc0OTl9.ZmaseeB-_2E0W9ZVHvPzn3FmiN59BGBnbHheJnQCOYo",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
