@@ -13,9 +13,6 @@ public class UserService {
     @Autowired
     UsersRepositoryFeign usersRepositoryFeign;
 
-    public ResponseEntity<?> userById(@RequestHeader("Authorization") String token, @PathVariable(name = "id") int id) {
-        return usersRepositoryFeign.userById(token, id);
-    };
     public ResponseEntity<UserExists> userExists(@RequestHeader("Authorization") String token, @PathVariable(name = "id") int id) {
         return usersRepositoryFeign.userExists(token, id);
     };

@@ -34,7 +34,7 @@
                     <textElement textAlignment="Center">
                         <font size="14" isBold="false"/>
                     </textElement>
-                    <text><![CDATA[SALES PERIOD REPORT]]></text>
+                    <text><![CDATA[REPORT SALES BY MONTH]]></text>
                 </staticText>
             </frame>
         </band>
@@ -121,7 +121,7 @@
                     <text><![CDATA[AVERAGE SHIPPING TIME]]></text>
                 </staticText>
                 <staticText>
-                    <reportElement x="104" y="35" width="180" height="18" forecolor="#030303" uuid="b73b89bd-3d3f-4ef9-a7c5-75d1fc7e44b9"/>
+                    <reportElement x="104" y="35" width="180" height="20" forecolor="#030303" uuid="b73b89bd-3d3f-4ef9-a7c5-75d1fc7e44b9"/>
                     <textElement textAlignment="Left" verticalAlignment="Middle">
                         <font size="14" isBold="true"/>
                     </textElement>
@@ -141,7 +141,7 @@
                     <textElement textAlignment="Center" verticalAlignment="Middle">
                         <font size="12" isBold="true"/>
                     </textElement>
-                    <text><![CDATA[SALES REPORT DETAIL FOR PERIOD]]></text>
+                    <text><![CDATA[SALES REPORT DETAIL]]></text>
                 </staticText>
             </frame>
         </band>

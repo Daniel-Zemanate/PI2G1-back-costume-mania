@@ -311,9 +311,9 @@ public class SaleController {
         String authorizationHeader = request.getHeader("Authorization");
         // validate user
         try {
-            ResponseEntity<?> userProof = userService.userById(authorizationHeader, idUser);
-            if (userProof.getStatusCode()==HttpStatus.NOT_FOUND) {
-                return ResponseEntity.badRequest().build();
+            ResponseEntity<UserExists> userProof = userService.userExists(authorizationHeader, idUser);
+            if (!userProof.getBody().isUserExists()) {
+                return ResponseEntity.notFound().build();
             }
         } catch (FeignException e) {
             return ResponseEntity.internalServerError().build();
@@ -571,9 +571,9 @@ public class SaleController {
         String authorizationHeader = request.getHeader("Authorization");
         // validate user
         try {
-            ResponseEntity<?> userProof = userService.userById(authorizationHeader, body.getUser());
-            if (userProof.getStatusCode()==HttpStatus.NOT_FOUND) {
-                return ResponseEntity.badRequest().build();
+            ResponseEntity<UserExists> userProof = userService.userExists(authorizationHeader, body.getUser());
+            if (!userProof.getBody().isUserExists()) {
+                return ResponseEntity.notFound().build();
             }
         } catch (FeignException e) {
             return ResponseEntity.internalServerError().build();

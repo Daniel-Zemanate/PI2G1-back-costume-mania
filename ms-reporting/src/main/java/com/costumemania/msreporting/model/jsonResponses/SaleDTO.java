@@ -1,6 +1,5 @@
 package com.costumemania.msreporting.model.jsonResponses;
 
-
 import java.io.Serializable;
 import java.time.LocalDate;
 
