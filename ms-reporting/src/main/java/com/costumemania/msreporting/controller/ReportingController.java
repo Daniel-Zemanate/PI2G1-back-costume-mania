@@ -8,17 +8,10 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -324,7 +317,7 @@ public class ReportingController {
     }
 
     @GetMapping("/generatePdfReport/{month}/{year}")
-    public ResponseEntity<byte[]> generatePdfReportPerMonth(@PathVariable int month, @PathVariable int year) throws URISyntaxException {
+    public ResponseEntity<byte[]> generatePdfReportPerMonth(@PathVariable int month, @PathVariable int year) {
         // get info
         ResponseEntity<AverageAndSaleList> averageAndSaleList = averageShippingTimeByMonth(month, year);
         if (averageAndSaleList.getStatusCode() != HttpStatus.OK) {
@@ -351,7 +344,7 @@ public class ReportingController {
 
     // average per customized period
     @GetMapping("/generatePdfReport/dates/{firstDate}/{lastDate}")
-    public ResponseEntity<byte[]> generatePdfaverageShippingCustom(@PathVariable String firstDate, @PathVariable String lastDate) throws URISyntaxException {
+    public ResponseEntity<byte[]> generatePdfaverageShippingCustom(@PathVariable String firstDate, @PathVariable String lastDate) {
         // get info
         ResponseEntity<AverageAndSaleList> averageAndSaleList = averageShippingCustom(firstDate, lastDate);
         if (averageAndSaleList.getStatusCode() != HttpStatus.OK) {
