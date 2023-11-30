@@ -28,7 +28,7 @@ public class ReportingController {
 
     // general average with every sale
     @GetMapping("/report1")
-    public ResponseEntity<AverageShippingTime> averageShippingTime() {
+    public ResponseEntity<AverageAndSaleList> averageShippingTime() {
         // get every sale
         List<Sale> sales = new ArrayList<>();
         try {
@@ -56,11 +56,13 @@ public class ReportingController {
         }
         float average = (float) totalDays / salesWithShipping.size();
         double averageWith2Decimals = Math.round(average * 100) / 100.0;
-        AverageShippingTime result = new AverageShippingTime(salesWithShipping.get(0).getSaleDate().toLocalDate(),
+        AverageShippingTime shippingTime = new AverageShippingTime(salesWithShipping.get(0).getSaleDate().toLocalDate(),
                 salesWithShipping.get(salesWithShipping.size() - 1).getSaleDate().toLocalDate(),
                 sales.size(),
                 salesWithShipping.size(),
                 averageWith2Decimals);
+
+        AverageAndSaleList result = new AverageAndSaleList(shippingTime, salesWithShipping);
         return ResponseEntity.ok(result);
     }
 
@@ -232,92 +234,77 @@ public class ReportingController {
         String[] splitMax = dateMax.split("/");
         String[] splitMin = dateMin.split("/");
         Calendar calMax = Calendar.getInstance();
-        calMax.setTime(new Date(Integer.parseInt(splitMax[1]), Integer.parseInt(splitMax[0])-1, 1));
+        calMax.setTime(new Date(Integer.parseInt(splitMax[1]), Integer.parseInt(splitMax[0]) - 1, 1));
         String monthYearMax = calMax.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH) + "/" + splitMax[1];
         Calendar calMin = Calendar.getInstance();
-        calMin.setTime(new Date(Integer.parseInt(splitMin[1]), Integer.parseInt(splitMin[0])-1, 1));
+        calMin.setTime(new Date(Integer.parseInt(splitMin[1]), Integer.parseInt(splitMin[0]) - 1, 1));
         String monthYearMin = calMin.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH) + "/" + splitMin[1];
 
         // final result
         ShippingTimeComplete shippingTimeComplete = new ShippingTimeComplete();
-        shippingTimeComplete.setGeneralShippingTime(averageShippingTime().getBody());
+        shippingTimeComplete.setGeneralShippingTime(averageShippingTime().getBody().getAverageShippingTime());
         shippingTimeComplete.setMaxDelay(monthYearMax);
         shippingTimeComplete.setMinDelay(monthYearMin);
         shippingTimeComplete.setDetailedShippingTime(list.getBody());
         return ResponseEntity.ok(shippingTimeComplete);
     }
-}
-/*
 
-            //////////////////////////////////////////////////////////////////
 
-            //////////////---------- Download ----------//////////////
+    //////////////////////////////////////////////////////////////////
 
-    @GetMapping("/generatePdfReport")
-    public ResponseEntity<byte[]> generatePdfReportAllSale() {
-        List<Sale> sales = new ArrayList<>();
-        try {
-            sales = saleService.getAllSales().getBody();
-            if (sales.isEmpty()) {
-                return ResponseEntity.noContent().build();
-            }
-        } catch (FeignException e) {
-            return ResponseEntity.internalServerError().build();
-        }
-        // get sales with shipping
-        Collections.sort(sales, Comparator.comparing(Sale::getSaleDate));
-        List<Sale> salesWithShipping = new ArrayList<>();
-        for (Sale sale : sales) {
-            if (sale.getShippingDate()!=null) {
-                salesWithShipping.add(sale);
-            }
-        }
-        if (salesWithShipping.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        // average days
-        long totalDays = 0;
-        for (Sale sale : salesWithShipping) {
-            totalDays += DAYS.between(sale.getSaleDate(), sale.getShippingDate());
-        }
-        float average = (float) totalDays /salesWithShipping.size();
-        double averageWith2Decimals = Math.round(average*100) / 100.0;
+    //////////////---------- Download ----------//////////////
 
-        AverageShippingTime averageShippingResul = new AverageShippingTime(salesWithShipping.get(0).getSaleDate(),
-                salesWithShipping.get(salesWithShipping.size()-1).getSaleDate(),
-                sales.size(),
-                salesWithShipping.size(),
-                (float) averageWith2Decimals);
-
-        // just deliveried sales
-        List<SaleDTO> saleDTOList = new ArrayList<>();
-        for (Sale sale: salesWithShipping) {
-            saleDTOList.add(new SaleDTO(sale.getInvoice(),sale.getCatalog().getModel().getNameModel(),sale.getSaleDate().toLocalDate(),sale.getShippingDate().toLocalDate(), sale.getQuantity(),sale.getStatus().getStatus()));
-        }
-
+    // function to get PDF
+    public ResponseEntity<byte[]> pdfGenerator(String file, List<SaleDTO> list, AverageAndSaleList averageAndSaleList) {
         try {
             // Load .jrxml file and compile into a JasperReport
-        JasperReport jasperReport = JasperCompileManager.compileReport("ms-reporting/src/main/resources/AllSaleShippingReport.jrxml");
+            JasperReport jasperReport = JasperCompileManager.compileReport(file);
             // parameters
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(saleDTOList);
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("createdBy", "Costume Mania");
-        parameters.put("firstDate", averageShippingResul.getFirstDate().toLocalDate());
-        parameters.put("lastDate", averageShippingResul.getLastDate().toLocalDate());
-        parameters.put("averageDelay", averageShippingResul.getAverageDelay());
-        parameters.put("quantitySales", averageShippingResul.getQuantitySales());
-        parameters.put("quantityDeliveredSales", averageShippingResul.getQuantityDeliveredSales());
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("createdBy", "Costume Mania");
+            parameters.put("firstDate", averageAndSaleList.getAverageShippingTime().getFirstDate());
+            parameters.put("lastDate", averageAndSaleList.getAverageShippingTime().getLastDate());
+            parameters.put("averageDelay", (float) averageAndSaleList.getAverageShippingTime().getAverageDelay());
+            parameters.put("quantitySales", averageAndSaleList.getAverageShippingTime().getQuantitySales());
+            parameters.put("quantityDeliveredSales", averageAndSaleList.getAverageShippingTime().getQuantityDeliveredSales());
+            // detailed data
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(list);
             //  configure the response to bytes in PDF
-        byte[] pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("inline", "salesReport.pdf");
-        return new ResponseEntity<>(pdfBytes, headers, org.springframework.http.HttpStatus.OK);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+            byte[] pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("inline", "salesReport.pdf");
+            return new ResponseEntity<>(pdfBytes, headers, org.springframework.http.HttpStatus.OK);
         } catch (JRException e) {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @GetMapping("/generatePdfReport")
+    public ResponseEntity<byte[]> generatePdfReportAllSale() {
+        // get info
+        AverageAndSaleList averageAndSaleList = averageShippingTime().getBody();
+        // report deliveried sales
+        List<SaleDTO> saleDTOList = new ArrayList<>();
+        for (Sale sale : averageAndSaleList.getSaleList()) {
+            saleDTOList.add(
+                    new SaleDTO(
+                            sale.getInvoice(),
+                            sale.getCatalog().getModel().getNameModel(),
+                            sale.getSaleDate().toLocalDate(),
+                            sale.getShippingDate().toLocalDate(),
+                            sale.getQuantity(),
+                            sale.getStatus().getStatus()));
+        }
+        // show PDF
+        return pdfGenerator(
+                "ms-reporting/src/main/resources/AllSaleShippingReport.jrxml",
+                saleDTOList,
+                averageAndSaleList);
+    }
+}
+/*
 
     @GetMapping("/generatePdfReport/{month}/{year}")
     public ResponseEntity<byte[]> generatePdfReportPerMonth(@PathVariable int month, @PathVariable int year) {
