@@ -90,7 +90,8 @@
 <!--				<targetPath>${basedir}/target/src/main/resources</targetPath>-->
 <!--				<includes>-->
 <!--					<include>**/*.jrxml</include>-->
-<!--				</includes>-->
+		<!--		<include>**/*.yml</include>-->
+        <!--				</includes>-->
 <!--			</resource>-->
 <!--		</resources>-->
 
