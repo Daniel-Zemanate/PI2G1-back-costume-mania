@@ -273,17 +273,7 @@ public class ReportingController {
 
     // function to get PDF
     public ResponseEntity<byte[]> pdfGenerator(String file, List<SaleDTO> list, AverageAndSaleList averageAndSaleList) {
-//        URL res = getClass().getClassLoader().getResource(file);
-//        File file1;
-//        try {
-//            file1 = Paths.get(res.toURI()).toFile();
-//        } catch (URISyntaxException e) {
-//            throw new RuntimeException(e);
-//        }
-//        String absolutePath = file1.getAbsolutePath();
-
         InputStream jrxmlStream = getClass().getResourceAsStream(file);
-
         try {
             // Load .jrxml file and compile into a JasperReport
             JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlStream);
@@ -305,8 +295,7 @@ public class ReportingController {
             headers.setContentDispositionFormData("inline", "salesReport.pdf");
             return new ResponseEntity<>(pdfBytes, headers, org.springframework.http.HttpStatus.OK);
         } catch (JRException e) {
-            System.out.println(e);
-            logger.error("Problemas para generar el PDF en la nube: " + e);
+            logger.error(String.valueOf(e));
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -329,8 +318,6 @@ public class ReportingController {
         }
         // show PDF
         return pdfGenerator(
-                //"../../../../../resources/AllSaleShippingReport.jrxml",
-                //"ms-reporting/src/main/resources/AllSaleShippingReport.jrxml",
                 "/AllSaleShippingReport.jrxml",
                 saleDTOList,
                 averageAndSaleList);
@@ -357,8 +344,7 @@ public class ReportingController {
         }
         // show PDF
         return pdfGenerator(
-                //"ms-reporting/src/main/resources/SaleByMonthShippingReport.jrxml",
-                "SaleByMonthShippingReport.jrxml",
+                "/SaleByMonthShippingReport.jrxml",
                 saleDTOList,
                 averageAndSaleList.getBody());
     }
@@ -385,8 +371,7 @@ public class ReportingController {
         }
         // show PDF
         return pdfGenerator(
-                //"ms-reporting/src/main/resources/CustomSaleShippingReport.jrxml",
-                "CustomSaleShippingReport.jrxml",
+                "/CustomSaleShippingReport.jrxml",
                 saleDTOList,
                 averageAndSaleList.getBody());
     }
