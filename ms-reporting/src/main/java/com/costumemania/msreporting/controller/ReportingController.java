@@ -6,9 +6,12 @@ import com.costumemania.msreporting.service.SaleService;
 import feign.FeignException;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
@@ -20,6 +23,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @RequestMapping("/api/v1/reporting")
 public class ReportingController {
 
+    private static Logger logger = LoggerFactory.getLogger(ReportingController.class);
     private final SaleService saleService;
 
     public ReportingController(SaleService saleService) {
@@ -284,6 +288,10 @@ public class ReportingController {
             headers.setContentDispositionFormData("inline", "salesReport.pdf");
             return new ResponseEntity<>(pdfBytes, headers, org.springframework.http.HttpStatus.OK);
         } catch (JRException e) {
+            System.out.println(e);
+            logger.error("Problemas para generar el PDF en la nube: " + e);
+            File file1 = new File(file);
+            logger.info("¿el archivo que necesito existe? " + file1.exists());
             return ResponseEntity.internalServerError().build();
         }
     }
