@@ -8,10 +8,16 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
@@ -266,10 +272,19 @@ public class ReportingController {
     //////////////---------- Download ----------//////////////
 
     // function to get PDF
-    public ResponseEntity<byte[]> pdfGenerator(String file, List<SaleDTO> list, AverageAndSaleList averageAndSaleList) {
+    public ResponseEntity<byte[]> pdfGenerator(String file, List<SaleDTO> list, AverageAndSaleList averageAndSaleList) throws URISyntaxException {
+        URL res = getClass().getClassLoader().getResource(file);
+        File file1;
+        try {
+            file1 = Paths.get(res.toURI()).toFile();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        String absolutePath = file1.getAbsolutePath();
+
         try {
             // Load .jrxml file and compile into a JasperReport
-            JasperReport jasperReport = JasperCompileManager.compileReport(file);
+            JasperReport jasperReport = JasperCompileManager.compileReport(absolutePath);
             // parameters
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("createdBy", "Costume Mania");
@@ -290,14 +305,12 @@ public class ReportingController {
         } catch (JRException e) {
             System.out.println(e);
             logger.error("Problemas para generar el PDF en la nube: " + e);
-            File file1 = new File(file);
-            logger.info("¿el archivo que necesito existe? " + file1.exists());
             return ResponseEntity.internalServerError().build();
         }
     }
 
     @GetMapping("/generatePdfReport")
-    public ResponseEntity<byte[]> generatePdfReportAllSale() {
+    public ResponseEntity<byte[]> generatePdfReportAllSale() throws URISyntaxException {
         // get info
         AverageAndSaleList averageAndSaleList = averageShippingTime().getBody();
         // report deliveried sales
@@ -314,13 +327,15 @@ public class ReportingController {
         }
         // show PDF
         return pdfGenerator(
-                "ms-reporting/src/main/resources/AllSaleShippingReport.jrxml",
+                //"../../../../../resources/AllSaleShippingReport.jrxml",
+                //"ms-reporting/src/main/resources/AllSaleShippingReport.jrxml",
+                "AllSaleShippingReport.jrxml",
                 saleDTOList,
                 averageAndSaleList);
     }
 
     @GetMapping("/generatePdfReport/{month}/{year}")
-    public ResponseEntity<byte[]> generatePdfReportPerMonth(@PathVariable int month, @PathVariable int year) {
+    public ResponseEntity<byte[]> generatePdfReportPerMonth(@PathVariable int month, @PathVariable int year) throws URISyntaxException {
         // get info
         ResponseEntity<AverageAndSaleList> averageAndSaleList = averageShippingTimeByMonth(month, year);
         if (averageAndSaleList.getStatusCode() != HttpStatus.OK) {
@@ -340,14 +355,15 @@ public class ReportingController {
         }
         // show PDF
         return pdfGenerator(
-                "ms-reporting/src/main/resources/SaleByMonthShippingReport.jrxml",
+                //"ms-reporting/src/main/resources/SaleByMonthShippingReport.jrxml",
+                "SaleByMonthShippingReport.jrxml",
                 saleDTOList,
                 averageAndSaleList.getBody());
     }
 
     // average per customized period
     @GetMapping("/generatePdfReport/dates/{firstDate}/{lastDate}")
-    public ResponseEntity<byte[]> generatePdfaverageShippingCustom(@PathVariable String firstDate, @PathVariable String lastDate) {
+    public ResponseEntity<byte[]> generatePdfaverageShippingCustom(@PathVariable String firstDate, @PathVariable String lastDate) throws URISyntaxException {
         // get info
         ResponseEntity<AverageAndSaleList> averageAndSaleList = averageShippingCustom(firstDate, lastDate);
         if (averageAndSaleList.getStatusCode() != HttpStatus.OK) {
@@ -367,7 +383,8 @@ public class ReportingController {
         }
         // show PDF
         return pdfGenerator(
-                "ms-reporting/src/main/resources/CustomSaleShippingReport.jrxml",
+                //"ms-reporting/src/main/resources/CustomSaleShippingReport.jrxml",
+                "CustomSaleShippingReport.jrxml",
                 saleDTOList,
                 averageAndSaleList.getBody());
     }
