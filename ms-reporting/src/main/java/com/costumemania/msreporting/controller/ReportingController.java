@@ -272,19 +272,21 @@ public class ReportingController {
     //////////////---------- Download ----------//////////////
 
     // function to get PDF
-    public ResponseEntity<byte[]> pdfGenerator(String file, List<SaleDTO> list, AverageAndSaleList averageAndSaleList) throws URISyntaxException {
-        URL res = getClass().getClassLoader().getResource(file);
-        File file1;
-        try {
-            file1 = Paths.get(res.toURI()).toFile();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        String absolutePath = file1.getAbsolutePath();
+    public ResponseEntity<byte[]> pdfGenerator(String file, List<SaleDTO> list, AverageAndSaleList averageAndSaleList) {
+//        URL res = getClass().getClassLoader().getResource(file);
+//        File file1;
+//        try {
+//            file1 = Paths.get(res.toURI()).toFile();
+//        } catch (URISyntaxException e) {
+//            throw new RuntimeException(e);
+//        }
+//        String absolutePath = file1.getAbsolutePath();
+
+        InputStream jrxmlStream = getClass().getResourceAsStream(file);
 
         try {
             // Load .jrxml file and compile into a JasperReport
-            JasperReport jasperReport = JasperCompileManager.compileReport(absolutePath);
+            JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlStream);
             // parameters
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("createdBy", "Costume Mania");
@@ -310,7 +312,7 @@ public class ReportingController {
     }
 
     @GetMapping("/generatePdfReport")
-    public ResponseEntity<byte[]> generatePdfReportAllSale() throws URISyntaxException {
+    public ResponseEntity<byte[]> generatePdfReportAllSale() {
         // get info
         AverageAndSaleList averageAndSaleList = averageShippingTime().getBody();
         // report deliveried sales
@@ -329,7 +331,7 @@ public class ReportingController {
         return pdfGenerator(
                 //"../../../../../resources/AllSaleShippingReport.jrxml",
                 //"ms-reporting/src/main/resources/AllSaleShippingReport.jrxml",
-                "AllSaleShippingReport.jrxml",
+                "/AllSaleShippingReport.jrxml",
                 saleDTOList,
                 averageAndSaleList);
     }
