@@ -9,7 +9,7 @@ import java.util.List;
 @Setter
 public class ShippingTimeComplete {
     AverageShippingTime generalShippingTime;
-    DateJson minDelay;
-    DateJson maxDelay;
+    String minDelay;
+    String maxDelay;
     List<ShippingTimePeriod> detailedShippingTime;
 }

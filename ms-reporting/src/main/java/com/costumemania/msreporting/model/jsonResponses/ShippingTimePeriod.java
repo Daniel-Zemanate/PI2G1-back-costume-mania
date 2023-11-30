@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ShippingTimePeriod {
-    DateJson period;
-    float averageShippingTime;
+    String period;
+    double averageShippingTime;
 }
