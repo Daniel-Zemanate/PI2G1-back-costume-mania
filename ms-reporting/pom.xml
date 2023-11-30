@@ -83,6 +83,17 @@
 	</dependencyManagement>
 
 	<build>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<targetPath>${basedir}/target/src/main/resources</targetPath>
+				<includes>
+					<include>**/*.jrxml</include>
+				</includes>
+			</resource>
+		</resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
