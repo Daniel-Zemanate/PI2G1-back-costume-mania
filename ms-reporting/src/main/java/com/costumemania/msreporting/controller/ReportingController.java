@@ -242,10 +242,10 @@ public class ReportingController {
         String[] splitMin = dateMin.split("/");
         Calendar calMax = Calendar.getInstance();
         calMax.setTime(new Date(Integer.parseInt(splitMax[1]), Integer.parseInt(splitMax[0]) - 1, 1));
-        String monthYearMax = calMax.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH) + "/" + splitMax[1];
+        String monthYearMax = calMax.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH) + " " + splitMax[1];
         Calendar calMin = Calendar.getInstance();
         calMin.setTime(new Date(Integer.parseInt(splitMin[1]), Integer.parseInt(splitMin[0]) - 1, 1));
-        String monthYearMin = calMin.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH) + "/" + splitMin[1];
+        String monthYearMin = calMin.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH) + " " + splitMin[1];
 
         // final result
         ShippingTimeComplete shippingTimeComplete = new ShippingTimeComplete();
