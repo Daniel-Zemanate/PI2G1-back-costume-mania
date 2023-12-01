@@ -74,7 +74,7 @@
 					<text><![CDATA[Quantity Sales :]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="300" y="80" width="170" height="20" forecolor="#030303" backcolor="#F0F0F0" uuid="6da018ad-7926-4b0a-9e6e-b382beee4062"/>
+					<reportElement x="300" y="80" width="175" height="20" forecolor="#030303" backcolor="#F0F0F0" uuid="6da018ad-7926-4b0a-9e6e-b382beee4062"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="12" isBold="true"/>
 					</textElement>
