@@ -1,0 +1,199 @@
+{
+	"info": {
+		"_postman_id": "18e2536b-f053-48a6-884b-7e1dc4fc2639",
+		"name": "PI2G1-Reporting",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18574247",
+		"_collection_link": "https://dark-meadow-935543.postman.co/workspace/PI2-G1~283cec54-33b6-4230-a826-cafcc1dffd25/collection/18574247-18e2536b-f053-48a6-884b-7e1dc4fc2639?action=share&source=collection_link&creator=18574247"
+	},
+	"item": [
+		{
+			"name": "Report1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/reporting/report1",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"reporting",
+						"report1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Report1 por mes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/reporting/report1/11/2023",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"reporting",
+						"report1",
+						"11",
+						"2023"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Report1 detallado por mes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/reporting/report1/detailed",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"reporting",
+						"report1",
+						"detailed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Report1 por periodos personalizados",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/reporting/report1/dates/2023-02-12/2023-02-16",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"reporting",
+						"report1",
+						"dates",
+						"2023-02-12",
+						"2023-02-16"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Report1 completo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/reporting/report1/complete",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"reporting",
+						"report1",
+						"complete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Report pdf completo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/reporting/generatePdfReport",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"reporting",
+						"generatePdfReport"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Report PDF por mes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/reporting/generatePdfReport/11/2023",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"reporting",
+						"generatePdfReport",
+						"11",
+						"2023"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Report PDF por periodos personalizados",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{URL-AWS}}:8080/api/v1/reporting/generatePdfReport/dates/2023-02-12/2023-02-16",
+					"protocol": "http",
+					"host": [
+						"{{URL-AWS}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"reporting",
+						"generatePdfReport",
+						"dates",
+						"2023-02-12",
+						"2023-02-16"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

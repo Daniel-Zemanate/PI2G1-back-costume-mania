@@ -45,6 +45,7 @@ public class AuthController {
                         .token(token)
                         .userId(userResponse.getId())
                         .email(userResponse.getEmail())
+                        .role(userResponse.getRole().name())
 //                        .username(userResponse.getUsername())
                         .build();
 

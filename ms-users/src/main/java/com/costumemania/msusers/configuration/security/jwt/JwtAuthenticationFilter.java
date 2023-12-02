@@ -67,9 +67,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         User user = (User) authResult.getPrincipal();
         String token = jwtUtils.generateAccessToken(user.getUsername());
         Integer userId = null;
+        String role = null;
 
         try {
-            userId = userDetailsService.searchUsername(user.getUsername()).getId();
+            UserEntity userEntity = userDetailsService.searchUsername(user.getUsername());
+            userId = userEntity.getId();
+            role = userEntity.getRole().name();
         } catch (Exception e) {
             System.out.println("Successful authentication failed to load user id.");
         }
@@ -81,6 +84,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         httpResponse.put("user_id", userId);
         httpResponse.put("token", token);
         httpResponse.put("email", user.getUsername());
+        httpResponse.put("role", role);
 //        httpResponse.put("username", user.getUsername());
 //        httpResponse.put("Message", "Authenticated");
 

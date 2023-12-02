@@ -16,7 +16,7 @@ import java.util.Optional;
 @Repository
 public interface CatalogRepository extends JpaRepository<Catalog, Integer> {
 
-    @Query(value="select * from catalog c inner join model m on c.model=m.id_model inner join size s on c.size=s.id_size inner join category cat on m.category=cat.id_category order by c.model", nativeQuery = true)
+    @Query(value="select * from catalog c inner join model m on c.model=m.id_model inner join size s on c.size=s.id_size inner join category cat on m.category=cat.id_category inner join statuscomponent st on c.status_Catalog=st.id_status order by c.model", nativeQuery = true)
     List<Catalog> findAll ();
     @Query(value="select * from catalog c inner join model m on c.model=m.id_model inner join size s on c.size=s.id_size inner join category cat on m.category=cat.id_category WHERE c.model =?1", nativeQuery = true)
     Optional<List<Catalog>> findByModel (Integer idModel);
