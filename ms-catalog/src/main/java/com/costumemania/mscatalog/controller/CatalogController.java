@@ -1005,7 +1005,7 @@ public class CatalogController {
         catalogCreated.setSize(searchSize.get());
         catalogCreated.setStock(catalogDTO.getQuantity());
         catalogCreated.setPrice(catalogDTO.getPrice());
-        catalogCreated.setStatus(new StatusComponent(1, "active"));
+        catalogCreated.setStatusCatalog(new StatusComponent(1, "active"));
         return ResponseEntity.accepted().body(catalogService.save(catalogCreated));
     }
 
@@ -1065,9 +1065,9 @@ public class CatalogController {
         catalogCreated.setStock(catalogDTO.getQuantity());
         catalogCreated.setPrice(catalogDTO.getPrice());
         if (catalogDTO.getStatus() == 1) {
-            catalogCreated.setStatus(new StatusComponent(1, "active"));
+            catalogCreated.setStatusCatalog(new StatusComponent(1, "active"));
         } else if (catalogDTO.getStatus() == 2) {
-            catalogCreated.setStatus(new StatusComponent(2, "inactive"));
+            catalogCreated.setStatusCatalog(new StatusComponent(2, "inactive"));
         } else {
             return ResponseEntity.badRequest().build();
         }
@@ -1095,7 +1095,7 @@ public class CatalogController {
             return ResponseEntity.notFound().build();
         }
         // modify state
-        searchCatalog.get().setStatus(new StatusComponent(2, "inactive"));
+        searchCatalog.get().setStatusCatalog(new StatusComponent(2, "inactive"));
         return ResponseEntity.ok().body(catalogService.save(searchCatalog.get()));
     }
     // adm - deshabilita catalogo por modelo

@@ -36,40 +36,4 @@ public class Catalog {
     @JoinColumn(name = "status_catalog")
     private StatusComponent statusCatalog;
 
-    public Integer getStock() {
-        return stock;
-    }
-    public void setStock(Integer stock) {
-        this.stock = stock;
-    }
-    public void setModel(Model model) {
-        this.model = model;
-    }
-    public void setSize(Size size) {
-        this.size = size;
-    }
-    public void setPrice(Float price) {
-        this.price = price;
-    }
-    public void setIdCatalog(Integer idCatalog) {
-        this.idCatalog = idCatalog;
-    }
-    public Integer getIdCatalog() {
-        return idCatalog;
-    }
-    public Model getModel() {
-        return model;
-    }
-    public Size getSize() {
-        return size;
-    }
-    public Float getPrice() {
-        return price;
-    }
-    public StatusComponent getStatus() {
-        return statusCatalog;
-    }
-    public void setStatus(StatusComponent status) {
-        this.statusCatalog = status;
-    }
 }
