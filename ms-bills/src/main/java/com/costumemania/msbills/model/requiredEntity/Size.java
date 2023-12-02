@@ -20,4 +20,7 @@ public class Size {
 
     @Column(name = "adult")
     private Integer adult;
+
+    @Column(name = "no_size")
+    private String noSize;
 }

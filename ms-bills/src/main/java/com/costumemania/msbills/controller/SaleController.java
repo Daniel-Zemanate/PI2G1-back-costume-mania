@@ -180,6 +180,7 @@ public class SaleController {
         private static class ItemInvoice {
             private Integer catalog;
             private String model;
+            private String size;
             private Integer quantity;
             private float price;
             private float PxQ;
@@ -196,6 +197,12 @@ public class SaleController {
             }
             public void setModel(String model) {
                 this.model = model;
+            }
+            public String getSize() {
+                return size;
+            }
+            public void setSize(String size) {
+                this.size = size;
             }
             public Integer getQuantity() {
                 return quantity;
@@ -293,6 +300,7 @@ public class SaleController {
             Invoice.ItemInvoice item = new Invoice.ItemInvoice();
             item.setCatalog(sale.getCatalog().getIdCatalog());
             item.setModel(sale.getCatalog().getModel().getNameModel());
+            item.setSize(sale.getCatalog().getSize().getNoSize());
             item.setQuantity(sale.getQuantity());
             item.setPrice(sale.getCatalog().getPrice());
             item.setPxQ(item.getQuantity()*item.getPrice());
