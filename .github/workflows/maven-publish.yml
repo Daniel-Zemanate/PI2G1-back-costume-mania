@@ -53,6 +53,9 @@ jobs:
         echo "${{ secrets.DB_SERVICE }}" >> .env 
         echo "${{ secrets.DB_USER }}" >> .env 
         echo "${{ secrets.DB_PASS }}" >> .env 
+        echo "${{ secrets.JWT_SECRET }}" >> .env 
+        echo "${{ secrets.EMAIL_SENDER }}" >> .env 
+        echo "${{ secrets.EMAIL_PASSWORD }}" >> .env 
 
     - name: Build with Maven
       run: sudo mvn -B package --file pom.xml

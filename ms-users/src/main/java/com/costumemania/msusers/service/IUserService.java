@@ -11,6 +11,7 @@ public interface IUserService {
     UserAccountResponse getByUsername(String username) throws Exception;
 
     UserAccountResponse getById(int id);
+
     UserExists userExists(int id);
 
     UserAccountResponse getByDni(String dni);
@@ -22,5 +23,7 @@ public interface IUserService {
     UserAccountResponse updateUserFromUser(UpdateUserRequest user);
 
     UserAccountResponse updateUserFromAdmin(UpdateFromAdmin user);
+
+    void resetPassword(ResetPassRequest resetPassRequest);
 
 }

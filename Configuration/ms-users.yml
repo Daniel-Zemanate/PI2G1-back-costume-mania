@@ -23,6 +23,11 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
     defer-datasource-initialization: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 message: hello from ms-users
 
@@ -41,5 +46,9 @@ eureka:
 
 
 jwt:
-  secret: $2a$12$dQNO.bNyF/E4.NC8ZM/kt.oVU31KSpZNMhTNHDEjvh/2z7zrfkoN6
+  secret: ${JWT_SECRET}
   expiration: 86480
+
+email:
+  sender: ${EMAIL_SENDER}
+  password: ${EMAIL_PASSWORD}

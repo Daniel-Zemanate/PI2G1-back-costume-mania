@@ -1,10 +1,13 @@
 package com.costumemania.msusers.service.implementation;
 
+import com.costumemania.msusers.configuration.mail.model.SimpleMailStructure;
+import com.costumemania.msusers.configuration.mail.service.IEmailService;
 import com.costumemania.msusers.model.dto.*;
 import com.costumemania.msusers.model.entity.UserEntity;
 import com.costumemania.msusers.repository.IUserRepository;
 import com.costumemania.msusers.service.IUserService;
 import jakarta.ws.rs.NotFoundException;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,11 +23,9 @@ public class UserServiceImplementation implements IUserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-//
-//    public UserServiceImplementation(IUserRepository userRepository, PasswordEncoder passwordEncoder) {
-//        this.userRepository = userRepository;
-//        this.passwordEncoder = passwordEncoder;
-//    }
+
+    @Autowired
+    private IEmailService emailService;
 
 
     public UserServiceImplementation(IUserRepository userRepository) {
@@ -95,6 +96,7 @@ public class UserServiceImplementation implements IUserService {
     public UserAccountResponse updateUserFromUser(UpdateUserRequest user) {
 
         UserAccountResponse foundUser = getById(user.getId());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         UserEntity updateUser = UpdateUserRequest.toUserEntity(user);
         updateUser.setCreatedAt(foundUser.getCreatedAt());
@@ -110,6 +112,7 @@ public class UserServiceImplementation implements IUserService {
     public UserAccountResponse updateUserFromAdmin(UpdateFromAdmin user) {
 
         UserAccountResponse foundUser = getById(user.getId());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         UserEntity updateUser = UpdateFromAdmin.toUserEntity(user);
         updateUser.setCreatedAt(foundUser.getCreatedAt());
@@ -121,6 +124,33 @@ public class UserServiceImplementation implements IUserService {
         return response;
     }
 
+    @Override
+    public void resetPassword(ResetPassRequest resetPassRequest) {
+
+        //Validating if user exists before next steps
+        UserAccountResponse user = getByUsername(resetPassRequest.getEmail());
+
+        String fullUsername = (user.getFirstName() + " " + user.getLastName()).toUpperCase();
+        String newPassword = RandomStringUtils.randomAlphanumeric(9);
+
+        //Build a UpdateUserRequest entity to reuse updateUserFromUser() method to achieve reset password
+        UpdateUserRequest updateUserPass = UpdateUserRequest.fromUserAccountResponse(user);
+        updateUserPass.setPassword(newPassword);
+
+        updateUserFromUser(updateUserPass);
+
+
+        SimpleMailStructure simpleMailStructure = SimpleMailStructure.builder()
+                .toUser(new String[]{user.getEmail()})
+                .subject("DO NOT REPLY: RESET PASSWORD; COSTUME MANIA")
+                .message(String.format("Hello, %s.\n\n" +
+                        "You have request reset your password, with this temporary password you will be able to access our platform. Please, change your password as soon as possible.\n\n" +
+                        "New temporary password: %s", fullUsername, newPassword))
+                .build();
+
+        emailService.sendEmail(simpleMailStructure);
+
+    }
 
     //Common method to be used for create and update
     private UserEntity save(UserEntity user) {
