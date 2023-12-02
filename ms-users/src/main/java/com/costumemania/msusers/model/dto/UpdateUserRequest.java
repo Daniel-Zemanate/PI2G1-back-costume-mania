@@ -18,14 +18,14 @@ public class UpdateUserRequest {
 
     Integer id;
     String dni;
-//    String username;
+    //    String username;
     String email;
     String password;
     String firstName;
     String lastName;
 
 
-    public static UserEntity toUserEntity(UpdateUserRequest user){
+    public static UserEntity toUserEntity(UpdateUserRequest user) {
         return UserEntity.builder()
                 .id(user.getId())
                 .dni(user.getDni())
@@ -40,6 +40,17 @@ public class UpdateUserRequest {
 //                .createdAt(LocalDate.now()) //Parameter from ddbb
                 .updatedAt(LocalDate.now())
                 .role(Role.USER)
+                .build();
+    }
+
+    public static UpdateUserRequest fromUserAccountResponse(UserAccountResponse user) {
+        return UpdateUserRequest.builder()
+                .id(user.getId())
+                .dni(user.getDni())
+                .email(user.getEmail())
+                .password("")   //Empty because UserAccountResponse does not return password
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
                 .build();
     }
 

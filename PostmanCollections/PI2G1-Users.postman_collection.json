@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "2ef3a0e4-84fb-407a-8251-454d23a77682",
+		"_postman_id": "6c01a8b9-349a-45e5-b080-655383f5577b",
 		"name": "PI2G1-Users",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18574247"
+		"_exporter_id": "24047893"
 	},
 	"item": [
 		{
@@ -260,6 +260,37 @@
 								"v1",
 								"users",
 								"17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users/reset PUBLIC/INTERNAL",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"donotreply.costumemania@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{URL-AWS}}:8080/api/v1/users/reset",
+							"protocol": "http",
+							"host": [
+								"{{URL-AWS}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"reset"
 							]
 						}
 					},

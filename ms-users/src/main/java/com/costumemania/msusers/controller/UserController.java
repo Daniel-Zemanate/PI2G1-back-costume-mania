@@ -176,10 +176,18 @@ public class UserController {
         return response;
     }
 
+    @PostMapping(path = "/reset")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPassRequest resetPassRequest) {
+        ResponseEntity response;
 
-    //    This endpoind is only used to check ms-config-server
-//    @GetMapping(path = "/config-message")
-//    private String configMessage() {
-//        return message;
-//    }
+        try {
+            userService.resetPassword(resetPassRequest);
+            response = ResponseEntity.accepted().build();
+        } catch (Exception e) {
+            response = ResponseEntity.badRequest().body("Something went wrong with your request. Try again, if error persists contact Admin for support: " + e.getMessage());
+        }
+
+        return response;
+    }
+
 }
