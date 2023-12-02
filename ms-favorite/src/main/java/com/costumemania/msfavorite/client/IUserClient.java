@@ -12,7 +12,7 @@ import java.util.List;
 @FeignClient(name= "ms-users")
 public interface IUserClient {
 
-    @GetMapping("/api/v1/users/all")
+    @GetMapping("/users/all")
     List<UsersEntity> allUsers();
 
 }

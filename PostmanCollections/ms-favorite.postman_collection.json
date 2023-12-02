@@ -1,0 +1,150 @@
+{
+	"info": {
+		"_postman_id": "9920bd95-627f-4c69-8b85-34b7d5a20524",
+		"name": "ms-favorite",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11705443"
+	},
+	"item": [
+		{
+			"name": "getAllFavorite",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:52886/api/v1/fav",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52886",
+					"path": [
+						"api",
+						"v1",
+						"fav"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteFavorite",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/api/v1/fav/14",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"api",
+						"v1",
+						"fav",
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addFav",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"users\": 3,\r\n    \"model\": 20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/api/v1/fav",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"api",
+						"v1",
+						"fav"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getByUser",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:52814/api/v1/fav/user/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52814",
+					"path": [
+						"api",
+						"v1",
+						"fav",
+						"user",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getFavForModel",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:52863/api/v1/fav/FavModel",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52863",
+					"path": [
+						"api",
+						"v1",
+						"fav",
+						"FavModel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getFavForModelV2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:52886/api/v1/fav/FavModelV2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52886",
+					"path": [
+						"api",
+						"v1",
+						"fav",
+						"FavModelV2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
