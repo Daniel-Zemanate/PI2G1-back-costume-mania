@@ -21,13 +21,4 @@ public class Category {
     @JoinColumn(name = "status_category")
     private StatusComponent statusCategory;
 
-    public Integer getIdCategory() {
-        return idCategory;
-    }
-    public String getName() {
-        return name;
-    }
-    public StatusComponent getStatus() {
-        return statusCategory;
-    }
 }

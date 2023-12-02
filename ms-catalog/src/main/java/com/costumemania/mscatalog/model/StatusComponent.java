@@ -2,8 +2,12 @@ package com.costumemania.mscatalog.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "statuscomponent")
 public class StatusComponent {
@@ -18,9 +22,5 @@ public class StatusComponent {
     public StatusComponent(Integer id, String description) {
         this.id = id;
         this.description = description;
-    }
-
-    public Integer getId() {
-        return id;
     }
 }
